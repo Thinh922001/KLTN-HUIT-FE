@@ -8,16 +8,17 @@
 
 // Update your breakpoints if you want
 export const sizes = {
-  small: 600,
-  medium: 1024,
-  large: 1440,
-  xlarge: 1920,
+  sm: 576,
+  md: 768,
+  lg: 992,
+  xl: 1200,
+  xxl: 1400,
 };
 
 // Iterate through the sizes and create min-width media queries
 export const media = (Object.keys(sizes) as Array<keyof typeof sizes>).reduce(
   (acc, size) => {
-    acc[size] = () => `@media (min-width:${sizes[size]}px)`;
+    acc[size] = () => `@media (max-width:${sizes[size] - 0.2}px)`;
     return acc;
   },
   {} as { [key in keyof typeof sizes]: () => string },

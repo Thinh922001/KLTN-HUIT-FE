@@ -33,7 +33,7 @@ import './locales/i18n';
 // the index.html file and this observer)
 const openSansObserver = new FontFaceObserver('Inter', {});
 
-// When Inter is loaded, add a font-family using Inter to the body
+//When Inter is loaded, add a font-family using Inter to the body
 openSansObserver.load().then(() => {
   document.body.classList.add('fontLoaded');
 });

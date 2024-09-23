@@ -1,17 +1,31 @@
 import { createGlobalStyle } from 'styled-components';
 import { StyleConstants } from './StyleConstants';
+import reset from 'styled-reset';
 /* istanbul ignore next */
 export const GlobalStyle = createGlobalStyle`
-  html,
-  body {
-    height: 100%;
-    width: 100%;
-    line-height: 1.5;
-  }
+
+${reset}
+  /* other styles */
+
+
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+
+html,body {
+  width: 100%;
+  height: 100%;
+}
+
+html {
+    font-size: 62.5%;
+}
 
   body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    padding-top: ${StyleConstants.NAV_BAR_HEIGHT};
+    font-size: 1.6rem;
     background-color: ${p => p.theme.background};
   }
 
@@ -19,18 +33,33 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
   
-  p,
-  label {
-    line-height: 1.5em;
-  }
+ a {
+    color: inherit;
+    text-decoration: none;
+}
 
-  input, select, button {
+button {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+a,
+img,
+button,
+input,
+textarea,
+select {
     font-family: inherit;
-    font-size: inherit;
-  }
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    border: none;
+    padding: 0;
+}
 
-  .icon {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
+input {
+    background: transparent;
+}
 `;
