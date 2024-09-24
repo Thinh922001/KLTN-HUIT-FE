@@ -48,7 +48,6 @@ const SubMenuItem = styled.div`
   height: 101px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 10px;
 `;

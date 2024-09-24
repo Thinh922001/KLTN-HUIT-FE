@@ -1,10 +1,17 @@
+import React, { useState, useEffect } from 'react';
 import Icon from 'app/components/icons';
 import { ReactComponent as MoreIcon } from './assets/more.svg';
 import styled from 'styled-components/macro';
 import { MenuData, MenuType } from './data/menu';
 import { SubMenu } from './sub-menu';
+import { media } from 'styles/media';
+interface Props {
+  isActive?: boolean;
+}
 
 export default function Menu() {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+
   return (
     <ButtonMenu>
       <Icon position="-286px -33px" width="20px" height="14px" />
@@ -16,16 +23,12 @@ export default function Menu() {
               <MenuItems>
                 {MenuData.map((e: MenuType, index) => {
                   return (
-                    <MenuItem key={index}>
-                      <A>{e.title}</A>
-                      <SubMenuWarper>
-                        <SubMenu
-                          key={index}
-                          data={e.subMenus as any}
-                          title={e.title}
-                        />
-                      </SubMenuWarper>
-                    </MenuItem>
+                    <MenuItemWithHover
+                      key={index}
+                      menu={e}
+                      isActive={index === activeIndex}
+                      onHover={() => setActiveIndex(index)}
+                    />
                   );
                 })}
               </MenuItems>
@@ -37,10 +40,45 @@ export default function Menu() {
   );
 }
 
+const MenuItemWithHover: React.FC<{
+  menu: MenuType;
+  isActive: boolean;
+  onHover: () => void;
+}> = ({ menu, isActive, onHover }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    // Nếu menu này đang active thì mở sub-menu
+    if (isActive) {
+      setIsHovered(true);
+    } else {
+      setIsHovered(false);
+    }
+  }, [isActive]);
+
+  return (
+    <MenuItem
+      onMouseEnter={() => {
+        onHover();
+        setIsHovered(true);
+      }}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <A>{menu.title}</A>
+      {(isHovered || isActive) && (
+        <SubMenuWarper>
+          <SubMenu data={menu.subMenus as any} title={menu.title} />
+        </SubMenuWarper>
+      )}
+    </MenuItem>
+  );
+};
+
 const Dropdown = styled.div`
+  display: none;
   position: absolute;
   left: 17.9%;
-  padding-top: 24px;
+  padding-top: 14px;
   top: 68%;
   color: #333;
 
@@ -51,6 +89,7 @@ const TopMenuMain = styled.div`
   width: 230px;
   height: 100%;
   background-color: #f2f4f7;
+  border-radius: 12px;
 `;
 
 const MenuItems = styled.ul`
@@ -65,25 +104,45 @@ const SubMenuWarper = styled.div`
   position: absolute;
   inset: 0 0 0 230px;
   overflow-y: auto;
-  display: none;
-  //  background-color: orange;
+  background-color: white;
+  display: block;
+  border-radius: 12px;
+  padding-right: 30px;
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f9f9f9;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #e0e0e0;
+    border-radius: 10px;
+    border: 2px solid #f9f9f9;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #d0d0d0; /* Slightly darker gray when hovered */
+  }
+
+  /* For Firefox */
+  * {
+    scrollbar-width: thin; /* Makes the scrollbar thinner */
+    scrollbar-color: #e0e0e0 #f9f9f9; /* thumb color | track color */
+  }
 `;
 
-const MenuItem = styled.li`
+const MenuItem = styled.li<Props>`
   height: 40px;
   border-left: 3px solid #eaecf0;
   text-overflow: ellipsis;
   background-color: #eaecf0;
   padding: 0 25px 0 12px;
   border-bottom: 1px solid #d3d7df;
-  // position: relative;
-
-  &:hover {
-    ${SubMenuWarper} {
-      display: block;
-    }
-  }
-
   display: flex;
   align-items: center;
 
@@ -95,29 +154,27 @@ const MenuItem = styled.li`
     background-color: #fff;
   }
 
-  /* &::before {
-    content: '';
-    position: absolute;
-    transform: rotate(90deg);
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid #eaecf0;
-    width: auto;
-    height: auto;
-    right: -4px;
-  } */
+  ${props =>
+    props.isActive &&
+    `
+    border-left-color: #2a83e9;
+    background-color: #fff;
+  `}
 `;
 
-const A = styled.a``;
+const A = styled.a`
+  text-decoration: none;
+  color: inherit;
+`;
 
 const TopMenu = styled.div`
   height: 100%;
   position: relative;
+  border-radius: 12px;
 `;
 
 const DropdownInner = styled.div`
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
+  border-radius: 12px;
   height: min(410px, 100vh - 100px);
   background-color: #fff;
 
@@ -127,8 +184,9 @@ const DropdownInner = styled.div`
 const ButtonMenu = styled.button`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  padding: 20px 10px;
+  padding: 10px;
   margin-right: 10px;
   border-radius: 20px 20px 0 0;
 
@@ -136,8 +194,16 @@ const ButtonMenu = styled.button`
     background-color: #fff;
     color: black;
 
+    ${Dropdown} {
+      display: block;
+    }
+
     ${Icon} {
       background-position: -78px 0;
     }
+  }
+
+  ${media.sm} {
+    display: none;
   }
 `;

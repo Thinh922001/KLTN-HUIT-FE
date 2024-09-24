@@ -28,7 +28,7 @@ export default function MyHeader() {
           <Icon position="-82px -221px" width="24px" height="24px" />
           Đăng nhập
         </HeaderButton>
-        <HeaderButton>
+        <HeaderButton className="header__card">
           <Icon position="-108px -221px" width="24px" height="24px" />
           Giỏ Hàng
         </HeaderButton>
@@ -64,6 +64,12 @@ const HeaderWarper = styled.div`
     align-items: center;
     justify-content: center;
   }
+
+  .header__card {
+    ${media.md} {
+      display: none;
+    }
+  }
 `;
 
 const HeaderSearch = styled.div`
@@ -71,7 +77,7 @@ const HeaderSearch = styled.div`
   align-items: center;
 
   background-color: #fff;
-  width: min(100%, 415px); //
+  width: min(100%, 300px); //
   height: 40px;
   border-radius: 32px;
   padding: 8px;
@@ -149,7 +155,7 @@ const HeaderLocation = styled.div`
     background-color: #2871d5;
   }
 
-  ${media.md} {
+  ${media.lg} {
     display: none;
   }
 `;
