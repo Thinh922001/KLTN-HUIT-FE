@@ -16,6 +16,7 @@ import { HomePage } from './pages/HomePage/Loadable';
 import { NotFoundPage } from './pages/NotFoundPage/Loadable';
 import { useTranslation } from 'react-i18next';
 import { MyHomePage } from './pages/MyHomePage';
+import { MainLayout } from './layout';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -30,9 +31,13 @@ export function App() {
       </Helmet>
 
       <Routes>
-        <Route path="/" element={<MyHomePage />} />
+        {/* <Route path="/" element={<MyHomePage />} /> */}
         {/* <Route path="/homepage-template" element={<HomePage />} />
         <Route path="*" element={<NotFoundPage />} /> */}
+
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<MyHomePage />} />
+        </Route>
       </Routes>
       <GlobalStyle />
     </BrowserRouter>

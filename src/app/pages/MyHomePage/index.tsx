@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet-async';
-import MyHeader from './components/Header';
+import MyHeader from 'app/components/Header';
 import styled from 'styled-components/macro';
 import { Container } from 'app/components/container';
+import { Banner } from './components/banner';
 
 export function MyHomePage() {
   return (
@@ -11,11 +12,9 @@ export function MyHomePage() {
         <title>My Home Page</title>
         <meta name="description" content="KLTN HUIT  homepage" />
       </Helmet>
-      <Header>
-        <Container>
-          <MyHeader />
-        </Container>
-      </Header>
+      <Container>
+        <Banner />
+      </Container>
     </>
   );
 }

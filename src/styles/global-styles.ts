@@ -31,7 +31,7 @@ html {
 
   body.fontLoaded {
     font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #EEEEEE;
+    background-color: #f2f4f7;
 
     ::-webkit-scrollbar-track {
     border: 1px solid black;

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Icon from 'app/components/icons';
-import { ReactComponent as MoreIcon } from './assets/more.svg';
 import styled from 'styled-components/macro';
 import { MenuData, MenuType } from './data/menu';
 import { SubMenu } from './sub-menu';
@@ -83,6 +82,8 @@ const Dropdown = styled.div`
   color: #333;
 
   width: min(820px, 100%);
+
+  z-index: 99999;
 `;
 
 const TopMenuMain = styled.div`
