@@ -31,6 +31,7 @@ html {
 
   body.fontLoaded {
     font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #EEEEEE;
   }
   
  a {
@@ -43,7 +44,6 @@ button {
     outline: none;
     background: transparent;
     padding: 0;
-    cursor: pointer;
 }
 a,
 img,

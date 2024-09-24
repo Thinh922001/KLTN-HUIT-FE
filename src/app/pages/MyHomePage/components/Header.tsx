@@ -3,6 +3,7 @@ import { Input } from 'app/components/Input/Input';
 import styled from 'styled-components/macro';
 import { media } from 'styles/media';
 import { ReactComponent as MoreIcon } from './assets/more.svg';
+import Menu from './Menu';
 
 export default function MyHeader() {
   return (
@@ -14,6 +15,8 @@ export default function MyHeader() {
         height="40px"
         className="header__brand"
       />
+
+      <Menu />
 
       <HeaderSearch>
         <Icon position="-151px -18px" width="17px" height="17px" />
