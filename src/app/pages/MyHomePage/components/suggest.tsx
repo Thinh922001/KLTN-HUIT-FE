@@ -1,9 +1,19 @@
+import { Card } from 'app/components/Card';
 import styled from 'styled-components';
 
 export const Suggest = () => {
   return (
     <SuggestWrapper>
       <SuggestTitle>Gợi ý cho bạn</SuggestTitle>
+      <SuggestItems>
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+      </SuggestItems>
     </SuggestWrapper>
   );
 };
@@ -21,4 +31,9 @@ const SuggestTitle = styled.h3`
   font-size: 24px;
   padding: 0 0 20px 20px;
   font-weight: bold;
+`;
+
+const SuggestItems = styled.div`
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
 `;
