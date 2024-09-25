@@ -4,6 +4,7 @@ import MyHeader from 'app/components/Header';
 import styled from 'styled-components/macro';
 import { Container } from 'app/components/container';
 import { Banner } from './components/banner';
+import { Category } from './components/category';
 
 export function MyHomePage() {
   return (
@@ -14,11 +15,8 @@ export function MyHomePage() {
       </Helmet>
       <Container>
         <Banner />
+        <Category />
       </Container>
     </>
   );
 }
-
-const Header = styled.header`
-  background-color: #2a83e9;
-`;

@@ -47,7 +47,6 @@ const MenuItemWithHover: React.FC<{
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    // Nếu menu này đang active thì mở sub-menu
     if (isActive) {
       setIsHovered(true);
     } else {
