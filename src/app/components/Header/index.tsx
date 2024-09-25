@@ -8,44 +8,50 @@ import { Container } from '../container';
 
 export default function MyHeader() {
   return (
-    <HeaderDiv>
-      <Container>
-        <HeaderWarper>
-          <MoreIcon className="header__more" />
-          <Icon
-            position="0 -130px"
-            width="240px"
-            height="40px"
-            className="header__brand"
-          />
+    <HeaderWrapper>
+      <HeaderDiv>
+        <Container>
+          <HeaderWarper>
+            <MoreIcon className="header__more" />
+            <Icon
+              position="0 -130px"
+              width="240px"
+              height="40px"
+              className="header__brand"
+            />
 
-          <Menu />
+            <Menu />
 
-          <HeaderSearch>
-            <Icon position="-151px -18px" width="17px" height="17px" />
-            <Input placeholder="Bạn tìm gì..." />
-          </HeaderSearch>
+            <HeaderSearch>
+              <Icon position="-151px -18px" width="17px" height="17px" />
+              <Input placeholder="Bạn tìm gì..." />
+            </HeaderSearch>
 
-          <ButtonGroup>
-            <HeaderButton>
-              <Icon position="-82px -221px" width="24px" height="24px" />
-              Đăng nhập
-            </HeaderButton>
-            <HeaderButton className="header__card">
-              <Icon position="-108px -221px" width="24px" height="24px" />
-              Giỏ Hàng
-            </HeaderButton>
-          </ButtonGroup>
+            <ButtonGroup>
+              <HeaderButton>
+                <Icon position="-82px -221px" width="24px" height="24px" />
+                Đăng nhập
+              </HeaderButton>
+              <HeaderButton className="header__card">
+                <Icon position="-108px -221px" width="24px" height="24px" />
+                Giỏ Hàng
+              </HeaderButton>
+            </ButtonGroup>
 
-          <HeaderLocation>
-            <Icon position="-134px -219px" width="17px" height="23px" />
-            Hồ Chí Minh
-          </HeaderLocation>
-        </HeaderWarper>
-      </Container>
-    </HeaderDiv>
+            <HeaderLocation>
+              <Icon position="-134px -219px" width="17px" height="23px" />
+              Hồ Chí Minh
+            </HeaderLocation>
+          </HeaderWarper>
+        </Container>
+      </HeaderDiv>
+    </HeaderWrapper>
   );
 }
+
+const HeaderWrapper = styled.div`
+  padding-bottom: 82px;
+`;
 
 const HeaderDiv = styled.header`
   background-color: #2a83e9;

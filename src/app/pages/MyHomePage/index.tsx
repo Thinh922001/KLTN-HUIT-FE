@@ -5,6 +5,7 @@ import styled from 'styled-components/macro';
 import { Container } from 'app/components/container';
 import { Banner } from './components/banner';
 import { Category } from './components/category';
+import { Suggest } from './components/suggest';
 
 export function MyHomePage() {
   return (
@@ -16,6 +17,7 @@ export function MyHomePage() {
       <Container>
         <Banner />
         <Category />
+        <Suggest />
       </Container>
     </>
   );

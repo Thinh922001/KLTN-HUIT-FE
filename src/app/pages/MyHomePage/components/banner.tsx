@@ -24,7 +24,6 @@ export const Banner = () => {
 
 const BannerWarper = styled.div<Props>`
   display: ${({ isClose }) => (isClose ? 'none' : 'block')};
-  margin-top: 20px;
   position: relative;
   width: 100%;
   padding-top: 20%;
