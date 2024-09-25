@@ -38,6 +38,7 @@ export function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<MyHomePage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <GlobalStyle />
     </BrowserRouter>
