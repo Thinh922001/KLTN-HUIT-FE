@@ -3,6 +3,7 @@ import { MenuData } from 'app/components/Header/data/menu';
 import { Arrow } from 'app/components/Arrow';
 import { Props as ArrowProps } from 'app/components/Arrow/index';
 import { useEffect, useState } from 'react';
+import { renderCategoryItems } from './render-cate-items';
 
 interface Props {
   currenIndex: number;
@@ -11,13 +12,18 @@ interface Props {
 export const Category = () => {
   const [currenIndex, setCurrentIndex] = useState(0);
 
-  //const newData = MenuData.flatMap(e => e.subMenus);
+  const newData = MenuData.flatMap(e => e.subMenus);
 
-  const data = MenuData[5];
+  const halfLength = newData.length / 2;
+
+  const [firstHalf, secondHalf] = [
+    newData.slice(0, Math.ceil(halfLength)),
+    newData.slice(Math.ceil(halfLength)),
+  ];
 
   const ITEM_TO_SHOW = 8;
 
-  const totalItem = data.subMenus?.length || 0;
+  const totalItem = halfLength;
 
   const onNext = () => {
     if (currenIndex < totalItem - ITEM_TO_SHOW) {
@@ -26,7 +32,7 @@ export const Category = () => {
   };
 
   const onPrev = () => {
-    if (currenIndex < totalItem - ITEM_TO_SHOW && currenIndex !== 0) {
+    if (currenIndex > 0) {
       setCurrentIndex(index => index - 1);
     }
   };
@@ -40,30 +46,10 @@ export const Category = () => {
 
       <CategoryWarper className="wrapper">
         <CateInner currenIndex={currenIndex}>
-          {data.subMenus &&
-            data.subMenus?.map((e, index) => {
-              return (
-                <A key={index}>
-                  <CateItem key={index}>
-                    <CateImg src={e.img} />
-                    <CateDesc>{e.desc}</CateDesc>
-                  </CateItem>
-                </A>
-              );
-            })}
+          {firstHalf.length && renderCategoryItems(firstHalf)}
         </CateInner>
         <CateInner currenIndex={currenIndex}>
-          {data.subMenus &&
-            data.subMenus?.map((e, index) => {
-              return (
-                <A key={index}>
-                  <CateItem key={index}>
-                    <CateImg src={e.img} />
-                    <CateDesc>{e.desc}</CateDesc>
-                  </CateItem>
-                </A>
-              );
-            })}
+          {secondHalf.length && renderCategoryItems(secondHalf)}
         </CateInner>
       </CategoryWarper>
 
@@ -124,32 +110,3 @@ const CateInner = styled.div<Props>`
 const CategoryContainer = styled.div`
   position: relative;
 `;
-
-const CateItem = styled.div`
-  min-width: 166px;
-  height: 100%;
-  padding: 16px 12px 12px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-
-  &:hover {
-    background-color: #eaecf0;
-  }
-`;
-
-const CateImg = styled.img`
-  width: 48px;
-  height: 48px;
-  object-fit: cover;
-`;
-
-const CateDesc = styled.span`
-  margin-top: 2px;
-  text-align: center;
-`;
-
-const A = styled.a``;

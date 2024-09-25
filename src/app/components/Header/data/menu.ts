@@ -7,7 +7,7 @@ export interface SubMenuType {
 
 export interface MenuType {
   title: string;
-  subMenus?: SubMenuType[];
+  subMenus: SubMenuType[];
 }
 
 export const subMenuData = [
