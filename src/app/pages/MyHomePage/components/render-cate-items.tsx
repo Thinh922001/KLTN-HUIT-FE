@@ -3,9 +3,9 @@ import styled from 'styled-components/macro';
 
 export const renderCategoryItems = (items: SubMenuType[]) =>
   items.map((item, index) => (
-    <A key={index}>
+    <A key={index} href="#!">
       <CateItem>
-        <CateImg src={item.img} alt={item.desc} />
+        <CateImg src={item.img} alt={item.desc} loading="lazy" />
         <CateDesc>{item.desc}</CateDesc>
       </CateItem>
     </A>

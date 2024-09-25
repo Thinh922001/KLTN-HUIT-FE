@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet-async';
-import MyHeader from 'app/components/Header';
-import styled from 'styled-components/macro';
 import { Container } from 'app/components/container';
 import { Banner } from './components/banner';
 import { Category } from './components/category';

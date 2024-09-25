@@ -17,7 +17,7 @@ export const SubMenu: React.FC<SubMenuProps> = ({ data = [], title = '' }) => {
             return (
               <A href="#!" key={index}>
                 <SubMenuItem>
-                  <ItemImg src={e.img} />
+                  <ItemImg src={e.img} alt={e.desc} loading="lazy" />
                   <ItemDesc>{e.desc}</ItemDesc>
                 </SubMenuItem>
               </A>
