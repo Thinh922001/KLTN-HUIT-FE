@@ -49,6 +49,11 @@ export default function MyHeader() {
 
 const HeaderDiv = styled.header`
   background-color: #2a83e9;
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  left: 0;
+  width: 100%;
 `;
 
 const HeaderWarper = styled.div`
