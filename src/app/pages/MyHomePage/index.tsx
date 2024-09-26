@@ -4,6 +4,7 @@ import { Container } from 'app/components/container';
 import { Banner } from './components/banner';
 import { Category } from './components/category';
 import { Suggest } from './components/suggest';
+import { BannerWeek } from './components/banner-week';
 
 export function MyHomePage() {
   return (
@@ -16,6 +17,7 @@ export function MyHomePage() {
         <Banner />
         <Category />
         <Suggest />
+        <BannerWeek />
       </Container>
     </>
   );

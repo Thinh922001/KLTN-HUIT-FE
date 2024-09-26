@@ -2,24 +2,60 @@ import styled from 'styled-components';
 import Icon from '../icons';
 import ProductIon from 'app/pages/MyHomePage/components/assets/1.jpg';
 import { Span } from '../Span/inedx';
+import { mapCardLabel } from '../CardLabel';
+import { ICard, ETxtOnline, ELabel, EResultLabel } from 'types/Card';
+import { CardTxtOnline } from './components/card-txt-online';
+import { currencyVND } from 'utils/string';
+import { ResultLabel } from './components/resultLabel';
+import { CardTab } from '../CardTab';
+import subImg from './assets/sub-1.png';
+import React from 'react';
 
-export const Card = () => {
+interface Props {
+  data: ICard;
+}
+
+export const Card: React.FC<Props> = ({ data }) => {
   return (
     <CardWrapper>
-      <CardLabel>Trả góp 0%</CardLabel>
-      <CardImg src={ProductIon} />
-      <CardTitle>Samsung Inverter 305 lít RT31CG5424B1SV</CardTitle>
-      <CardSubTile>Online giá rẻ quá</CardSubTile>
-      <CardPrice>9.890.000₫</CardPrice>
-      <CardOldPriceWrapper>
-        <CardOldPrice>11.190.000₫</CardOldPrice>
-        <CardPercent>-11%</CardPercent>
-      </CardOldPriceWrapper>
-      <CardVote>
-        <StartIcon position="-136px -19px" width="14px" height="14px" />
-        <StartNumber>4.3</StartNumber>
-        <Span>(90)</Span>
-      </CardVote>
+      {data.labels?.length && mapCardLabel(data.labels)}
+      <CardImgWrapper>
+        <CardImg src={data.img} />
+        {data.subImg && <CardSubImg src={subImg} />}
+      </CardImgWrapper>
+
+      {data.resultLabel && (
+        <ResultLabel
+          text={data.resultLabel.text}
+          type={data.resultLabel.type}
+        />
+      )}
+      <CardTitleWrapper>
+        <CardTitle>{data.title ?? ''}</CardTitle>
+      </CardTitleWrapper>
+      {data.tabs && <CardTab tabs={data.tabs} />}
+      {data.txtOnline && (
+        <CardTxtOnline type={data.txtOnline.type ?? 0}>
+          {data.txtOnline.text ?? ''}
+        </CardTxtOnline>
+      )}
+      <CardPrice>{currencyVND(data.price ?? 0)}</CardPrice>
+      {data.discount && (
+        <CardOldPriceWrapper>
+          <CardOldPrice>
+            {currencyVND(data.discount.OldPrice ?? 0)}
+          </CardOldPrice>
+          <CardPercent>{data.discount.discountPercent ?? 0}%</CardPercent>
+        </CardOldPriceWrapper>
+      )}
+      {data.textGift && <TextGift>{data.textGift}</TextGift>}
+      {data.vote && (
+        <CardVote>
+          <StartIcon position="-136px -19px" width="14px" height="14px" />
+          <StartNumber>{data.vote.startRate ?? 0}</StartNumber>
+          <Span>({data.vote.totalVote ?? 0})</Span>
+        </CardVote>
+      )}
     </CardWrapper>
   );
 };
@@ -35,19 +71,27 @@ const CardImg = styled.img`
   transition: transform 0.5s;
 `;
 
+const CardTitleWrapper = styled.div`
+  margin-bottom: 5px;
+  margin-top: 5px;
+`;
+
 const CardTitle = styled.h3`
-  display: inline-block;
-  margin-bottom: 8px;
   line-height: 21px;
   font-size: 1.4rem;
   line-height: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 5px;
   font-weight: 700;
   color: #1d2939;
 
-  transition: color 0.5s;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  transition: color 0.3s;
 `;
 
 const CardWrapper = styled.div`
@@ -55,7 +99,7 @@ const CardWrapper = styled.div`
   padding: 10px;
   border: 1px solid #eaecf0;
   background-color: #fff;
-  min-height: 391px;
+  min-height: 436px;
   cursor: pointer;
 
   &:hover {
@@ -67,13 +111,6 @@ const CardWrapper = styled.div`
       transform: translateY(-8px);
     }
   }
-`;
-
-const CardSubTile = styled.p`
-  font-weight: 700;
-  color: #fd853a;
-  font-size: 1.2rem;
-  margin-bottom: 10px;
 `;
 
 const CardPrice = styled.strong`
@@ -119,26 +156,26 @@ const StartNumber = styled.div`
   display: inline-block;
 `;
 
-const ItemLabel = styled.span`
-  border-radius: 2px;
-  font-size: 11px;
-  line-height: 12px;
-  display: inline-block;
-
-  padding: 3px;
-  height: 17px;
-  margin-bottom: 5px;
-
-  & + & {
-    margin-right: 4px;
-  }
-`;
-
-const CardLabel = styled(ItemLabel)`
-  background-color: #f1f1f1;
-  color: #333;
-`;
-
 const StartIcon = styled(Icon)`
   margin: -4px 0 0 0;
+`;
+
+const TextGift = styled.p`
+  color: #1d2939;
+  margin-bottom: 10px;
+`;
+
+const CardImgWrapper = styled.div`
+  position: relative;
+  min-height: 163px;
+  display: flex;
+  align-items: center;
+`;
+
+const CardSubImg = styled.img`
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
 `;
