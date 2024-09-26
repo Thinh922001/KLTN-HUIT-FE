@@ -18,7 +18,7 @@ export const Suggest = () => {
 
 const SuggestWrapper = styled.section`
   width: 100%;
-  padding: 20px 0px;
+  padding: 20px 10px;
   background-color: #fff;
   margin-top: 20px;
   border-radius: 8px;
