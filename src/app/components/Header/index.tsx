@@ -5,8 +5,10 @@ import { media } from 'styles/media';
 import { ReactComponent as MoreIcon } from './assets/more.svg';
 import Menu from './Menu';
 import { Container } from '../container';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyHeader() {
+  const navigate = useNavigate();
   return (
     <HeaderWrapper>
       <HeaderDiv>
@@ -18,6 +20,7 @@ export default function MyHeader() {
               width="240px"
               height="40px"
               className="header__brand"
+              onClick={() => navigate('/')}
             />
 
             <Menu />
@@ -32,7 +35,10 @@ export default function MyHeader() {
                 <Icon position="-82px -221px" width="24px" height="24px" />
                 Đăng nhập
               </HeaderButton>
-              <HeaderButton className="header__card">
+              <HeaderButton
+                className="header__card"
+                onClick={() => navigate('/card')}
+              >
                 <Icon position="-108px -221px" width="24px" height="24px" />
                 Giỏ Hàng
               </HeaderButton>

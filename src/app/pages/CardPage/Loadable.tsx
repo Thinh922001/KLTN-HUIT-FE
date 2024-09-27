@@ -11,9 +11,9 @@ const LoadingWrapper = styled.div`
   justify-content: center;
 `;
 
-export const LZMyHomePage = lazyLoad(
+export const LZCardPage = lazyLoad(
   () => import('./index'),
-  module => module.MyHomePage,
+  module => module.CardPage,
   {
     fallback: (
       <LoadingWrapper>

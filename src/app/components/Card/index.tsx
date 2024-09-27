@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import Icon from '../icons';
-import ProductIon from 'app/pages/MyHomePage/components/assets/1.jpg';
 import { Span } from '../Span/inedx';
 import { mapCardLabel } from '../CardLabel';
-import { ICard, ETxtOnline, ELabel, EResultLabel } from 'types/Card';
+import { ICard } from 'types/Card';
 import { CardTxtOnline } from './components/card-txt-online';
 import { currencyVND } from 'utils/string';
 import { ResultLabel } from './components/resultLabel';
