@@ -1,6 +1,7 @@
 import { Card } from 'app/components/Card';
 import styled from 'styled-components';
 import { data } from 'app/components/Card/data/card-data';
+import { SeeMore } from 'app/components/SeeMore';
 
 export const Suggest = () => {
   return (
@@ -9,9 +10,7 @@ export const Suggest = () => {
       <SuggestItems>
         {data.length && data.map((e, index) => <Card data={e} key={index} />)}
       </SuggestItems>
-      <LoadMoreWrapper>
-        <LoadMore>Xem thêm sản phẩm</LoadMore>
-      </LoadMoreWrapper>
+      <SeeMore text="Xem thêm sản phẩm" />
     </SuggestWrapper>
   );
 };
@@ -35,36 +34,4 @@ const SuggestItems = styled.div`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 10px;
-`;
-
-const LoadMoreWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const LoadMore = styled.a`
-  border: 0;
-  color: #2a83e9;
-  font-size: 1.6rem;
-  font-weight: 700;
-  height: 36px;
-  padding: 0 12px;
-  line-height: 36px;
-  position: relative;
-  cursor: pointer;
-
-  &::before {
-    border-top: 2px solid #2a83e9;
-    border-left: 2px solid #2a83e9;
-    content: '';
-    position: absolute;
-    height: 5px;
-    width: 5px;
-    right: 0;
-    top: 44%;
-    transform: translateY(-50%);
-    transform: rotate(135deg);
-  }
 `;

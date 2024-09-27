@@ -5,6 +5,9 @@ import { Banner } from './components/banner';
 import { Category } from './components/category';
 import { Suggest } from './components/suggest';
 import { BannerWeek } from './components/banner-week';
+import { BannerOffer } from './components/banner-offer';
+import { HomeNews } from './components/home-news';
+import { CommonSearch } from './components/common-search';
 
 export function MyHomePage() {
   return (
@@ -18,6 +21,9 @@ export function MyHomePage() {
         <Category />
         <Suggest />
         <BannerWeek />
+        <BannerOffer />
+        <HomeNews />
+        <CommonSearch />
       </Container>
     </>
   );
