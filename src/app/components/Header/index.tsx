@@ -37,7 +37,7 @@ export default function MyHeader() {
               </HeaderButton>
               <HeaderButton
                 className="header__card"
-                onClick={() => navigate('/card')}
+                onClick={() => navigate('/cart')}
               >
                 <Icon position="-108px -221px" width="24px" height="24px" />
                 Giỏ Hàng

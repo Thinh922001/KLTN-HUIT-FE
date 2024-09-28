@@ -13,7 +13,7 @@ const routes: RouteObject[] = [
     children: [{ index: true, element: <LZMyHomePage /> }],
   },
   {
-    path: '/card',
+    path: '/cart',
     element: <NoFooterLayout />,
     children: [{ index: true, element: <LZCardPage /> }],
   },
