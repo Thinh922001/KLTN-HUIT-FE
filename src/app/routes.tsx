@@ -2,7 +2,7 @@ import { MainLayout } from './layout/main-layout';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { LZMyHomePage } from './pages/MyHomePage/Loadable';
 import { NoFooterLayout } from './layout/no-footer';
-import { LZCardPage } from './pages/CardPage/Loadable';
+import { LZCartPage } from './pages/CartPage/Loadable';
 import { RouteObject, useRoutes } from 'react-router-dom';
 import React from 'react';
 
@@ -15,7 +15,7 @@ const routes: RouteObject[] = [
   {
     path: '/cart',
     element: <NoFooterLayout />,
-    children: [{ index: true, element: <LZCardPage /> }],
+    children: [{ index: true, element: <LZCartPage /> }],
   },
   { path: '*', element: <NotFoundPage /> },
 ];

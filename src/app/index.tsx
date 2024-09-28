@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { MyHomePage } from './pages/MyHomePage';
 import { MainLayout } from './layout/main-layout';
 import { NoFooterLayout } from './layout/no-footer';
-import { CardPage } from './pages/CardPage';
+import { CartPage } from './pages/CartPage';
 import AppRoutes from './routes';
 
 export function App() {
