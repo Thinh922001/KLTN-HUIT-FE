@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { CardNotFound } from './components/card-not-found';
+import { CartFound } from './CartFound';
 
 export function CartPage() {
   return (
@@ -8,7 +9,8 @@ export function CartPage() {
         <title>Giỏ hàng</title>
         <meta name="description" content="Giỏ hàng" />
       </Helmet>
-      <CardNotFound />
+      {/* <CardNotFound /> */}
+      <CartFound />
     </>
   );
 }

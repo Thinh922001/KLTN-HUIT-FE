@@ -3,12 +3,40 @@ import { Input } from 'app/components/Input/Input';
 import styled from 'styled-components/macro';
 import { media } from 'styles/media';
 import { ReactComponent as MoreIcon } from './assets/more.svg';
-import Menu from './Menu';
 import { Container } from '../container';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { OverlayActions, useOverlaySlice } from '../Overlay/slice';
+import { Menu } from './Menu';
+import { LocationBox } from './Features/LocationBox';
+import {
+  LocationBoxActions,
+  useLocationBoxSlice,
+} from './Features/LocationBox/slice';
+import { selectStatusBoxLocation } from './Features/LocationBox/slice/selectors';
 
 export default function MyHeader() {
+  useLocationBoxSlice();
+
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const isBoxLocationActive = useSelector(selectStatusBoxLocation);
+
+  const handleShowOverLay = () => {
+    dispatch(OverlayActions.showOverlay());
+  };
+
+  const handleHideOverLay = () => {
+    if (!isBoxLocationActive) dispatch(OverlayActions.hideOverlay());
+  };
+
+  const handleShowLocationBox = () => {
+    dispatch(OverlayActions.showOverlay());
+    dispatch(LocationBoxActions.showLocationBox());
+  };
+
   return (
     <HeaderWrapper>
       <HeaderDiv>
@@ -23,7 +51,10 @@ export default function MyHeader() {
               onClick={() => navigate('/')}
             />
 
-            <Menu />
+            <Menu
+              onMouseEnter={handleShowOverLay}
+              onMouseLeave={handleHideOverLay}
+            />
 
             <HeaderSearch>
               <Icon position="-151px -18px" width="17px" height="17px" />
@@ -44,10 +75,11 @@ export default function MyHeader() {
               </HeaderButton>
             </ButtonGroup>
 
-            <HeaderLocation>
+            <HeaderLocation onClick={handleShowLocationBox}>
               <Icon position="-134px -219px" width="17px" height="23px" />
               Hồ Chí Minh
             </HeaderLocation>
+            {isBoxLocationActive && <LocationBox />}
           </HeaderWarper>
         </Container>
       </HeaderDiv>

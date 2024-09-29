@@ -6,13 +6,18 @@ import { SubMenu } from './sub-menu';
 import { media } from 'styles/media';
 interface Props {
   isActive?: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }
 
-export default function Menu() {
+export const Menu: React.FC<Pick<Props, 'onMouseEnter' | 'onMouseLeave'>> = ({
+  onMouseEnter,
+  onMouseLeave,
+}) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   return (
-    <ButtonMenu>
+    <ButtonMenu onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <Icon position="-286px -33px" width="20px" height="14px" />
       Danh mục
       <Dropdown>
@@ -37,7 +42,7 @@ export default function Menu() {
       </Dropdown>
     </ButtonMenu>
   );
-}
+};
 
 const MenuItemWithHover: React.FC<{
   menu: MenuType;
@@ -136,7 +141,7 @@ const SubMenuWarper = styled.div`
   }
 `;
 
-const MenuItem = styled.li<Props>`
+const MenuItem = styled.li<Pick<Props, 'isActive'>>`
   height: 40px;
   border-left: 3px solid #eaecf0;
   text-overflow: ellipsis;
