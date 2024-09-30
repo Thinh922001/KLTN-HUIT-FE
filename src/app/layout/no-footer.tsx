@@ -9,6 +9,7 @@ export const NoFooterLayout = () => {
       <MyHeader />
       <Main>
         <Outlet />
+        <Overlay />
       </Main>
     </>
   );

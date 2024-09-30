@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CardItem } from './components/cart-items';
+import { currencyVND } from 'utils/string';
+import { CartInfo } from './components/CartInfo';
 
 export function CartFound() {
   return (
@@ -12,8 +14,14 @@ export function CartFound() {
         </CartHeader>
         <CartBody>
           <CardItem />
-          <CardItem />
-          <CardItem />
+          <Total>
+            <TotalWrapper>
+              {' '}
+              <TotalText>Tạm tính (1 sản phẩm): </TotalText>
+              <TotalText>{currencyVND(1290000)} </TotalText>
+            </TotalWrapper>
+          </Total>
+          <CartInfo></CartInfo>
         </CartBody>
       </CartContainer>
     </Wrapper>
@@ -72,3 +80,16 @@ const CartBody = styled.div`
   border-radius: 2px;
   position: relative;
 `;
+
+const Total = styled.div`
+  border-bottom: 1px solid #ccc;
+`;
+
+const TotalWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  font-size: 1.4rem;
+`;
+
+const TotalText = styled.span``;
