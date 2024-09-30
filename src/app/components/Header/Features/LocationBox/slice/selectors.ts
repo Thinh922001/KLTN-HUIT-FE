@@ -37,7 +37,29 @@ export const selectWards = createSelector(
   state => state.wards,
 );
 
-export const selectId = createSelector(
+export const selectWardId = createSelector(
   [(state: RootState) => state.locationBox || initialState],
   state => state.wardId,
+);
+
+export const selectDoneLocation = createSelector(
+  [(state: RootState) => state.locationBox || initialState],
+  state => state.isDoneLocation,
+);
+
+export const selectLocationName = createSelector(
+  [(state: RootState) => state.locationBox || initialState],
+  state => {
+    return `${state.selectedDWardName}, ${state.selectedDistrictName}, ${state.selectedProvinceName}`;
+  },
+);
+
+export const selectAddress = createSelector(
+  [(state: RootState) => state.locationBox || initialState],
+  state => state.address,
+);
+
+export const selectActiveComponent = createSelector(
+  [(state: RootState) => state.locationBox || initialState],
+  state => state.activeComponent,
 );

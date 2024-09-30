@@ -1,4 +1,10 @@
-import { District, LocationBoxState, Province, Ward } from './type';
+import {
+  ActiveComponent,
+  District,
+  LocationBoxState,
+  Province,
+  Ward,
+} from './type';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { PayloadAction } from '@reduxjs/toolkit';
@@ -7,12 +13,18 @@ import { LocationBoxFromSaga } from './saga';
 export const initialState: LocationBoxState = {
   isActive: false,
   isLoading: false,
+  isDoneLocation: false,
   provinceId: 0,
   districtId: 0,
   wardId: 0,
   provinces: [],
   district: [],
   wards: [],
+  selectedProvinceName: '',
+  selectedDistrictName: '',
+  selectedDWardName: '',
+  address: '',
+  activeComponent: 'province',
 };
 
 const slice = createSlice({
@@ -57,6 +69,43 @@ const slice = createSlice({
     wardLoaded(state, actions: PayloadAction<Ward[]>) {
       state.isLoading = false;
       state.wards = actions.payload;
+    },
+    setIsDoneLocation(state) {
+      state.isDoneLocation = true;
+    },
+    setIsNotDoneLocation(state) {
+      state.isDoneLocation = false;
+    },
+
+    setSelectedLocationName(state) {
+      state.selectedProvinceName =
+        state.provinces.find(e => e.id === state.provinceId)?.name ?? '';
+      state.selectedDistrictName =
+        state.district.find(e => e.id === state.districtId)?.name ?? '';
+      state.selectedDWardName =
+        state.wards.find(e => e.id === state.wardId)?.name ?? '';
+    },
+
+    setAddress(state, action: PayloadAction<string>) {
+      state.address = action.payload;
+    },
+
+    setActiveComponent(state, action: PayloadAction<ActiveComponent>) {
+      state.activeComponent = action.payload;
+    },
+    resetLocationBox(state) {
+      state.isDoneLocation = false;
+      state.activeComponent = 'province';
+      state.wards = [];
+      state.wardId = 0;
+      state.district = [];
+      state.districtId = 0;
+      state.provinces = [];
+      state.provinceId = 0;
+      state.address = '';
+      state.selectedDWardName = '';
+      state.selectedDistrictName = '';
+      state.selectedProvinceName = '';
     },
   },
 });

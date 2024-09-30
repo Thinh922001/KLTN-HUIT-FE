@@ -1,24 +1,28 @@
 import styled from 'styled-components';
 import React from 'react';
-import { District, Province, Ward } from '../slice/type';
+import { ActiveComponent, District, Province, Ward } from '../slice/type';
 
 interface Props {
   data: Province[] | District[] | Ward[];
   handleId: (num: number) => void;
-  setActiveComponent?: (component: string) => void;
-  componentType: 'province' | 'district' | 'ward';
+  setActiveComponent?: () => void;
+  idActive?: number;
+}
+
+interface LocationItem {
+  isActive: boolean;
 }
 
 export const LocationContent: React.FC<Props> = ({
   data,
   handleId,
   setActiveComponent,
-  componentType,
+  idActive,
 }) => {
   const handleOnclick = (num: number) => {
     handleId(num);
     if (setActiveComponent) {
-      setActiveComponent(componentType);
+      setActiveComponent();
     }
   };
 
@@ -26,7 +30,11 @@ export const LocationContent: React.FC<Props> = ({
     <Wrapper>
       <LocationWrapper>
         {data.map(e => (
-          <LocationItems key={e.id} onClick={() => handleOnclick(e.id)}>
+          <LocationItems
+            isActive={e.id === idActive}
+            key={e.id}
+            onClick={() => handleOnclick(e.id)}
+          >
             {e.name}
           </LocationItems>
         ))}
@@ -73,12 +81,13 @@ const LocationWrapper = styled.div`
   gap: 10px;
 `;
 
-const LocationItems = styled.div`
+const LocationItems = styled.div<LocationItem>`
   padding: 10px;
   border-bottom: 1px solid #e9f4fb;
   font-size: 1.4rem;
   transition: background 0.3s;
 
+  ${({ isActive }) => (isActive ? `background: #e9f4fb;` : ``)}
   &:hover {
     background: #e9f4fb;
   }

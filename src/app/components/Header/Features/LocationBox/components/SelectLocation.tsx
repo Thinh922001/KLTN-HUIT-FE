@@ -4,15 +4,20 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LocationBoxActions, useLocationBoxSlice } from '../slice';
 import {
+  selectActiveComponent,
+  selectDistrictId,
   selectDistricts,
   selectIsLoading,
   selectProvince,
+  selectProVinceId,
+  selectWardId,
   selectWards,
 } from '../slice/selectors';
 import { LoadingIndicator } from 'app/components/LoadingIndicator';
+import { ActiveComponent } from '../slice/type';
 
 interface Props {
-  headerActive?: 'provinces' | 'district' | 'ward';
+  headerActive?: ActiveComponent;
   activeComponent?: string;
 }
 
@@ -20,14 +25,17 @@ export const SelectLocation = () => {
   useLocationBoxSlice();
   const dispatch = useDispatch();
 
-  const [activeComponent, setActiveComponent] = useState('provinces');
-
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
-
+  const activeComponent = useSelector(selectActiveComponent);
   const provinces = useSelector(selectProvince);
   const districts = useSelector(selectDistricts);
   const wards = useSelector(selectWards);
   const isLoading = useSelector(selectIsLoading);
+
+  const provinceId = useSelector(selectProVinceId);
+
+  const districtId = useSelector(selectDistrictId);
+
+  const wardId = useSelector(selectWardId);
 
   const handleSetProvinceId = num => {
     dispatch(LocationBoxActions.setProvinceId(num));
@@ -35,12 +43,12 @@ export const SelectLocation = () => {
   };
 
   const handleOnClickDistrict = () => {
-    setActiveComponent('district');
+    dispatch(LocationBoxActions.setActiveComponent('district'));
     if (!districts.length) dispatch(LocationBoxActions.loadDistrict());
   };
 
   const handleOnclickWard = () => {
-    setActiveComponent('ward');
+    dispatch(LocationBoxActions.setActiveComponent('ward'));
     if (!wards.length) dispatch(LocationBoxActions.loadWard());
   };
 
@@ -51,6 +59,8 @@ export const SelectLocation = () => {
 
   const handleSetWardId = num => {
     dispatch(LocationBoxActions.setWardId(num));
+    dispatch(LocationBoxActions.setSelectedLocationName());
+    dispatch(LocationBoxActions.setIsDoneLocation());
   };
 
   useEffect(() => {
@@ -61,9 +71,11 @@ export const SelectLocation = () => {
     <Wrapper>
       <WrapperHeader>
         <Item
-          headerActive="provinces"
+          headerActive="province"
           activeComponent={activeComponent}
-          onClick={() => setActiveComponent('provinces')}
+          onClick={() =>
+            dispatch(LocationBoxActions.setActiveComponent('province'))
+          }
         >
           Tỉnh/TP 1
         </Item>
@@ -85,7 +97,7 @@ export const SelectLocation = () => {
         </Item>
       </WrapperHeader>
 
-      {activeComponent === 'provinces' &&
+      {activeComponent === 'province' &&
         (isLoading ? (
           <CenteredWrapper>
             {' '}
@@ -95,8 +107,10 @@ export const SelectLocation = () => {
           <LocationContent
             data={provinces}
             handleId={handleSetProvinceId}
-            setActiveComponent={setActiveComponent}
-            componentType="district"
+            idActive={provinceId}
+            setActiveComponent={() =>
+              dispatch(LocationBoxActions.setActiveComponent('district'))
+            }
           />
         ))}
       {activeComponent === 'district' &&
@@ -109,8 +123,10 @@ export const SelectLocation = () => {
           <LocationContent
             data={districts}
             handleId={handleSetDistrictId}
-            setActiveComponent={setActiveComponent}
-            componentType="ward"
+            idActive={districtId}
+            setActiveComponent={() =>
+              dispatch(LocationBoxActions.setActiveComponent('ward'))
+            }
           />
         ))}
       {activeComponent === 'ward' &&
@@ -121,10 +137,9 @@ export const SelectLocation = () => {
           </CenteredWrapper>
         ) : (
           <LocationContent
+            idActive={wardId}
             data={wards}
             handleId={handleSetWardId}
-            setActiveComponent={setActiveComponent}
-            componentType="ward"
           />
         ))}
     </Wrapper>
