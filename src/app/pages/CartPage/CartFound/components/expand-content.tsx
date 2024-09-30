@@ -38,6 +38,9 @@ const Ul = styled.ul``;
 const NoteScenario = styled.li`
   line-height: 25px;
   margin-left: 8px;
+  list-style: disc;
+  font-size: 1.2rem;
+  margin-left: 20px;
 
   &::marker {
     color: #999;

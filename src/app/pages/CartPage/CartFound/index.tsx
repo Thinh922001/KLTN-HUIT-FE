@@ -12,6 +12,8 @@ export function CartFound() {
         </CartHeader>
         <CartBody>
           <CardItem />
+          <CardItem />
+          <CardItem />
         </CartBody>
       </CartContainer>
     </Wrapper>
@@ -69,5 +71,4 @@ const CartBody = styled.div`
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.12);
   border-radius: 2px;
   position: relative;
-  padding: 10px 30px;
 `;
