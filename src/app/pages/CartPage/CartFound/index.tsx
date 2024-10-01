@@ -3,8 +3,12 @@ import styled from 'styled-components';
 import { CardItem } from './components/cart-items';
 import { currencyVND } from 'utils/string';
 import { CartInfo } from './components/CartInfo';
+import { CartDisCount } from './components/CartDiscount';
+import CustomCheckbox from 'app/components/CustomCheckBox';
+import { useState } from 'react';
 
 export function CartFound() {
+  const [isDegree, setIsDegree] = useState<boolean>(false);
   return (
     <Wrapper>
       <CartContainer>
@@ -14,6 +18,9 @@ export function CartFound() {
         </CartHeader>
         <CartBody>
           <CardItem />
+          <CardItem />
+          <CardItem />
+          <CardItem />
           <Total>
             <TotalWrapper>
               {' '}
@@ -22,6 +29,33 @@ export function CartFound() {
             </TotalWrapper>
           </Total>
           <CartInfo />
+          <CartDisCount />
+          <Total>
+            <TotalPriceWrapper>
+              {' '}
+              <TotalPrice>TổngTiền: </TotalPrice>
+              <Price>{currencyVND(15140000)} </Price>
+            </TotalPriceWrapper>
+          </Total>
+
+          <CheckBoxWrapper>
+            {' '}
+            <CustomCheckbox
+              id="degree"
+              isChecked={isDegree}
+              onChange={checked => setIsDegree(checked)}
+            />
+            <LabelPolicy htmlFor="degree">
+              Tôi đồng ý với{' '}
+              <LinkPolicy href="#!">
+                Chính sách xử lý dữ liệu cá nhân
+              </LinkPolicy>{' '}
+              của chúng tôi
+            </LabelPolicy>
+          </CheckBoxWrapper>
+          <WrapperSubmit>
+            <SubmitOrder>Đặt Hàng</SubmitOrder>
+          </WrapperSubmit>
         </CartBody>
       </CartContainer>
     </Wrapper>
@@ -82,7 +116,7 @@ const CartBody = styled.div`
 `;
 
 const Total = styled.div`
-  border-bottom: 1px solid #ccc;
+  padding: 0 20px;
 `;
 
 const TotalWrapper = styled.div`
@@ -93,3 +127,55 @@ const TotalWrapper = styled.div`
 `;
 
 const TotalText = styled.span``;
+
+const Price = styled.span`
+  color: #f30c28;
+  font-size: 1.3rem;
+  font-weight: 700;
+  right: 33px;
+  top: 17px;
+`;
+
+const TotalPrice = styled(TotalText)`
+  font-weight: 700;
+`;
+
+const TotalPriceWrapper = styled(TotalWrapper)`
+  border-bottom: 1.2px solid #ccc;
+  padding: 10px 1px;
+`;
+
+const CheckBoxWrapper = styled.div`
+  padding: 30px 20px 0px 20px;
+  display: flex;
+  align-items: center;
+`;
+
+const LabelPolicy = styled.label`
+  font-size: 1.4rem;
+  font-weight: 500;
+`;
+
+const LinkPolicy = styled.a`
+  color: #288ad6;
+`;
+
+const SubmitOrder = styled.button`
+  display: block;
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+  height: 50px;
+  margin: 10px auto;
+  width: 100%;
+  border-radius: 4px;
+  border: 0;
+  font-weight: 700;
+  font-size: 1.9rem;
+  cursor: pointer;
+  background: linear-gradient(180deg, #f79429, #f7712e);
+`;
+
+const WrapperSubmit = styled.div`
+  padding: 10px 20px;
+`;
