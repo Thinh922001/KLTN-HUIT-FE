@@ -63,3 +63,20 @@ export const selectActiveComponent = createSelector(
   [(state: RootState) => state.locationBox || initialState],
   state => state.activeComponent,
 );
+
+export const selectProvinceName = createSelector(
+  [(state: RootState) => state.locationBox || initialState],
+  state => state.selectedProvinceName,
+);
+
+export const selectDistrictName = createSelector(
+  [(state: RootState) => state.locationBox || initialState],
+  state => {
+    return state.selectedDistrictName;
+  },
+);
+
+export const selectWardName = createSelector(
+  [(state: RootState) => state.locationBox || initialState],
+  state => state.selectedDWardName,
+);

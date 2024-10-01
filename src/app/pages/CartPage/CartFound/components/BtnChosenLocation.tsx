@@ -1,23 +1,31 @@
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import Icon from '../../components/icon-card';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectProvince } from 'app/components/Header/Features/LocationBox/slice/selectors';
-import { LocationBoxActions } from 'app/components/Header/Features/LocationBox/slice';
+import {
+  Province,
+  District,
+  Ward,
+} from 'app/components/Header/Features/LocationBox/slice/type';
+import { removeVietnameseTones } from 'utils/string';
 
 interface Props {
   isActive: boolean;
+  data: Province[] | District[] | Ward[];
+  onClick: (num) => void;
+  title: string;
+  activeId?: number;
 }
 
-export const BtnChosenLocation = () => {
+export const BtnChosenLocation: React.FC<
+  Pick<Props, 'data' | 'onClick' | 'title' | 'activeId'>
+> = ({ data, onClick, title, activeId }) => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const dispatch = useDispatch();
-  const provinces = useSelector(selectProvince);
+
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleIsActive = () => {
-    setIsActive(true);
+    setIsActive(e => !e);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -33,25 +41,33 @@ export const BtnChosenLocation = () => {
     setSearchTerm(event.target.value);
   };
 
+  const handleOnClickItem = num => {
+    setIsActive(false);
+    onClick(num);
+  };
+
   useEffect(() => {
-    if (!provinces.length) dispatch(LocationBoxActions.loadProvince());
     document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [provinces]);
+  }, []);
 
-  const filteredProvinces = provinces.filter(province =>
-    province.name.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const filteredData =
+    data &&
+    data.filter(province =>
+      removeVietnameseTones(province.name).includes(
+        removeVietnameseTones(searchTerm),
+      ),
+    );
 
   return (
     <Wrapper ref={wrapperRef}>
       <Btn isActive={isActive} onClick={handleIsActive}>
-        Hồ Chí Minh
+        {title}
         {isActive && (
-          <FormLocation>
+          <FormLocation onClick={e => e.stopPropagation()}>
             <LocationContent>
               <BoxSearch>
                 <Input
@@ -63,10 +79,18 @@ export const BtnChosenLocation = () => {
               </BoxSearch>
 
               <ItemWrapper>
-                {filteredProvinces.length > 0 ? (
-                  filteredProvinces.map(e => <Item key={e.id}>{e.name}</Item>)
+                {filteredData && filteredData.length > 0 ? (
+                  filteredData.map(e => (
+                    <Item
+                      isActive={activeId === e.id}
+                      onClick={() => handleOnClickItem(e.id)}
+                      key={e.id}
+                    >
+                      {e.name}
+                    </Item>
+                  ))
                 ) : (
-                  <Item>Không có kết quả tìm kiếm</Item>
+                  <Item isActive={false}>Không có kết quả tìm kiếm</Item>
                 )}
               </ItemWrapper>
             </LocationContent>
@@ -81,7 +105,7 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const Btn = styled.button<Props>`
+const Btn = styled.button<Pick<Props, 'isActive'>>`
   display: block;
   padding: 10px;
   border: 1px solid #d1d1d1;
@@ -149,11 +173,16 @@ const ItemWrapper = styled.div`
   margin-top: 10px;
 `;
 
-const Item = styled.span`
+const Item = styled.span<Pick<Props, 'isActive'>>`
   padding: 6px;
   font-size: 1.3rem;
   font-weight: 500;
   transition: background-color, color, 0.3s;
+
+  ${({ isActive }) =>
+    isActive &&
+    `background-color: rgb(40, 138, 214);
+     color: #fff;`}
 
   &:hover {
     background-color: rgb(40, 138, 214);

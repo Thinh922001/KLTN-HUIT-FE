@@ -1,5 +1,5 @@
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
-import { District, Province } from './type';
+import { District, Province, Ward } from './type';
 import { request } from 'utils/request';
 import { LocationBoxActions } from '.';
 import { data } from 'app/components/Card/data/card-data';
@@ -17,6 +17,9 @@ export function* getProvince() {
     const data = yield call(request, `${BASE_URL}/province`);
     if (data.data.length > 0) {
       yield put(LocationBoxActions.provinceLoaded(data.data as Province[]));
+
+      yield put(LocationBoxActions.setProvinceName(data.data[0].name));
+      yield put(LocationBoxActions.setProvinceId(data.data[0].id));
     } else {
       yield put(LocationBoxActions.provinceLoaded([]));
     }
@@ -45,6 +48,11 @@ export function* getDistrict() {
       yield put(
         LocationBoxActions.districtLoaded(data.data.length ? data.data : []),
       );
+
+      if (data.data.length) {
+        yield put(LocationBoxActions.setDistrictId(data.data[0]?.id || 0));
+        yield put(LocationBoxActions.setDistrictName(data.data[0]?.name || ''));
+      }
     } else {
       yield put(LocationBoxActions.districtLoaded([]));
     }
@@ -64,7 +72,10 @@ export function* getWard() {
     const data = yield call(request, `${BASE_URL}/ward/${districtId}`);
 
     if (data.data.length > 0) {
-      yield put(LocationBoxActions.wardLoaded(data.data as Province[]));
+      yield put(LocationBoxActions.wardLoaded(data.data as Ward[]));
+
+      yield put(LocationBoxActions.setWardName(data.data[0].name));
+      yield put(LocationBoxActions.setWardId(data.data[0].id));
     } else {
       yield put(LocationBoxActions.wardLoaded([]));
     }

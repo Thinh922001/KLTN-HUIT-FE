@@ -39,12 +39,18 @@ const slice = createSlice({
     },
     setProvinceId(state, data: PayloadAction<number>) {
       state.provinceId = data.payload;
+      state.selectedProvinceName =
+        state.provinces.find(e => e.id === state.provinceId)?.name ?? '';
     },
     setDistrictId(state, data: PayloadAction<number>) {
       state.districtId = data.payload;
+      state.selectedDistrictName =
+        state.district.find(e => e.id === state.districtId)?.name ?? '';
     },
     setWardId(state, data: PayloadAction<number>) {
       state.wardId = data.payload;
+      state.selectedDWardName =
+        state.wards.find(e => e.id === state.wardId)?.name ?? '';
     },
     loadProvince(state) {
       state.isLoading = true;
@@ -76,20 +82,9 @@ const slice = createSlice({
     setIsNotDoneLocation(state) {
       state.isDoneLocation = false;
     },
-
-    setSelectedLocationName(state) {
-      state.selectedProvinceName =
-        state.provinces.find(e => e.id === state.provinceId)?.name ?? '';
-      state.selectedDistrictName =
-        state.district.find(e => e.id === state.districtId)?.name ?? '';
-      state.selectedDWardName =
-        state.wards.find(e => e.id === state.wardId)?.name ?? '';
-    },
-
     setAddress(state, action: PayloadAction<string>) {
       state.address = action.payload;
     },
-
     setActiveComponent(state, action: PayloadAction<ActiveComponent>) {
       state.activeComponent = action.payload;
     },
@@ -106,6 +101,15 @@ const slice = createSlice({
       state.selectedDWardName = '';
       state.selectedDistrictName = '';
       state.selectedProvinceName = '';
+    },
+    setDistrictName(state, actions: PayloadAction<string>) {
+      state.selectedDistrictName = actions.payload;
+    },
+    setProvinceName(state, actions: PayloadAction<string>) {
+      state.selectedProvinceName = actions.payload;
+    },
+    setWardName(state, actions: PayloadAction<string>) {
+      state.selectedDWardName = actions.payload;
     },
   },
 });

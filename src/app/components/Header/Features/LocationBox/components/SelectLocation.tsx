@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { LocationContent } from './LocationContent';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LocationBoxActions, useLocationBoxSlice } from '../slice';
 import {
@@ -59,7 +59,6 @@ export const SelectLocation = () => {
 
   const handleSetWardId = num => {
     dispatch(LocationBoxActions.setWardId(num));
-    dispatch(LocationBoxActions.setSelectedLocationName());
     dispatch(LocationBoxActions.setIsDoneLocation());
   };
 

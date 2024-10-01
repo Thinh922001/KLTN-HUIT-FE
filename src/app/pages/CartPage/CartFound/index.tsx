@@ -21,7 +21,7 @@ export function CartFound() {
               <TotalText>{currencyVND(1290000)} </TotalText>
             </TotalWrapper>
           </Total>
-          <CartInfo></CartInfo>
+          <CartInfo />
         </CartBody>
       </CartContainer>
     </Wrapper>

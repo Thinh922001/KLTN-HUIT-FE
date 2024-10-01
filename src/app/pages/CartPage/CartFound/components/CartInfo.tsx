@@ -4,8 +4,12 @@ import styled from 'styled-components';
 import { Gender } from './type';
 import { FloatingInput } from 'app/components/FloatingInput';
 import { CartLocation } from './CartLocation';
+import { ReceiveSM } from './ReceiveSM';
+import { useDispatch } from 'react-redux';
+import { LocationBoxActions } from 'app/components/Header/Features/LocationBox/slice';
 
 export const CartInfo = () => {
+  const dispatch = useDispatch();
   const [selectedRadio, setSelectedRadio] = useState<Gender>(0);
 
   const [receive, setReceive] = useState<string>('YOUR_PLACE');
@@ -15,7 +19,11 @@ export const CartInfo = () => {
   };
 
   const handleMethodReceiveGoods = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setReceive(e.target.value);
+    const value = e.target.value;
+    if (value === 'SUPER_MARKET') {
+      dispatch(LocationBoxActions.resetLocationBox());
+    }
+    setReceive(value);
   };
 
   return (
@@ -41,7 +49,7 @@ export const CartInfo = () => {
 
         <FormGroupInput>
           <FloatingInput name="fullName" label="Họ và Tên" />
-          <FloatingInput name="fullName" label="Số điện thoại" />
+          <FloatingInput name="phoneNumber" label="Số điện thoại" />
         </FormGroupInput>
 
         <Header>Cách thức nhận hàng</Header>
@@ -62,7 +70,7 @@ export const CartInfo = () => {
             onChange={handleMethodReceiveGoods}
           />
         </FormGroup>
-        <CartLocation />
+        {receive === 'YOUR_PLACE' ? <CartLocation /> : <ReceiveSM />}
       </Content>
     </Wrapper>
   );
