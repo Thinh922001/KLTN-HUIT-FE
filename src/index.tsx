@@ -48,10 +48,9 @@ root.render(
   <Provider store={store}>
     <ThemeProvider>
       <HelmetProvider>
-        {/* <React.StrictMode>
+        <React.StrictMode>
           <App />
-        </React.StrictMode> */}
-        <App />
+        </React.StrictMode>
       </HelmetProvider>
     </ThemeProvider>
   </Provider>,
