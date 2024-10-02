@@ -39,10 +39,10 @@ export const Category = () => {
 
   return (
     <CategoryContainer>
-      <ArrowWrapperLeft direction="left" onClick={onPrev}>
+      <ArrowWrapper direction="left" onClick={onPrev}>
         {' '}
         <Arrow direction="left" />
-      </ArrowWrapperLeft>
+      </ArrowWrapper>
 
       <CategoryWarper className="wrapper">
         <CateInner currenIndex={currenIndex}>
@@ -53,10 +53,10 @@ export const Category = () => {
         </CateInner>
       </CategoryWarper>
 
-      <ArrowWrapperLeft direction="right" onClick={onNext}>
+      <ArrowWrapper direction="right" onClick={onNext}>
         {' '}
         <Arrow direction="right" />
-      </ArrowWrapperLeft>
+      </ArrowWrapper>
     </CategoryContainer>
   );
 };
@@ -69,7 +69,7 @@ const CategoryWarper = styled.div`
   overflow: hidden;
 `;
 
-const ArrowWrapperLeft = styled.div<ArrowProps>`
+const ArrowWrapper = styled.div<ArrowProps>`
   position: absolute;
 
   ${({ direction }) => {
