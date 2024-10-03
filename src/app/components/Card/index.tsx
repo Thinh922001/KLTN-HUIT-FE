@@ -9,6 +9,7 @@ import { ResultLabel } from './components/resultLabel';
 import { CardTab } from '../CardTab';
 import subImg from './assets/sub-1.png';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Props {
   data: ICard;
@@ -19,7 +20,9 @@ export const Card: React.FC<Props> = ({ data }) => {
     <CardWrapper>
       {data.labels?.length && mapCardLabel(data.labels)}
       <CardImgWrapper>
-        <CardImg src={data.img} />
+        <A to="/chi-tiet-san-pham">
+          <CardImg src={data.img} />
+        </A>
         {data.subImg && <CardSubImg src={subImg} />}
       </CardImgWrapper>
 
@@ -99,9 +102,10 @@ const CardWrapper = styled.div`
   border: 1px solid #eaecf0;
   background-color: #fff;
   min-height: 436px;
-  cursor: pointer;
 
   &:hover {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+
     ${CardTitle} {
       color: #288ad6;
     }
@@ -169,6 +173,7 @@ const CardImgWrapper = styled.div`
   min-height: 163px;
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const CardSubImg = styled.img`
@@ -177,4 +182,8 @@ const CardSubImg = styled.img`
   position: absolute;
   left: 0;
   bottom: 0;
+`;
+
+const A = styled(Link)`
+  display: block;
 `;

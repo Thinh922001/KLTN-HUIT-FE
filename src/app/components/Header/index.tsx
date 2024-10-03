@@ -6,7 +6,7 @@ import { ReactComponent as MoreIcon } from './assets/more.svg';
 import { Container } from '../container';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { OverlayActions, useOverlaySlice } from '../Overlay/slice';
+import { OverlayActions } from '../Overlay/slice';
 import { Menu } from './Menu';
 import { LocationBox } from './Features/LocationBox';
 import {
@@ -26,6 +26,10 @@ export default function MyHeader() {
 
   const handleShowOverLay = () => {
     dispatch(OverlayActions.showOverlay());
+  };
+
+  const navigateLogin = () => {
+    navigate('/login');
   };
 
   const handleHideOverLay = () => {
@@ -62,7 +66,7 @@ export default function MyHeader() {
             </HeaderSearch>
 
             <ButtonGroup>
-              <HeaderButton>
+              <HeaderButton onClick={navigateLogin}>
                 <Icon position="-82px -221px" width="24px" height="24px" />
                 Đăng nhập
               </HeaderButton>
@@ -72,6 +76,7 @@ export default function MyHeader() {
               >
                 <Icon position="-108px -221px" width="24px" height="24px" />
                 Giỏ Hàng
+                <QuantityCart>1</QuantityCart>
               </HeaderButton>
             </ButtonGroup>
 
@@ -89,6 +94,22 @@ export default function MyHeader() {
 
 const HeaderWrapper = styled.div`
   padding-bottom: 82px;
+`;
+
+const QuantityCart = styled.span`
+  position: absolute;
+  top: 9px;
+  left: 16px;
+  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1rem;
+  background-color: #dd1c1a;
 `;
 
 const HeaderDiv = styled.header`
@@ -158,6 +179,8 @@ const HeaderButton = styled.button`
   background-color: transparent;
   border-radius: 32px;
   padding: 0 10px;
+
+  position: relative;
 
   display: flex;
   align-items: center;

@@ -5,6 +5,11 @@ import { BreakCum } from './Components/BreakCum';
 import { HeaderItem } from './Components/HeaderItem';
 import { ImgSlideShow } from './Components/ImgSlideShow';
 import { WeCommit } from './Components/WeCommit';
+import { Specifications } from './Components/Specifications';
+import { Variants } from './Components/Variant';
+import { Price } from './Components/Price';
+import { Location } from './Components/Location';
+import { Buy } from './Components/Buy';
 
 export function DetailItem() {
   return (
@@ -21,13 +26,15 @@ export function DetailItem() {
             <LeftSide>
               <ImgSlideShow />
               <WeCommit />
+              <Specifications />
             </LeftSide>
             <RightSide>
-              {' '}
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae
-              dolores quo, dolorem explicabo animi consectetur. Obcaecati amet
-              nam perspiciatis nesciunt aspernatur corporis ipsam quasi
-              asperiores culpa id. Expedita, corporis praesentium.
+              <RightSideContent>
+                <Variants />
+                <Price />
+                <Location />
+                <Buy />
+              </RightSideContent>
             </RightSide>
           </DetailWrapperItem>
         </Container>
@@ -41,9 +48,16 @@ const DetailWrapperItem = styled.div`
   display: grid;
   grid-template-columns: 55% 35%;
   width: 100%;
-  gap: 10px;
+  gap: 25px;
 `;
 
 const LeftSide = styled.div``;
 
 const RightSide = styled.div``;
+
+const RightSideContent = styled.div`
+  width: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 15px;
+`;

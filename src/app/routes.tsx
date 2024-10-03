@@ -6,6 +6,7 @@ import { LZCartPage } from './pages/CartPage/Loadable';
 import { RouteObject, useRoutes } from 'react-router-dom';
 import React from 'react';
 import { LZDetailItem } from './pages/DetaiItem/Loadable';
+import { LZLogin } from './pages/Login/Loadable';
 
 const routes: RouteObject[] = [
   {
@@ -13,9 +14,14 @@ const routes: RouteObject[] = [
     element: <MainLayout />,
     children: [
       { index: true, element: <LZMyHomePage /> },
+
       {
         path: '/chi-tiet-san-pham',
         element: <LZDetailItem />,
+      },
+      {
+        path: '/login',
+        element: <LZLogin />,
       },
     ],
   },

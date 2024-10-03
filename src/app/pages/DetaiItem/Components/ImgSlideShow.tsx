@@ -34,6 +34,10 @@ export const ImgSlideShow = () => {
   }, [currenIndex]);
 
   const onNext = () => {
+    if (currenIndex === Img.length - 1) {
+      setCurrentIndex(0);
+    }
+
     if (currenIndex < Img.length - 1) {
       setCurrentIndex(index => index + 1);
     }
