@@ -1,21 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import { IBreakCum } from './type';
 
 interface BreadCumLinkProps {
   isLast: boolean;
+  isLink?: boolean;
 }
 
-export const BreakCum = () => {
-  const data = [
-    {
-      name: 'Điện thoại',
-      link: '/',
-    },
-    {
-      name: 'Điện thoại Iphone (Apple)',
-      link: '/chi-tiet-san-pham',
-    },
-  ];
+interface BreakCumData {
+  data: IBreakCum[];
+}
+
+export const BreakCum: React.FC<BreakCumData> = ({ data }) => {
   return (
     <Wrapper>
       <BreadCumList>
@@ -24,7 +20,11 @@ export const BreakCum = () => {
           data.map((e, index) => (
             <React.Fragment key={index}>
               <BreadCumItem>
-                <BreadCumLink href={e.link} isLast={index === data.length - 1}>
+                <BreadCumLink
+                  {...(e?.link && { href: e.link })}
+                  isLast={index === data.length - 1}
+                  isLink={!!e?.link}
+                >
                   {e.name}
                 </BreadCumLink>
               </BreadCumItem>
@@ -48,9 +48,10 @@ const BreadCumItem = styled.li`
 `;
 
 const BreadCumLink = styled.a<BreadCumLinkProps>`
-  color: ${props =>
-    props.isLast ? 'black' : '#98a2b3'}; // Đổi màu dựa trên prop isLast
+  color: ${props => (props.isLast ? 'black' : '#98a2b3')};
   text-decoration: none;
+
+  cursor: ${props => (props.isLink ? 'pointer' : 'text')};
 `;
 
 const BreadCumSeparate = styled.span`

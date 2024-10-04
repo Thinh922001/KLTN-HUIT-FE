@@ -8,6 +8,7 @@ import React from 'react';
 import { LZDetailItem } from './pages/DetaiItem/Loadable';
 import { LZLogin } from './pages/Login/Loadable';
 import { LZRegister } from './pages/Register/Loadable';
+import { LZCategory } from './pages/Category/Loadable';
 
 const routes: RouteObject[] = [
   {
@@ -15,7 +16,6 @@ const routes: RouteObject[] = [
     element: <MainLayout />,
     children: [
       { index: true, element: <LZMyHomePage /> },
-
       {
         path: '/chi-tiet-san-pham',
         element: <LZDetailItem />,
@@ -27,6 +27,10 @@ const routes: RouteObject[] = [
       {
         path: '/Register',
         element: <LZRegister />,
+      },
+      {
+        path: '/danh-muc',
+        element: <LZCategory />,
       },
     ],
   },

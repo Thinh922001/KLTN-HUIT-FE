@@ -12,6 +12,16 @@ import { Location } from './Components/Location';
 import { Buy } from './Components/Buy';
 
 export function DetailItem() {
+  const dataBreakCum = [
+    {
+      name: 'Điện thoại',
+      link: '/',
+    },
+    {
+      name: 'Điện thoại Iphone (Apple)',
+      link: '/chi-tiet-san-pham',
+    },
+  ];
   return (
     <>
       <Helmet>
@@ -20,7 +30,7 @@ export function DetailItem() {
       </Helmet>
       <Wrapper>
         <Container>
-          <BreakCum />
+          <BreakCum data={dataBreakCum} />
           <HeaderItem />
           <DetailWrapperItem>
             <LeftSide>
