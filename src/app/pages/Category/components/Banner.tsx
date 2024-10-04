@@ -19,7 +19,6 @@ export const Banner = () => {
   const images = [IMG1, IMG2, IMG3, IMG3, IMG4, IMG5, IMG6, IMG7, IMG8, IMG9];
   const [currenIndex, setCurrentIndex] = useState(0);
 
-  console.log(currenIndex);
   const onNext = () => {
     if (currenIndex === images.length - 1) {
       setCurrentIndex(0);
