@@ -8,3 +8,16 @@ export const removeVietnameseTones = (str: string) => {
     .replace(/Đ/g, 'D')
     .toLowerCase();
 };
+
+export const onlyAllowNumbers = e => {
+  const charCode = e.which ? e.which : e.keyCode;
+  if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    e.preventDefault();
+  }
+};
+
+export const formatPhoneNumber = value => {
+  const onlyNumbers = value.replace(/\D/g, '');
+
+  return onlyNumbers.replace(/(\d{1})(?=\d)/g, '$1 ');
+};

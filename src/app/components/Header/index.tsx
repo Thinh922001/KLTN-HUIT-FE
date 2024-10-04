@@ -1,4 +1,4 @@
-import Icon from 'app/components/icons';
+import IconLogin from 'app/components/icons';
 import { Input } from 'app/components/Input/Input';
 import styled from 'styled-components/macro';
 import { media } from 'styles/media';
@@ -47,7 +47,7 @@ export default function MyHeader() {
         <Container>
           <HeaderWarper>
             <MoreIcon className="header__more" />
-            <Icon
+            <IconLogin
               position="0 -130px"
               width="240px"
               height="40px"
@@ -61,27 +61,31 @@ export default function MyHeader() {
             />
 
             <HeaderSearch>
-              <Icon position="-151px -18px" width="17px" height="17px" />
+              <IconLogin position="-151px -18px" width="17px" height="17px" />
               <Input placeholder="Bạn tìm gì..." />
             </HeaderSearch>
 
             <ButtonGroup>
               <HeaderButton onClick={navigateLogin}>
-                <Icon position="-82px -221px" width="24px" height="24px" />
+                <IconLogin position="-82px -221px" width="24px" height="24px" />
                 Đăng nhập
               </HeaderButton>
               <HeaderButton
                 className="header__card"
                 onClick={() => navigate('/cart')}
               >
-                <Icon position="-108px -221px" width="24px" height="24px" />
+                <IconLogin
+                  position="-108px -221px"
+                  width="24px"
+                  height="24px"
+                />
                 Giỏ Hàng
                 <QuantityCart>1</QuantityCart>
               </HeaderButton>
             </ButtonGroup>
 
             <HeaderLocation onClick={handleShowLocationBox}>
-              <Icon position="-134px -219px" width="17px" height="23px" />
+              <IconLogin position="-134px -219px" width="17px" height="23px" />
               Hồ Chí Minh
             </HeaderLocation>
             {isBoxLocationActive && <LocationBox />}
@@ -166,7 +170,7 @@ const HeaderSearch = styled.div`
   font-size: 1.2rem;
   line-height: 14px;
 
-  ${Icon} {
+  ${IconLogin} {
     margin-right: 10px;
   }
 
@@ -215,7 +219,7 @@ const HeaderLocation = styled.div`
   margin-left: 10px;
   cursor: pointer;
 
-  ${Icon} {
+  ${IconLogin} {
     margin-left: 10px;
   }
 

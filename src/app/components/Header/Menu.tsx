@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Icon from 'app/components/icons';
+import IconLogin from 'app/components/icons';
 import styled from 'styled-components/macro';
 import { MenuData, MenuType } from './data/menu';
 import { SubMenu } from './sub-menu';
@@ -18,7 +18,7 @@ export const Menu: React.FC<Pick<Props, 'onMouseEnter' | 'onMouseLeave'>> = ({
 
   return (
     <ButtonMenu onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      <Icon position="-286px -33px" width="20px" height="14px" />
+      <IconLogin position="-286px -33px" width="20px" height="14px" />
       Danh mục
       <Dropdown>
         <DropdownInner>
@@ -203,7 +203,7 @@ const ButtonMenu = styled.button`
       display: block;
     }
 
-    ${Icon} {
+    ${IconLogin} {
       background-position: -78px 0;
     }
   }

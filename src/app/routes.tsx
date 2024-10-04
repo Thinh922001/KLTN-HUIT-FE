@@ -7,6 +7,7 @@ import { RouteObject, useRoutes } from 'react-router-dom';
 import React from 'react';
 import { LZDetailItem } from './pages/DetaiItem/Loadable';
 import { LZLogin } from './pages/Login/Loadable';
+import { LZRegister } from './pages/Register/Loadable';
 
 const routes: RouteObject[] = [
   {
@@ -22,6 +23,10 @@ const routes: RouteObject[] = [
       {
         path: '/login',
         element: <LZLogin />,
+      },
+      {
+        path: '/Register',
+        element: <LZRegister />,
       },
     ],
   },

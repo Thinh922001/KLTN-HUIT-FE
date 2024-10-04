@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import iconSprite from './iconnew-min.png';
+import iconSprite from './icon.png';
 
 interface IconProps {
   position?: string;
@@ -7,7 +7,7 @@ interface IconProps {
   height?: string;
 }
 
-const IconLogin = styled.div<IconProps>`
+const Icon = styled.div<IconProps>`
   width: ${({ width }) => width || '24px'};
   height: ${({ height }) => height || '24px'};
   background-image: url(${iconSprite});
@@ -17,8 +17,8 @@ const IconLogin = styled.div<IconProps>`
   display: inline-block;
   line-height: 30px;
   vertical-align: middle;
-  background-size: 310px 257px;
+  background-size: 490px 224px;
   cursor: pointer;
 `;
 
-export default IconLogin;
+export default Icon;

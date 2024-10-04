@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Icon from '../icons';
+import IconLogin from '../icons';
 import { Span } from '../Span/inedx';
 import { mapCardLabel } from '../CardLabel';
 import { ICard } from 'types/Card';
@@ -159,7 +159,7 @@ const StartNumber = styled.div`
   display: inline-block;
 `;
 
-const StartIcon = styled(Icon)`
+const StartIcon = styled(IconLogin)`
   margin: -4px 0 0 0;
 `;
 
