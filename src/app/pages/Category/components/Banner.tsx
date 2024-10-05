@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Arrow } from 'app/components/Arrow';
 import IMG1 from './assets/1.png';
 import IMG2 from './assets/2.jpg';
@@ -34,6 +34,11 @@ export const Banner = () => {
       setCurrentIndex(index => index - 1);
     }
   };
+
+  useEffect(() => {
+    const interval = setInterval(onNext, 3000);
+    return () => clearInterval(interval);
+  }, [currenIndex]);
 
   return (
     <Wrapper>
@@ -73,7 +78,7 @@ const ImgListContainer = styled.div<{
 }>`
   display: flex;
   align-items: center;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.5s ease-in-out;
   gap: 10px;
 
   ${({ currentIndex, totalImages }) => {

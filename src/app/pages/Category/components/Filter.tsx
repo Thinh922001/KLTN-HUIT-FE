@@ -1,23 +1,98 @@
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import FilterImg from './assets/filter.png';
+import { FilterBy } from './ButtonBrand';
+import { SortByLabel } from './SortBy';
 
 export const Filter = () => {
+  const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const FilterData = [
+    'Apple',
+    'SamSung',
+    'Xiaomi',
+    'OPPO',
+    'Chơi game',
+    'Pin khủng',
+  ];
+
   return (
-    <Wrapper>
-      <Brand>
-        <BtnFilterAll>Lọc</BtnFilterAll>
-      </Brand>
-      <SortBy></SortBy>
+    <Wrapper className={isSticky ? 'sticky' : ''}>
+      <Content isSticky={isSticky}>
+        <Brand>
+          <BtnFilterAll>
+            <Img src={FilterImg} />
+            Lọc
+          </BtnFilterAll>
+          {FilterData.length > 0 &&
+            FilterData.map((e, index) => <FilterBy key={index} text={e} />)}
+        </Brand>
+        <SortBy>
+          <SortByLabel />
+        </SortBy>
+      </Content>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   width: 100%;
-
   background: rgba(255, 255, 255, 1);
+  transition: position 0.3s ease-in-out;
+
+  &.sticky {
+    position: fixed;
+    top: 62px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    animation: slideDown 0.5s ease forwards;
+  }
+
+  @keyframes slideDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
-const Brand = styled.div``;
+const Content = styled.div<{ isSticky: boolean }>`
+  ${({ isSticky }) => {
+    if (isSticky) {
+      return `  max-width: 1200px; 
+               margin: 0 auto; 
+              width: 100%; 
+                 padding: 10px 0 20px 0`;
+    }
+  }}
+`;
+
+const Brand = styled.div`
+  display: flex;
+  gap: 10px;
+`;
 
 const SortBy = styled.div``;
 
@@ -27,4 +102,16 @@ const BtnFilterAll = styled.button`
   cursor: pointer;
   padding: 8px 12px;
   background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 `;
+
+const Img = styled.img`
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+`;
+
+const Span = styled.div``;
