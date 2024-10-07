@@ -45,6 +45,8 @@ export interface ICard {
   subImg?: string; // chưa làm
   labels?: ILabel[];
   // trả góp 5% , mẫu mới
+  prodsGroup?: string[];
+  // 256GB 512GB 1TB => for only phone
   resultLabel?: IResultLabel; // chưa làm
   // tạo component mới làm sau
   txtOnline?: ITxtOnline; // chưa làm

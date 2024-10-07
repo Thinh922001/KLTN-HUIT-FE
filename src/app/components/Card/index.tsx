@@ -10,18 +10,21 @@ import { CardTab } from '../CardTab';
 import subImg from './assets/sub-1.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { CardProdsGroup } from './components/card-prods-group';
 
 interface Props {
   data: ICard;
+  imgWidth?: string;
+  imgHeight?: string;
 }
 
-export const Card: React.FC<Props> = ({ data }) => {
+export const Card: React.FC<Props> = ({ data, imgWidth, imgHeight }) => {
   return (
     <CardWrapper>
       {data.labels?.length && mapCardLabel(data.labels)}
       <CardImgWrapper>
         <A to="/chi-tiet-san-pham">
-          <CardImg src={data.img} />
+          <CardImg imgWidth={imgWidth} imgHeight={imgHeight} src={data.img} />
         </A>
         {data.subImg && <CardSubImg src={subImg} />}
       </CardImgWrapper>
@@ -36,6 +39,7 @@ export const Card: React.FC<Props> = ({ data }) => {
         <CardTitle>{data.title ?? ''}</CardTitle>
       </CardTitleWrapper>
       {data.tabs && <CardTab tabs={data.tabs} />}
+      {data.prodsGroup && <CardProdsGroup prodsGroup={data.prodsGroup} />}
       {data.txtOnline && (
         <CardTxtOnline type={data.txtOnline.type ?? 0}>
           {data.txtOnline.text ?? ''}
@@ -62,9 +66,9 @@ export const Card: React.FC<Props> = ({ data }) => {
   );
 };
 
-const CardImg = styled.img`
-  width: 155px;
-  height: 155px;
+const CardImg = styled.img<{ imgWidth?: string; imgHeight?: string }>`
+  width: ${({ imgWidth }) => imgWidth ?? `155px`};
+  height: ${({ imgHeight }) => imgHeight ?? `155px`};
   object-fit: contain;
   padding-top: 8px;
   height: auto;

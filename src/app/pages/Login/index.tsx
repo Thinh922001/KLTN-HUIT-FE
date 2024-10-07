@@ -18,6 +18,10 @@ export function LoginPage() {
     navigate('/register');
   };
 
+  const handleSubmit = e => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <Helmet>
@@ -32,29 +36,41 @@ export function LoginPage() {
           <LoginForm>
             <LoginFormContainer>
               <Header>Tra cứu thông tin đơn hàng</Header>
-              <InputWrapper>
-                <IconLogin position="-66px -19px;" width="14px" height="21px" />
-                <Input
-                  type="tel"
-                  placeholder="Số điện thoại mua hàng"
-                  inputMode="numeric"
-                  autoComplete="off"
-                  pattern="[0-9]*"
-                  onKeyDown={onlyAllowNumbers}
-                  maxLength={19}
-                  onInput={handleInputChange}
-                />
-              </InputWrapper>
-              <InputWrapper>
-                <IconLogin position="-89px -19px;" width="18px" height="21px" />
-                <Input
-                  type="password"
-                  placeholder="Nhập mật khẩu"
-                  autoComplete="off"
-                />
-              </InputWrapper>
-              <BtnLogin>Đăng nhập</BtnLogin>
-              <RegisterBtn onClick={NavigateToRegister}>Đăng ký</RegisterBtn>
+              <form onSubmit={handleSubmit}>
+                <InputWrapper>
+                  <IconLogin
+                    position="-66px -19px;"
+                    width="14px"
+                    height="21px"
+                  />
+                  <Input
+                    type="tel"
+                    placeholder="Số điện thoại mua hàng"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    pattern="[0-9]*"
+                    onKeyDown={onlyAllowNumbers}
+                    maxLength={19}
+                    onInput={handleInputChange}
+                  />
+                </InputWrapper>
+                <InputWrapper>
+                  <IconLogin
+                    position="-89px -19px;"
+                    width="18px"
+                    height="21px"
+                  />
+                  <Input
+                    type="password"
+                    placeholder="Nhập mật khẩu"
+                    autoComplete="off"
+                  />
+                </InputWrapper>
+                <BtnLogin type="submit">Đăng nhập</BtnLogin>
+                <RegisterBtn type="button" onClick={NavigateToRegister}>
+                  Đăng ký
+                </RegisterBtn>
+              </form>
             </LoginFormContainer>
           </LoginForm>
         </LoginContainer>

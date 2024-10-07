@@ -5,6 +5,7 @@ import { BreakCum } from '../DetaiItem/Components/BreakCum';
 import { Container } from 'app/components/container';
 import { Banner } from './components/Banner';
 import { Filter } from './components/Filter';
+import { ProductList } from './components/ProductList';
 
 export function Category() {
   const BreakCumData: IBreakCum[] = [
@@ -28,6 +29,7 @@ export function Category() {
           <Banner />
           <ProductionContainer>
             <Filter />
+            <ProductList />
           </ProductionContainer>
         </Container>
       </Wrapper>

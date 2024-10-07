@@ -23,6 +23,10 @@ export function RegisterPage() {
     e.target.value = formattedValue;
   };
 
+  const handleSubmit = e => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <Helmet>
@@ -37,35 +41,49 @@ export function RegisterPage() {
           <LoginForm>
             <LoginFormContainer>
               <Header>Đăng ký thông tin khách hàng</Header>
-              <InputWrapper>
-                <IconLogin position="-66px -19px;" width="14px" height="21px" />
-                <Input
-                  type="tel"
-                  placeholder="Số điện thoại mua hàng"
-                  inputMode="numeric"
-                  autoComplete="off"
-                  pattern="[0-9]*"
-                  onKeyDown={onlyAllowNumbers}
-                  maxLength={19}
-                  onInput={handleInputChange}
-                />
-              </InputWrapper>
-              <InputWrapper>
-                <IconLogin position="-89px -19px;" width="18px" height="21px" />
-                <Input
-                  type="password"
-                  placeholder="Nhập mật khẩu"
-                  autoComplete="off"
-                />
-              </InputWrapper>
-              <InputWrapper>
-                <IconLogin position="-89px -19px;" width="18px" height="21px" />
-                <Input
-                  type="password"
-                  placeholder="Nhập lại mật khẩu"
-                  autoComplete="off"
-                />
-              </InputWrapper>
+              <form onSubmit={handleSubmit}>
+                <InputWrapper>
+                  <IconLogin
+                    position="-66px -19px;"
+                    width="14px"
+                    height="21px"
+                  />
+                  <Input
+                    type="tel"
+                    placeholder="Số điện thoại mua hàng"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    pattern="[0-9]*"
+                    onKeyDown={onlyAllowNumbers}
+                    maxLength={19}
+                    onInput={handleInputChange}
+                  />
+                </InputWrapper>
+                <InputWrapper>
+                  <IconLogin
+                    position="-89px -19px;"
+                    width="18px"
+                    height="21px"
+                  />
+                  <Input
+                    type="password"
+                    placeholder="Nhập mật khẩu"
+                    autoComplete="off"
+                  />
+                </InputWrapper>
+                <InputWrapper>
+                  <IconLogin
+                    position="-89px -19px;"
+                    width="18px"
+                    height="21px"
+                  />
+                  <Input
+                    type="password"
+                    placeholder="Nhập lại mật khẩu"
+                    autoComplete="off"
+                  />
+                </InputWrapper>
+              </form>
 
               <RegisterBtn>Đăng ký</RegisterBtn>
             </LoginFormContainer>
