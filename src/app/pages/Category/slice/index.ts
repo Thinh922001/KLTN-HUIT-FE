@@ -2,12 +2,14 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { ProductCateState } from './type';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
-import { ICard } from 'types/Card';
+import { IBrand, IBreadCrumb, ICard } from 'types/Card';
 import { ProductCateFromSaga } from './saga';
 
 export const initialState: ProductCateState = {
   isLoading: false,
   isPageLoading: false,
+  isBreadCrumbLoading: false,
+  isBrandLoading: false,
   cateId: '0',
   take: 10,
   skip: 0,
@@ -15,6 +17,8 @@ export const initialState: ProductCateState = {
   isNext: true,
   itemPerPage: 10,
   products: [],
+  breadCrumbs: [],
+  brand: [],
 };
 
 const slice = createSlice({
@@ -45,6 +49,22 @@ const slice = createSlice({
     },
     setTotal(state, action: PayloadAction<number>) {
       state.total = action.payload;
+    },
+    loadBreadCrumb(state) {
+      state.isBreadCrumbLoading = true;
+      state.breadCrumbs = [];
+    },
+    breadCrumbLoaded(state, actions: PayloadAction<IBreadCrumb[]>) {
+      state.isBreadCrumbLoading = false;
+      state.breadCrumbs = actions.payload;
+    },
+    loadingBrand(state) {
+      state.isBrandLoading = true;
+      state.brand = [];
+    },
+    brandLoaded(state, actions: PayloadAction<IBrand[]>) {
+      state.isBrandLoading = false;
+      state.brand = actions.payload;
     },
   },
 });

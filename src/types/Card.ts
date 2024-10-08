@@ -39,6 +39,16 @@ export interface IResultLabel {
   type: EResultLabel;
 }
 
+export interface IBreadCrumb {
+  link?: string;
+  name: string;
+}
+
+export interface IBrand {
+  id: number;
+  name: string;
+}
+
 export interface ICard {
   id?: number;
   title: string;

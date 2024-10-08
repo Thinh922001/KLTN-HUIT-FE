@@ -36,3 +36,23 @@ export const selectTotal = createSelector(
   [(state: RootState) => state.productCateState || initialState],
   state => state.total,
 );
+
+export const selectBreadCrumb = createSelector(
+  [(state: RootState) => state.productCateState || initialState],
+  state => state.breadCrumbs,
+);
+
+export const selectBreadCrumbLoading = createSelector(
+  [(state: RootState) => state.productCateState || initialState],
+  state => state.isBreadCrumbLoading,
+);
+
+export const selectBrand = createSelector(
+  [(state: RootState) => state.productCateState || initialState],
+  state => state.brand,
+);
+
+export const selectBrandLoading = createSelector(
+  [(state: RootState) => state.productCateState || initialState],
+  state => state.isBrandLoading,
+);

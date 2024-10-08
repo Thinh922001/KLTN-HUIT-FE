@@ -11,7 +11,12 @@ import { useEffect } from 'react';
 import { ProductCateActions, useProductCateSlice } from './slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { CenteredLoading } from 'app/components/LoadingCenter';
-import { selectIsLoading } from './slice/selector';
+import {
+  selectBrandLoading,
+  selectBreadCrumb,
+  selectBreadCrumbLoading,
+  selectIsLoading,
+} from './slice/selector';
 
 export function Category() {
   useProductCateSlice();
@@ -22,20 +27,18 @@ export function Category() {
 
   const isLoading = useSelector(selectIsLoading);
 
+  const isBreadCrumbLoading = useSelector(selectBreadCrumbLoading);
+
+  const isBrandLoading = useSelector(selectBrandLoading);
+
   useEffect(() => {
     dispatch(ProductCateActions.setCateId(id));
     dispatch(ProductCateActions.loadProduct());
+    dispatch(ProductCateActions.loadBreadCrumb());
+    dispatch(ProductCateActions.loadingBrand());
   }, [id]);
 
-  const BreakCumData: IBreakCum[] = [
-    {
-      name: 'Trang chủ',
-      link: '/',
-    },
-    {
-      name: '136 điện thoại',
-    },
-  ];
+  const BreakCumData: IBreakCum[] = useSelector(selectBreadCrumb);
   return (
     <>
       <Helmet>
@@ -43,7 +46,7 @@ export function Category() {
         <meta name="description" content="login" />
       </Helmet>
       <Wrapper>
-        {isLoading ? (
+        {isLoading || isBreadCrumbLoading || isBrandLoading ? (
           <WrapperLoading>
             <CenteredLoading minHeight="100%" />
           </WrapperLoading>

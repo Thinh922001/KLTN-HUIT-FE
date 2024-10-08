@@ -2,7 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { selectCateId, selectSkip, selectTake } from './selector';
 import { request } from 'utils/request';
 import { BASE_URL } from 'utils/url';
-import { createQueryString } from 'utils/string';
+import { convertToJSON, createQueryString } from 'utils/string';
 import { ProductCateActions } from '.';
 
 export function* getProductCate() {
@@ -43,7 +43,45 @@ export function* getProductPageCate() {
   }
 }
 
+export function* getBreadCrumbs() {
+  try {
+    const cateId = yield select(selectCateId);
+
+    const queryString = createQueryString({ id: cateId, type: 'CATE' });
+
+    const data = yield call(request, `${BASE_URL}/breadcrumb?${queryString}`);
+
+    if (data.data) {
+      yield put(ProductCateActions.breadCrumbLoaded(data.data));
+    } else {
+      yield put(ProductCateActions.breadCrumbLoaded([]));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* getBrand() {
+  try {
+    const cateId = yield select(selectCateId);
+
+    const queryString = createQueryString({ cateId });
+
+    const data = yield call(request, `${BASE_URL}/brand?${queryString}`);
+
+    if (data.data) {
+      yield put(ProductCateActions.brandLoaded(data.data));
+    } else {
+      yield put(ProductCateActions.brandLoaded([]));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function* ProductCateFromSaga() {
   yield takeLatest(ProductCateActions.loadProduct, getProductCate);
   yield takeLatest(ProductCateActions.loadingPage, getProductPageCate);
+  yield takeLatest(ProductCateActions.loadBreadCrumb, getBreadCrumbs);
+  yield takeLatest(ProductCateActions.loadingBrand, getBrand);
 }

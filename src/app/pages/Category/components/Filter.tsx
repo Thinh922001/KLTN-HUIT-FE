@@ -3,8 +3,13 @@ import styled from 'styled-components';
 import FilterImg from './assets/filter.png';
 import { FilterBy } from './ButtonBrand';
 import { SortByLabel } from './SortBy';
+import { IBrand } from 'types/Card';
+import { useProductCateSlice } from '../slice';
+import { useSelector } from 'react-redux';
+import { selectBrand } from '../slice/selector';
 
 export const Filter = () => {
+  useProductCateSlice();
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
@@ -22,14 +27,7 @@ export const Filter = () => {
     };
   }, []);
 
-  const FilterData = [
-    'Apple',
-    'SamSung',
-    'Xiaomi',
-    'OPPO',
-    'Chơi game',
-    'Pin khủng',
-  ];
+  const FilterData: IBrand[] = useSelector(selectBrand);
 
   return (
     <Wrapper className={isSticky ? 'sticky' : ''}>
@@ -40,7 +38,7 @@ export const Filter = () => {
             Lọc
           </BtnFilterAll>
           {FilterData.length > 0 &&
-            FilterData.map((e, index) => <FilterBy key={index} text={e} />)}
+            FilterData.map(e => <FilterBy key={e.id} text={e.name} />)}
         </Brand>
         <SortBy>
           <SortByLabel />

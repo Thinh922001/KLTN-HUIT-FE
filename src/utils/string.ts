@@ -42,3 +42,7 @@ export const createQueryString = (
 
   return new URLSearchParams(stringifiedParams).toString();
 };
+
+export const convertToJSON = data => {
+  return JSON.stringify(data);
+};
