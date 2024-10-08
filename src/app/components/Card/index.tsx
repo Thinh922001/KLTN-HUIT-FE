@@ -21,7 +21,7 @@ interface Props {
 export const Card: React.FC<Props> = ({ data, imgWidth, imgHeight }) => {
   return (
     <CardWrapper>
-      {data.labels?.length && mapCardLabel(data.labels)}
+      {data.labels?.length ? mapCardLabel(data.labels) : null}
       <CardImgWrapper>
         <A to="/chi-tiet-san-pham">
           <CardImg imgWidth={imgWidth} imgHeight={imgHeight} src={data.img} />

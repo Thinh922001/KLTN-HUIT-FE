@@ -26,7 +26,6 @@ html {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 1.6rem;
     background-color: ${p => p.theme.background};
-    height: 10000px;
   }
 
   body.fontLoaded {

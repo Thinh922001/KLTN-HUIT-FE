@@ -40,6 +40,7 @@ export interface IResultLabel {
 }
 
 export interface ICard {
+  id?: number;
   title: string;
   img: string;
   subImg?: string; // chưa làm

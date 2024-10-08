@@ -1,9 +1,10 @@
 import { SubMenuType } from 'app/components/Header/data/menu';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 export const renderCategoryItems = (items: SubMenuType[]) =>
   items.map((item, index) => (
-    <A key={index} href="#!">
+    <A key={index} to="/danh-muc/1">
       <CateItem>
         <CateImg src={item.img} alt={item.desc} loading="lazy" />
         <CateDesc>{item.desc}</CateDesc>
@@ -36,4 +37,4 @@ const CateDesc = styled.span`
   text-align: center;
 `;
 
-const A = styled.a``;
+const A = styled(Link)``;

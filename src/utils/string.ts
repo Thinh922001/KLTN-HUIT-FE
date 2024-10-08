@@ -1,4 +1,15 @@
-export const currencyVND = (num: number) => num.toLocaleString('vi-VN') + '₫';
+export const currencyVND = num => {
+  if (typeof num === 'string') {
+    num = parseFloat(num);
+  }
+
+  if (typeof num !== 'number' || isNaN(num)) {
+    return '0₫';
+  }
+
+  const formattedNum = Number.isInteger(num) ? num.toString() : num.toFixed(2);
+  return parseFloat(formattedNum).toLocaleString('vi-VN') + '₫';
+};
 
 export const removeVietnameseTones = (str: string) => {
   return str
@@ -20,4 +31,14 @@ export const formatPhoneNumber = value => {
   const onlyNumbers = value.replace(/\D/g, '');
 
   return onlyNumbers.replace(/(\d{1})(?=\d)/g, '$1 ');
+};
+
+export const createQueryString = (
+  params: Record<string, string | number>,
+): string => {
+  const stringifiedParams: Record<string, string> = Object.fromEntries(
+    Object.entries(params).map(([key, value]) => [key, String(value)]),
+  );
+
+  return new URLSearchParams(stringifiedParams).toString();
 };

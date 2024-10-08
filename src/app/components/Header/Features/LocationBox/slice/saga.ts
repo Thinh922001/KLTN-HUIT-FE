@@ -1,8 +1,7 @@
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
-import { District, Province, Ward } from './type';
+import { Province, Ward } from './type';
 import { request } from 'utils/request';
 import { LocationBoxActions } from '.';
-import { data } from 'app/components/Card/data/card-data';
 import {
   selectDistrictId,
   selectDistricts,
@@ -10,7 +9,7 @@ import {
   selectProVinceId,
 } from './selectors';
 
-const BASE_URL = 'https://kltn-huit-production.up.railway.app';
+export const BASE_URL = 'https://kltn-huit-production.up.railway.app';
 
 export function* getProvince() {
   try {

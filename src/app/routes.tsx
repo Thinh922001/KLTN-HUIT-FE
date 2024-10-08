@@ -29,7 +29,7 @@ const routes: RouteObject[] = [
         element: <LZRegister />,
       },
       {
-        path: '/danh-muc',
+        path: '/danh-muc/:id',
         element: <LZCategory />,
       },
     ],

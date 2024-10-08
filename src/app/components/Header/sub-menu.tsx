@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro';
 import { SubMenuType } from './data/menu';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface SubMenuProps {
   data: SubMenuType[];
@@ -15,7 +16,7 @@ export const SubMenu: React.FC<SubMenuProps> = ({ data = [], title = '' }) => {
         {data?.length &&
           data.map((e, index) => {
             return (
-              <A href="#!" key={index}>
+              <A to="/danh-muc/1" key={index}>
                 <SubMenuItem>
                   <ItemImg src={e.img} alt={e.desc} loading="lazy" />
                   <ItemDesc>{e.desc}</ItemDesc>
@@ -62,7 +63,7 @@ const ItemDesc = styled.p`
   text-align: center;
 `;
 
-const A = styled.a``;
+const A = styled(Link)``;
 
 const SubMenuTitle = styled.h3`
   font-size: 1.5rem;

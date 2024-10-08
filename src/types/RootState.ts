@@ -1,5 +1,6 @@
 import { LocationBoxState } from 'app/components/Header/Features/LocationBox/slice/type';
 import { OverlayState } from 'app/components/Overlay/slice';
+import { ProductCateState } from 'app/pages/Category/slice/type';
 import { GithubRepoFormState } from 'app/pages/HomePage/Features/GithubRepoForm/slice/types';
 import { ThemeState } from 'styles/theme/slice/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
@@ -15,5 +16,6 @@ export interface RootState {
   githubRepoForm?: GithubRepoFormState;
   overLay?: OverlayState;
   locationBox?: LocationBoxState;
+  productCateState?: ProductCateState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

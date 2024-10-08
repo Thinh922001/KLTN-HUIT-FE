@@ -3,11 +3,12 @@ import styled from 'styled-components';
 
 interface Props {
   text: string;
+  onClick?: () => void;
 }
 
-export const SeeMore: React.FC<Props> = ({ text }) => {
+export const SeeMore: React.FC<Props> = ({ text, onClick }) => {
   return (
-    <SeeMoreWrapper>
+    <SeeMoreWrapper onClick={onClick}>
       <LoadMore>{text}</LoadMore>
     </SeeMoreWrapper>
   );

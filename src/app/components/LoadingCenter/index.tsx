@@ -1,17 +1,22 @@
 import styled from 'styled-components';
 import { LoadingIndicator } from '../LoadingIndicator';
+import React from 'react';
 
-export const CenteredLoading = () => {
+interface Props {
+  minHeight?: string;
+}
+
+export const CenteredLoading: React.FC<Props> = ({ minHeight }) => {
   return (
-    <CenteredWrapper>
+    <CenteredWrapper minHeight={minHeight}>
       <LoadingIndicator />
     </CenteredWrapper>
   );
 };
 
-const CenteredWrapper = styled.div`
+const CenteredWrapper = styled.div<{ minHeight?: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 200px;
+  min-height: ${({ minHeight }) => (minHeight ? minHeight : '200px')};
 `;
