@@ -1,9 +1,16 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { selectCateId, selectSkip, selectTake } from './selector';
+import {
+  selectCateId,
+  selectFilters,
+  selectOrderBy,
+  selectSkip,
+  selectTake,
+} from './selector';
 import { request } from 'utils/request';
 import { BASE_URL } from 'utils/url';
-import { convertToJSON, createQueryString } from 'utils/string';
+import { createQueryString } from 'utils/string';
 import { ProductCateActions } from '.';
+import { QueryParams } from 'types/Card';
 
 export function* getProductCate() {
   try {
@@ -11,7 +18,9 @@ export function* getProductCate() {
     const take = yield select(selectTake);
     const skip = yield select(selectSkip);
 
-    const queryString = createQueryString({ cateId, take, skip });
+    const orderBy = yield select(selectOrderBy);
+
+    const queryString = createQueryString({ cateId, take, skip, orderBy });
 
     const data = yield call(request, `${BASE_URL}/category?${queryString}`);
 
@@ -29,8 +38,16 @@ export function* getProductPageCate() {
     const cateId = yield select(selectCateId);
     const take = yield select(selectTake);
     const skip = yield select(selectSkip);
+    const orderBy = yield select(selectOrderBy);
+    const filters = yield select(selectFilters);
 
-    const queryString = createQueryString({ cateId, take, skip });
+    const queryParams: QueryParams = { cateId, take, skip, orderBy };
+
+    if (filters.brand.length > 0) {
+      queryParams.filters = filters;
+    }
+
+    const queryString = createQueryString(queryParams);
 
     const data = yield call(request, `${BASE_URL}/category?${queryString}`);
 

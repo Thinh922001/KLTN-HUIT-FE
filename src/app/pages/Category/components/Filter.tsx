@@ -38,7 +38,9 @@ export const Filter = () => {
             Lọc
           </BtnFilterAll>
           {FilterData.length > 0 &&
-            FilterData.map(e => <FilterBy key={e.id} text={e.name} />)}
+            FilterData.map(e => (
+              <FilterBy key={e.id} id={e.id} text={e.name} />
+            ))}
         </Brand>
         <SortBy>
           <SortByLabel />

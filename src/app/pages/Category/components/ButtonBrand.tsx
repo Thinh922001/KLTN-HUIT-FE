@@ -1,14 +1,32 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { ProductCateActions, useProductCateSlice } from '../slice';
 
 interface Props {
   text?: string;
+  id: number;
 }
 
-export const FilterBy: React.FC<Props> = ({ text }) => {
+export const FilterBy: React.FC<Props> = ({ text, id }) => {
+  useProductCateSlice();
+  const dispatch = useDispatch();
   const [isActive, setIsActive] = useState<boolean>(false);
+
+  const handleSetIsActive = () => {
+    if (!isActive) {
+      dispatch(ProductCateActions.setFilter(id));
+      dispatch(ProductCateActions.loadingPage());
+    } else {
+      dispatch(ProductCateActions.popFilter(id));
+      dispatch(ProductCateActions.loadingPage());
+    }
+
+    setIsActive(!isActive);
+  };
+
   return (
-    <BtnFilterBy onClick={() => setIsActive(e => !e)} isActive={isActive}>
+    <BtnFilterBy onClick={handleSetIsActive} isActive={isActive}>
       {text}
     </BtnFilterBy>
   );

@@ -2,7 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { ProductCateState } from './type';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
-import { IBrand, IBreadCrumb, ICard } from 'types/Card';
+import { IBrand, IBreadCrumb, ICard, IFilters, IOrderBy } from 'types/Card';
 import { ProductCateFromSaga } from './saga';
 
 export const initialState: ProductCateState = {
@@ -19,6 +19,8 @@ export const initialState: ProductCateState = {
   products: [],
   breadCrumbs: [],
   brand: [],
+  orderBy: { trend: 'DESC' },
+  filters: { brand: [] },
 };
 
 const slice = createSlice({
@@ -65,6 +67,26 @@ const slice = createSlice({
     brandLoaded(state, actions: PayloadAction<IBrand[]>) {
       state.isBrandLoading = false;
       state.brand = actions.payload;
+    },
+    setOrderBy(state, actions: PayloadAction<IOrderBy>) {
+      state.orderBy = actions.payload;
+      state.take = 10;
+      state.skip = 0;
+      state.products = [];
+    },
+    setFilter(state, actions: PayloadAction<number>) {
+      state.filters.brand.push(actions.payload);
+      state.take = 10;
+      state.skip = 0;
+      state.products = [];
+    },
+    popFilter(state, actions: PayloadAction<number>) {
+      state.filters.brand = state.filters.brand.filter(
+        e => e !== actions.payload,
+      );
+      state.take = 10;
+      state.skip = 0;
+      state.products = [];
     },
   },
 });

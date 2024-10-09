@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ProductCateActions, useProductCateSlice } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  selectFilters,
   selectIsLoadingPage,
   selectProductCate,
   selectSkip,
@@ -22,6 +23,10 @@ export const ProductList = () => {
   const skip = useSelector(selectSkip);
   const take = useSelector(selectTake);
   const total = useSelector(selectTotal);
+
+  const filters = useSelector(selectFilters);
+
+  console.log(filters);
 
   const nextPage = () => {
     dispatch(ProductCateActions.nextPage());

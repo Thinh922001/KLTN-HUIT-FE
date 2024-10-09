@@ -56,3 +56,13 @@ export const selectBrandLoading = createSelector(
   [(state: RootState) => state.productCateState || initialState],
   state => state.isBrandLoading,
 );
+
+export const selectOrderBy = createSelector(
+  [(state: RootState) => state.productCateState || initialState],
+  state => state.orderBy,
+);
+
+export const selectFilters = createSelector(
+  [(state: RootState) => state.productCateState || initialState],
+  state => state.filters,
+);

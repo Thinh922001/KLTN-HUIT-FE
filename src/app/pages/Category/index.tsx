@@ -15,6 +15,7 @@ import {
   selectBrandLoading,
   selectBreadCrumb,
   selectBreadCrumbLoading,
+  selectFilters,
   selectIsLoading,
 } from './slice/selector';
 

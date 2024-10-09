@@ -69,3 +69,25 @@ export interface ICard {
   discount?: IDiscount;
   vote?: IVote;
 }
+
+export enum EOrderBy {
+  TREND = 'trend',
+  WELL_SELL = 'well-sell',
+  DISCOUNT = 'discount',
+  NEW = 'new',
+  PRICE = 'price',
+}
+
+export type IOrderBy = Partial<Record<EOrderBy, 'ASC' | 'DESC'>>;
+
+export interface IFilters {
+  brand: number[];
+}
+
+export interface QueryParams {
+  cateId: string;
+  take: number;
+  skip: number;
+  orderBy: string;
+  filters?: any[];
+}

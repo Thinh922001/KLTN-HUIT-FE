@@ -1,24 +1,62 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { ProductCateActions, useProductCateSlice } from '../slice';
+import { useDispatch } from 'react-redux';
 
 export const SortByLabel = () => {
-  const [activeLabel, setActiveLabel] = useState<string>('NOI_BAT');
+  useProductCateSlice();
+  const dispatch = useDispatch();
 
+  const [activeLabel, setActiveLabel] = useState<string>('NOI_BAT');
   const [isActiveToggle, setIsActiveToggle] = useState<boolean>(false);
 
   const handleTextLabel = (activeLabel: string) => {
     if (activeLabel === 'PRICE_DESC') {
       return 'Giá cao - thấp';
     }
-
     if (activeLabel === 'PRICE_ASC') {
       return 'Giá thấp - cao';
     }
     return 'Giá';
   };
 
+  const dispatchOrder = (activeLabelName: string) => {
+    switch (activeLabelName) {
+      case 'NOI_BAT':
+        dispatch(ProductCateActions.setOrderBy({ trend: 'ASC' }));
+        break;
+      case 'BAN_CHAY':
+        dispatch(ProductCateActions.setOrderBy({ 'well-sell': 'DESC' }));
+        break;
+      case 'DISCOUNT':
+        dispatch(ProductCateActions.setOrderBy({ discount: 'DESC' }));
+        break;
+      case 'NEW':
+        dispatch(ProductCateActions.setOrderBy({ new: 'ASC' }));
+        break;
+      case 'PRICE_DESC':
+        dispatch(ProductCateActions.setOrderBy({ price: 'DESC' }));
+        break;
+      case 'PRICE_ASC':
+        dispatch(ProductCateActions.setOrderBy({ price: 'ASC' }));
+        break;
+      default:
+        dispatch(ProductCateActions.setOrderBy({ trend: 'ASC' }));
+        break;
+    }
+  };
+
+  const handleLabelClick = (label: string) => {
+    if (label === activeLabel) return;
+    setActiveLabel(label);
+    dispatchOrder(label);
+    dispatch(ProductCateActions.loadingPage());
+  };
+
   const SetActiveToggle = (toggleName: string) => {
     setActiveLabel(toggleName);
+    dispatchOrder(toggleName);
+    dispatch(ProductCateActions.loadingPage());
   };
 
   return (
@@ -26,28 +64,28 @@ export const SortByLabel = () => {
       <Span>Sắp xếp theo</Span>
       <Label
         isActive={activeLabel === 'NOI_BAT'}
-        onClick={() => setActiveLabel('NOI_BAT')}
+        onClick={() => handleLabelClick('NOI_BAT')}
       >
         Nổi bật
       </Label>
       <Ellipse />
       <Label
         isActive={activeLabel === 'BAN_CHAY'}
-        onClick={() => setActiveLabel('BAN_CHAY')}
+        onClick={() => handleLabelClick('BAN_CHAY')}
       >
         Bán chạy
       </Label>
       <Ellipse />
       <Label
         isActive={activeLabel === 'DISCOUNT'}
-        onClick={() => setActiveLabel('DISCOUNT')}
+        onClick={() => handleLabelClick('DISCOUNT')}
       >
         Giảm giá
       </Label>
       <Ellipse />
       <Label
         isActive={activeLabel === 'NEW'}
-        onClick={() => setActiveLabel('NEW')}
+        onClick={() => handleLabelClick('NEW')}
       >
         Mới
       </Label>
@@ -89,12 +127,12 @@ const Span = styled.div``;
 
 const Label = styled.span<{ isActive: boolean }>`
   display: inline-block;
-
   color: ${({ isActive }) =>
     isActive ? `rgba(42, 131, 233, 1);` : `rgba(102, 112, 133, 1)`};
   font-weight: 500;
   line-height: 18px;
   cursor: pointer;
+  user-select: none;
 `;
 
 const LabelToggle = styled(Label)`
@@ -124,7 +162,7 @@ const ToggleWrapper = styled.div<{ isActive: boolean }>`
   z-index: 2;
   top: 190%;
   left: -87px;
-  padding: 20px 10px 20px 10px;
+  padding: 20px 10px;
   border-radius: 8px;
 
   ${({ isActive }) =>

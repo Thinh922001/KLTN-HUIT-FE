@@ -1,4 +1,4 @@
-import { IBrand, IBreadCrumb, ICard } from 'types/Card';
+import { IBrand, IBreadCrumb, ICard, IFilters, IOrderBy } from 'types/Card';
 
 export interface ProductCateState {
   isLoading: boolean;
@@ -14,4 +14,6 @@ export interface ProductCateState {
   products: ICard[];
   breadCrumbs: IBreadCrumb[];
   brand: IBrand[];
+  orderBy: IOrderBy;
+  filters: IFilters;
 }

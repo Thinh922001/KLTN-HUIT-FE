@@ -33,14 +33,28 @@ export const formatPhoneNumber = value => {
   return onlyNumbers.replace(/(\d{1})(?=\d)/g, '$1 ');
 };
 
-export const createQueryString = (
-  params: Record<string, string | number>,
-): string => {
-  const stringifiedParams: Record<string, string> = Object.fromEntries(
-    Object.entries(params).map(([key, value]) => [key, String(value)]),
-  );
+// export const createQueryString = (
+//   params: Record<string, string | number>,
+// ): string => {
+//   const stringifiedParams: Record<string, string> = Object.fromEntries(
+//     Object.entries(params).map(([key, value]) => [key, String(value)]),
+//   );
 
-  return new URLSearchParams(stringifiedParams).toString();
+//   return new URLSearchParams(stringifiedParams).toString();
+// };
+
+export const createQueryString = (params: Record<string, any>): string => {
+  return Object.entries(params)
+    .map(([key, value]) => {
+      if (typeof value === 'object' && !Array.isArray(value)) {
+        // Nếu giá trị là object, chuyển thành chuỗi JSON
+        return `${encodeURIComponent(key)}=${encodeURIComponent(
+          JSON.stringify(value),
+        )}`;
+      }
+      return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
+    })
+    .join('&');
 };
 
 export const convertToJSON = data => {
