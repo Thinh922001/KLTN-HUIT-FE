@@ -24,10 +24,6 @@ export const ProductList = () => {
   const take = useSelector(selectTake);
   const total = useSelector(selectTotal);
 
-  const filters = useSelector(selectFilters);
-
-  console.log(filters);
-
   const nextPage = () => {
     dispatch(ProductCateActions.nextPage());
     dispatch(ProductCateActions.loadingPage());
