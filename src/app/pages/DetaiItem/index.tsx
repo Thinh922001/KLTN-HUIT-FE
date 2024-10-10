@@ -14,7 +14,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProductDetailActions, useProductDetailSlice } from './slice';
-import { selectIsLoading } from './slice/selector';
+import { selectIsLoading, selectVariantChosen } from './slice/selector';
 import { CenteredLoading } from 'app/components/LoadingCenter';
 
 export function DetailItem() {

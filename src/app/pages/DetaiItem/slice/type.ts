@@ -27,8 +27,14 @@ export interface IProductDetail {
   specifications?: ISpecifications[];
 }
 
+export interface IVariationChosen {
+  [key: string]: string | number;
+}
+
 export interface ProductDetailState {
   isLoading: boolean;
   productId: string;
   productDetail: IProductDetail;
+  variationChosen: IVariationChosen;
+  isVariantLoading : boolean
 }

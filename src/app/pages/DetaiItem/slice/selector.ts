@@ -59,3 +59,8 @@ export const selectVariant = createSelector(
     return [];
   },
 );
+
+export const selectVariantChosen = createSelector(
+  [(state: RootState) => state.productDetailState || initialState],
+  state => state.variationChosen,
+);

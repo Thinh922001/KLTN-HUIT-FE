@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { IProductDetail, ProductDetailState } from './type';
+import { IProductDetail, IVariationChosen, ProductDetailState } from './type';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { ProductDetailFormSaga } from './saga';
@@ -8,6 +8,8 @@ export const initialState: ProductDetailState = {
   isLoading: false,
   productId: '0',
   productDetail: {} as IProductDetail,
+  variationChosen: {},
+  isVariantLoading: false,
 };
 
 const slice = createSlice({
@@ -26,6 +28,33 @@ const slice = createSlice({
       if (actions.payload) {
         state.productId = actions.payload;
       }
+    },
+    setVariationChosenDf(state) {
+      if (state.productDetail.variation) {
+        state.variationChosen = Object.assign(
+          {},
+          ...state.productDetail.variation.map(e => ({
+            [e.name]: e.options[0],
+          })),
+        );
+      }
+    },
+    setVariationChosen(state, actions: PayloadAction<IVariationChosen>) {
+      state.variationChosen = { ...state.variationChosen, ...actions.payload };
+    },
+    loadingVariant(state) {
+      state.isVariantLoading = true;
+    },
+    variantLoaded(state, actions: PayloadAction<IProductDetail>) {
+      state.isVariantLoading = false;
+      state.productDetail.id = actions.payload.id;
+      if (actions.payload.subImg) {
+        state.productDetail.subImg = actions.payload.subImg;
+      }
+      if (actions.payload.price) {
+        state.productDetail.price = actions.payload.price;
+      }
+      state.productDetail.discount = actions.payload.discount;
     },
   },
 });

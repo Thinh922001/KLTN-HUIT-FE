@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { ProductDetailActions, useProductDetailSlice } from '../slice';
+import { useDispatch } from 'react-redux';
 
 interface IVariant {
   name: string;
@@ -12,14 +14,21 @@ interface IData {
 }
 
 export const VariantItems: React.FC<IData> = ({ data }) => {
+  useProductDetailSlice();
+  const dispatch = useDispatch();
   const [activeIndex, setIsActiveIndex] = useState<number>(0);
-
+  const handleClick = (name, index) => {
+    if (activeIndex === index) return;
+    dispatch(ProductDetailActions.setVariationChosen({ [data.name]: name }));
+    dispatch(ProductDetailActions.loadingVariant());
+    setIsActiveIndex(index);
+  };
   return (
     <VariantWrapper>
       {data.options.length > 0 &&
         data.options.map((e, index) => (
           <Items
-            onClick={() => setIsActiveIndex(index)}
+            onClick={() => handleClick(e, index)}
             isActive={activeIndex === index}
             key={index}
           >

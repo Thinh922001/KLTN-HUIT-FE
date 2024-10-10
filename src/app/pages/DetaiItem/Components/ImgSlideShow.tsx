@@ -6,7 +6,7 @@ import { Arrow } from 'app/components/Arrow';
 import { useEffect, useRef, useState } from 'react';
 import { useProductDetailSlice } from '../slice';
 import { useSelector } from 'react-redux';
-import { selectSubImg } from '../slice/selector';
+import { selectSubImg, selectVariantChosen } from '../slice/selector';
 
 interface ArrowProps {
   direction: string;
@@ -24,7 +24,7 @@ interface SubImgProps {
 }
 
 export const ImgSlideShow = () => {
-  useProductDetailSlice()
+  useProductDetailSlice();
   const Img = useSelector(selectSubImg);
   const [currenIndex, setCurrentIndex] = useState(0);
 
@@ -32,10 +32,16 @@ export const ImgSlideShow = () => {
 
   const prevDistance = useRef<number>(0);
 
+  const variantChosen = useSelector(selectVariantChosen);
+
   useEffect(() => {
     prevCurrenIndexRef.current = currenIndex;
     prevDistance.current = currenIndex * 50;
   }, [currenIndex]);
+
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [variantChosen]);
 
   const onNext = () => {
     if (currenIndex === Img.length - 1) {

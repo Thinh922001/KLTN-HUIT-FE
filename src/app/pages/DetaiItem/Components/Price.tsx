@@ -1,4 +1,4 @@
-import { CardLabel } from 'app/components/CardLabel';
+import { CardLabel, mapCardLabel } from 'app/components/CardLabel';
 import {
   LocationBoxActions,
   useLocationBoxSlice,
@@ -7,14 +7,19 @@ import { selectProvinceName } from 'app/components/Header/Features/LocationBox/s
 import { OverlayActions } from 'app/components/Overlay/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { ELabel } from 'types/Card';
 import { currencyVND } from 'utils/string';
 import { Promotion } from './Promotion';
+import { useProductDetailSlice } from '../slice';
+import { selectProductDetail } from '../slice/selector';
 
 export const Price = () => {
   useLocationBoxSlice();
 
+  useProductDetailSlice();
+
   const dispatch = useDispatch();
+
+  const productDetail = useSelector(selectProductDetail);
 
   const handleShowLocationBox = () => {
     dispatch(OverlayActions.showOverlay());
@@ -31,10 +36,18 @@ export const Price = () => {
           {provinceName || 'Hồ Chí Minh'}
         </LocationName>
         <PriceWrapper>
-          <PricePresent>{currencyVND(29590000)}</PricePresent>
-          <OldPrice>{currencyVND(34000000)}</OldPrice>
-          <Discount>15%</Discount>
-          <CardLabel type={ELabel.NORMAL}>Trả góp 0%</CardLabel>
+          {productDetail.price && (
+            <PricePresent>{currencyVND(productDetail.price)}</PricePresent>
+          )}
+          {productDetail.discount?.OldPrice && (
+            <OldPrice>{currencyVND(productDetail.discount.OldPrice)}</OldPrice>
+          )}
+          {productDetail.discount?.discountPercent && (
+            <Discount>{productDetail.discount?.discountPercent}%</Discount>
+          )}
+          {productDetail.labels &&
+            productDetail.labels.length > 0 &&
+            mapCardLabel(productDetail.labels)}
         </PriceWrapper>
         <Promotion />
       </PriceText>
