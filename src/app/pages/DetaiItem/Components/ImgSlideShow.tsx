@@ -4,6 +4,9 @@ import Img2 from './assets/2.jpg';
 import Img3 from './assets/3.jpg';
 import { Arrow } from 'app/components/Arrow';
 import { useEffect, useRef, useState } from 'react';
+import { useProductDetailSlice } from '../slice';
+import { useSelector } from 'react-redux';
+import { selectSubImg } from '../slice/selector';
 
 interface ArrowProps {
   direction: string;
@@ -21,7 +24,8 @@ interface SubImgProps {
 }
 
 export const ImgSlideShow = () => {
-  const Img = [Img1, Img2, Img3];
+  useProductDetailSlice()
+  const Img = useSelector(selectSubImg);
   const [currenIndex, setCurrentIndex] = useState(0);
 
   const prevCurrenIndexRef = useRef<number>(0);

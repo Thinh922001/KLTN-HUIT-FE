@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface IVariant {
   name: string;
-  img: string[];
+  images: string[];
   options: string[];
 }
 
@@ -23,7 +23,7 @@ export const VariantItems: React.FC<IData> = ({ data }) => {
             isActive={activeIndex === index}
             key={index}
           >
-            {data.img.length > 0 && <SubImg color={data.img[index]} />}
+            {data.images.length > 0 && <SubImg color={data.images[index]} />}
             {e}
           </Items>
         ))}

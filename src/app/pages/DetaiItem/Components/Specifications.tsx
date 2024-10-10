@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { BoxSpecif } from './BoxSpecif';
-import { SpecData } from './data';
+import { useProductDetailSlice } from '../slice';
+import { useSelector } from 'react-redux';
+import { selectSpecData } from '../slice/selector';
 
 export const Specifications = () => {
+  useProductDetailSlice();
+
+  const specData = useSelector(selectSpecData);
   const [componentActive, setComponentActive] = useState<string>('SPEC');
 
   const handleSetComponentActive = (name: string) => {
@@ -29,8 +34,8 @@ export const Specifications = () => {
         </BtnWrapper>
 
         <SpecsWrapper>
-          {SpecData.length &&
-            SpecData.map((e, index) => <BoxSpecif data={e} key={index} />)}
+          {specData.length &&
+            specData.map((e, index) => <BoxSpecif data={e} key={index} />)}
         </SpecsWrapper>
       </Content>
     </Wrapper>

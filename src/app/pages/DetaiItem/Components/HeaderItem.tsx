@@ -1,9 +1,14 @@
 import styled from 'styled-components';
+import { useProductDetailSlice } from '../slice';
+import { useSelector } from 'react-redux';
+import { selectTitle } from '../slice/selector';
 
 export const HeaderItem = () => {
+  useProductDetailSlice();
+  const title = useSelector(selectTitle);
   return (
     <Wrapper>
-      <Header>Điện thoại iPhone 15 Pro Max 256GB</Header>
+      <Header>{title}</Header>
     </Wrapper>
   );
 };

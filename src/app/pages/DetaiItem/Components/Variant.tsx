@@ -1,19 +1,13 @@
 import styled from 'styled-components';
 import { VariantItems } from './VariantItems';
+import { useProductDetailSlice } from '../slice';
+import { useSelector } from 'react-redux';
+import { selectVariant } from '../slice/selector';
 
 export const Variants = () => {
-  const data = [
-    {
-      name: 'size',
-      img: [],
-      options: ['256GB', '512GB', '1TB'],
-    },
-    {
-      name: 'color',
-      img: ['#BAB4A9', '#3F4042', '#3D4555', '#F2F1EB'],
-      options: ['Titan tự nhiên', 'Titan đen', 'Titan xanh', 'Titan trắng'],
-    },
-  ];
+  useProductDetailSlice();
+  const data = useSelector(selectVariant);
+
   return (
     <Wrapper>
       {data.length > 0 &&

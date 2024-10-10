@@ -17,7 +17,7 @@ const routes: RouteObject[] = [
     children: [
       { index: true, element: <LZMyHomePage /> },
       {
-        path: '/chi-tiet-san-pham',
+        path: '/chi-tiet-san-pham/:id',
         element: <LZDetailItem />,
       },
       {
