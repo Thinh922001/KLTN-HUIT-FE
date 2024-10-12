@@ -32,7 +32,9 @@ export const VariantItems: React.FC<IData> = ({ data }) => {
             isActive={activeIndex === index}
             key={index}
           >
-            {data.images.length > 0 && <SubImg color={data.images[index]} />}
+            {data.images.length > 0 && data.images[index] ? (
+              <SubImg color={data.images[index]} />
+            ) : null}
             {e}
           </Items>
         ))}
