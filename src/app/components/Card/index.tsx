@@ -23,7 +23,7 @@ export const Card: React.FC<Props> = ({ data, imgWidth, imgHeight }) => {
     <CardWrapper>
       {data.labels?.length ? mapCardLabel(data.labels) : null}
       <CardImgWrapper>
-        <A to="/chi-tiet-san-pham/1">
+        <A to={`/chi-tiet-san-pham/${data.id}`}>
           <CardImg imgWidth={imgWidth} imgHeight={imgHeight} src={data.img} />
         </A>
         {data.subImg && <CardSubImg src={subImg} />}
