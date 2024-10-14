@@ -64,3 +64,8 @@ export const selectVariantChosen = createSelector(
   [(state: RootState) => state.productDetailState || initialState],
   state => state.variationChosen,
 );
+
+export const selectProductDetailId = createSelector(
+  [(state: RootState) => state.productDetailState || initialState],
+  state => state.productDetail.id,
+);

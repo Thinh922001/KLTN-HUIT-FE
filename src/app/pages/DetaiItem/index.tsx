@@ -24,6 +24,10 @@ export function DetailItem() {
 
   const isLoading = useSelector(selectIsLoading);
 
+  useEffect(() => {
+    dispatch(ProductDetailActions.resetProductDetail());
+  }, [dispatch]);
+
   const dataBreakCum = [
     {
       name: 'Điện thoại',

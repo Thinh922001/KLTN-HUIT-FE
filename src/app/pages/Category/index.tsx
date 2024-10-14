@@ -15,7 +15,6 @@ import {
   selectBrandLoading,
   selectBreadCrumb,
   selectBreadCrumbLoading,
-  selectFilters,
   selectIsLoading,
 } from './slice/selector';
 
@@ -31,6 +30,10 @@ export function Category() {
   const isBreadCrumbLoading = useSelector(selectBreadCrumbLoading);
 
   const isBrandLoading = useSelector(selectBrandLoading);
+
+  useEffect(() => {
+    dispatch(ProductCateActions.resetProductCate());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(ProductCateActions.setCateId(id));

@@ -3,6 +3,9 @@ import { createInjectorsEnhancer } from 'redux-injectors';
 import createSagaMiddleware from 'redux-saga';
 
 import { createReducer } from './reducers';
+import { localStorageCartMiddleware } from 'app/pages/CartPage/slice/middleware';
+import { CartActions } from 'app/pages/CartPage/slice';
+import { CartState } from 'app/pages/CartPage/slice/type';
 
 export function configureAppStore() {
   const reduxSagaMonitorOptions = {};
@@ -10,7 +13,7 @@ export function configureAppStore() {
   const { run: runSaga } = sagaMiddleware;
 
   // Create the store with saga middleware
-  const middlewares = [sagaMiddleware];
+  const middlewares = [sagaMiddleware, localStorageCartMiddleware];
 
   const enhancers = [
     createInjectorsEnhancer({

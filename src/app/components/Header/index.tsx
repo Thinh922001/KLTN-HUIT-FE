@@ -14,8 +14,11 @@ import {
   useLocationBoxSlice,
 } from './Features/LocationBox/slice';
 import { selectStatusBoxLocation } from './Features/LocationBox/slice/selectors';
+import { useCartSlice } from 'app/pages/CartPage/slice';
+import { selectLengthCart } from 'app/pages/CartPage/slice/selector';
 
 export default function MyHeader() {
+  useCartSlice();
   useLocationBoxSlice();
 
   const navigate = useNavigate();
@@ -23,6 +26,8 @@ export default function MyHeader() {
   const dispatch = useDispatch();
 
   const isBoxLocationActive = useSelector(selectStatusBoxLocation);
+
+  const cartLength = useSelector(selectLengthCart);
 
   const handleShowOverLay = () => {
     dispatch(OverlayActions.showOverlay());
@@ -72,7 +77,9 @@ export default function MyHeader() {
               </HeaderButton>
               <HeaderButton
                 className="header__card"
-                onClick={() => navigate('/cart')}
+                onClick={() => {
+                  navigate('/cart');
+                }}
               >
                 <IconLogin
                   position="-108px -221px"
@@ -80,7 +87,9 @@ export default function MyHeader() {
                   height="24px"
                 />
                 Giỏ Hàng
-                <QuantityCart>1</QuantityCart>
+                {cartLength > 0 ? (
+                  <QuantityCart>{cartLength}</QuantityCart>
+                ) : null}
               </HeaderButton>
             </ButtonGroup>
 

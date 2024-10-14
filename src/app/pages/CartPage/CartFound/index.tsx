@@ -6,8 +6,23 @@ import { CartInfo } from './components/CartInfo';
 import { CartDisCount } from './components/CartDiscount';
 import CustomCheckbox from 'app/components/CustomCheckBox';
 import { useState } from 'react';
+import { useCartSlice } from '../slice';
+import { useSelector } from 'react-redux';
+import {
+  selectCartItems,
+  selectLengthCart,
+  selectTotalPrice,
+} from '../slice/selector';
 
 export function CartFound() {
+  useCartSlice();
+
+  const cartItems = useSelector(selectCartItems);
+
+  const cartLength = useSelector(selectLengthCart);
+
+  const totalAmount = useSelector(selectTotalPrice);
+
   const [isDegree, setIsDegree] = useState<boolean>(false);
   return (
     <Wrapper>
@@ -17,15 +32,14 @@ export function CartFound() {
           <YourCard>Giỏ hàng của anh</YourCard>
         </CartHeader>
         <CartBody>
-          <CardItem />
-          <CardItem />
-          <CardItem />
-          <CardItem />
+          {cartItems.length > 0 &&
+            cartItems.map((e, index) => <CardItem key={index} data={e} />)}
+
           <Total>
             <TotalWrapper>
               {' '}
-              <TotalText>Tạm tính (1 sản phẩm): </TotalText>
-              <TotalText>{currencyVND(1290000)} </TotalText>
+              <TotalText>Tạm tính ({cartLength} sản phẩm): </TotalText>
+              <TotalText>{currencyVND(totalAmount)} </TotalText>
             </TotalWrapper>
           </Total>
           <CartInfo />
@@ -34,7 +48,7 @@ export function CartFound() {
             <TotalPriceWrapper>
               {' '}
               <TotalPrice>TổngTiền: </TotalPrice>
-              <Price>{currencyVND(15140000)} </Price>
+              <Price>{currencyVND(totalAmount)} </Price>
             </TotalPriceWrapper>
           </Total>
 

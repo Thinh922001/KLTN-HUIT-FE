@@ -56,6 +56,9 @@ const slice = createSlice({
       }
       state.productDetail.discount = actions.payload.discount;
     },
+    resetProductDetail(state) {
+      return initialState;
+    },
   },
 });
 

@@ -2,7 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { ProductCateState } from './type';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
-import { IBrand, IBreadCrumb, ICard, IFilters, IOrderBy } from 'types/Card';
+import { IBrand, IBreadCrumb, ICard, IOrderBy } from 'types/Card';
 import { ProductCateFromSaga } from './saga';
 
 export const initialState: ProductCateState = {
@@ -87,6 +87,9 @@ const slice = createSlice({
       state.take = 10;
       state.skip = 0;
       state.products = [];
+    },
+    resetProductCate(state) {
+      return initialState;
     },
   },
 });

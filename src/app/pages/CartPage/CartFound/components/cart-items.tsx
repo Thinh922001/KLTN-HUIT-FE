@@ -2,17 +2,25 @@ import styled from 'styled-components';
 import Img1 from './assets/1.jpg';
 import { ProductExpand } from './product-expand';
 import { ExpandContent } from './expand-content';
-import { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { currencyVND } from 'utils/string';
+import { ICart } from '../../slice/type';
+import { CartActions, useCartSlice } from '../../slice';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   quantity?: number;
 }
 
-export function CardItem() {
+interface PropsCart {
+  data: ICart;
+}
+
+export const CardItem: React.FC<PropsCart> = ({ data }) => {
+  useCartSlice();
   const [activeExpand, setActiveExpand] = useState<boolean>(false);
 
-  const [cardQuantity, setCardQuantity] = useState<number>(1);
+  const dispatch = useDispatch();
 
   const handleCardOnchange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -26,17 +34,14 @@ export function CardItem() {
     }
 
     const value = Number(inputValue) === 0 ? 1 : Number(inputValue);
-
-    setCardQuantity(value);
   };
 
   const increaseQuantity = () => {
-    setCardQuantity(e => e + 1);
+    dispatch(CartActions.increaseQuantity(data.productDetailId));
   };
 
   const decreaseQuantity = () => {
-    if (cardQuantity <= 1) return;
-    setCardQuantity(e => e - 1);
+    dispatch(CartActions.decreaseQuantity(data.productDetailId));
   };
 
   const handleActiveExpand = () => {
@@ -44,24 +49,29 @@ export function CardItem() {
   };
   return (
     <Wrapper className="wrapper">
-      <Price>{currencyVND(9179000)}</Price>
+      <Price>
+        <WrapperPrice>
+          <Price>{currencyVND(data.price)}</Price>
+          {data.oldPrice ? (
+            <OldPrice>{currencyVND(data.oldPrice)}</OldPrice>
+          ) : null}
+        </WrapperPrice>
+      </Price>
       <ImgWrapper className="img">
-        <ImgCard src={Img1} />
+        <ImgCard src={data.img} />
         <Div>
-          {' '}
-          <BtnRemoveCard>
-            {' '}
+          <BtnRemoveCard
+            onClick={() =>
+              dispatch(CartActions.removeFromCart(data.productDetailId))
+            }
+          >
             <Span /> Xóa
           </BtnRemoveCard>
         </Div>
       </ImgWrapper>
       <DescWrapper>
-        <CartTitle>
-          {' '}
-          Máy giặt Electrolux UltimateCare 500 Inverter 10 kg EWF1024P5WB{' '}
-        </CartTitle>
+        <CartTitle>{data.productName}</CartTitle>
         <CartNoteWrapper>
-          {' '}
           <CartNote>Online giá rẻ quá</CartNote>
           <ProductExpand
             isActive={activeExpand}
@@ -71,26 +81,28 @@ export function CardItem() {
         </CartNoteWrapper>
         <DiscountPromotion>
           <DiscountText>Giảm</DiscountText>
-          <DisCountPrice>{currencyVND(400000)}</DisCountPrice>
+          <DisCountPrice>{currencyVND(400000)} </DisCountPrice>
           <DiscountText>Còn</DiscountText>
           <DisCountPrice>{currencyVND(9390000)}</DisCountPrice>
         </DiscountPromotion>
 
         <FooterCard>
-          <Color>
-            <ColorTex>Màu: trắng</ColorTex>
-          </Color>
+          {data.color ? (
+            <Color>
+              <ColorTex>Màu: {data.color}</ColorTex>
+            </Color>
+          ) : null}
+
           <ChosenNumber>
-            <Minus quantity={cardQuantity} onClick={decreaseQuantity}>
+            <Minus quantity={data.quantity} onClick={decreaseQuantity}>
               <IConMinus />
             </Minus>
             <QuantityWrapper>
-              {' '}
               <Quantity
                 onChange={handleCardOnchange}
                 type="text"
                 maxLength={3}
-                value={cardQuantity}
+                value={data.quantity}
               />
             </QuantityWrapper>
 
@@ -103,7 +115,7 @@ export function CardItem() {
       </DescWrapper>
     </Wrapper>
   );
-}
+};
 
 const Wrapper = styled.div`
   padding: 18px 30px;
@@ -116,13 +128,24 @@ const Wrapper = styled.div`
   }
 `;
 
+const WrapperPrice = styled.div`
+  position: absolute;
+  right: 33px;
+  top: 17px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
 const Price = styled.span`
   color: #f30c28;
   font-size: 1.3rem;
   font-weight: 700;
-  position: absolute;
-  right: 33px;
-  top: 17px;
+`;
+
+const OldPrice = styled.span`
+  color: #666;
+  text-decoration: line-through;
 `;
 
 const ImgWrapper = styled.div`
@@ -131,7 +154,9 @@ const ImgWrapper = styled.div`
   gap: 15px;
 `;
 
-const DescWrapper = styled.div``;
+const DescWrapper = styled.div`
+  width: 100%;
+`;
 
 const ImgCard = styled.img`
   width: 75px;
