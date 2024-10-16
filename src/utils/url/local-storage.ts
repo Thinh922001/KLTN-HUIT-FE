@@ -15,5 +15,10 @@ export const getCartFromLocalStorage = (): CartState => {
     totalQuantity: 0,
     isCartLoadDone: false,
     productIdChosen: '',
+    loadingCheckStock: false,
+    isOutOfStock: false,
+    increaseCartId: 0,
+    increaseCartQuantity: 0,
+    isIncreaseLoading: false,
   };
 };

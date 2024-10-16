@@ -93,6 +93,33 @@ const slice = createSlice({
     resetCartLoadDone(state) {
       state.isCartLoadDone = false;
     },
+    updateCartHasNoStock(state, action: PayloadAction<number[]>) {
+      state.loadingCheckStock = false;
+      state.cartItems = state.cartItems.map(item => ({
+        ...item,
+        hasNoStock: action.payload.includes(Number(item.productDetailId)),
+      }));
+    },
+    loadingCheckStock(state) {
+      state.loadingCheckStock = true;
+    },
+    setCheckStock(state, actions: PayloadAction<boolean>) {
+      state.loadingCheckStock = actions.payload;
+    },
+    setIsOutOfStock(state, actions: PayloadAction<boolean>) {
+      state.isOutOfStock = actions.payload;
+    },
+    setIncrease(
+      state,
+      actions: PayloadAction<{ id: number; quantity: number }>,
+    ) {
+      state.isIncreaseLoading = true;
+      state.increaseCartId = actions.payload.id;
+      state.increaseCartQuantity = actions.payload.quantity;
+    },
+    setIncreaseLoading(state, actions: PayloadAction<boolean>) {
+      state.isIncreaseLoading = actions.payload;
+    },
   },
 });
 

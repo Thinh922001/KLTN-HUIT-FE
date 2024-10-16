@@ -6,6 +6,7 @@ export interface ICart {
   quantity: number;
   productName: string;
   color: string;
+  hasNoStock: boolean;
 }
 
 export interface CartState {
@@ -13,5 +14,10 @@ export interface CartState {
   totalAmount: number;
   totalQuantity: number;
   isCartLoadDone: boolean;
+  loadingCheckStock: boolean;
   productIdChosen: string;
+  isOutOfStock: boolean;
+  increaseCartId: number;
+  increaseCartQuantity: number;
+  isIncreaseLoading: boolean;
 }

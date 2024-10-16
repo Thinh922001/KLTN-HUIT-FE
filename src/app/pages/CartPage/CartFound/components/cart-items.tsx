@@ -2,11 +2,13 @@ import styled from 'styled-components';
 import Img1 from './assets/1.jpg';
 import { ProductExpand } from './product-expand';
 import { ExpandContent } from './expand-content';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { currencyVND } from 'utils/string';
 import { ICart } from '../../slice/type';
 import { CartActions, useCartSlice } from '../../slice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIncreaseLoading, selectOutOfStock } from '../../slice/selector';
+import { OutOfStockToast, useAddToCartToast } from 'app/components/Toast';
 
 interface Props {
   quantity?: number;
@@ -22,22 +24,15 @@ export const CardItem: React.FC<PropsCart> = ({ data }) => {
 
   const dispatch = useDispatch();
 
-  const handleCardOnchange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-
-    if (!/^\d*$/.test(inputValue)) {
-      return;
-    }
-
-    if (inputValue !== '' && parseInt(inputValue, 10) < 1) {
-      return;
-    }
-
-    const value = Number(inputValue) === 0 ? 1 : Number(inputValue);
-  };
+  const isSelectLoading = useSelector(selectIncreaseLoading);
 
   const increaseQuantity = () => {
-    dispatch(CartActions.increaseQuantity(data.productDetailId));
+    dispatch(
+      CartActions.setIncrease({
+        id: Number(data.productDetailId),
+        quantity: data.quantity + 1,
+      }),
+    );
   };
 
   const decreaseQuantity = () => {
@@ -49,6 +44,7 @@ export const CardItem: React.FC<PropsCart> = ({ data }) => {
   };
   return (
     <Wrapper className="wrapper">
+      {data?.hasNoStock && <OutOfStockText>Hết hàng</OutOfStockText>}
       <Price>
         <WrapperPrice>
           <Price>{currencyVND(data.price)}</Price>
@@ -58,7 +54,7 @@ export const CardItem: React.FC<PropsCart> = ({ data }) => {
         </WrapperPrice>
       </Price>
       <ImgWrapper className="img">
-        <ImgCard src={data.img} />
+        <ImgCard isDisable={data.hasNoStock} src={data.img} />
         <Div>
           <BtnRemoveCard
             onClick={() =>
@@ -69,7 +65,7 @@ export const CardItem: React.FC<PropsCart> = ({ data }) => {
           </BtnRemoveCard>
         </Div>
       </ImgWrapper>
-      <DescWrapper>
+      <DescWrapper isDisable={data.hasNoStock}>
         <CartTitle>{data.productName}</CartTitle>
         <CartNoteWrapper>
           <CartNote>Online giá rẻ quá</CartNote>
@@ -99,14 +95,14 @@ export const CardItem: React.FC<PropsCart> = ({ data }) => {
             </Minus>
             <QuantityWrapper>
               <Quantity
-                onChange={handleCardOnchange}
                 type="text"
                 maxLength={3}
+                readOnly
                 value={data.quantity}
               />
             </QuantityWrapper>
 
-            <Plus onClick={increaseQuantity}>
+            <Plus isLoading={isSelectLoading} onClick={increaseQuantity}>
               <IConMinus />
               <IConMinus />
             </Plus>
@@ -117,7 +113,7 @@ export const CardItem: React.FC<PropsCart> = ({ data }) => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isDisable?: boolean }>`
   padding: 18px 30px;
   display: flex;
   gap: 10px;
@@ -125,6 +121,38 @@ const Wrapper = styled.div`
 
   & + & {
     border-top: 1px solid #ccc;
+  }
+`;
+
+const OutOfStockText = styled.h4`
+  display: inline-block;
+  position: absolute;
+  font-style: italic;
+  color: red;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 2px solid red;
+  border-radius: 8px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-10deg);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border: 1px dashed red;
+    opacity: 0.5;
+    border-radius: 8px;
   }
 `;
 
@@ -154,15 +182,19 @@ const ImgWrapper = styled.div`
   gap: 15px;
 `;
 
-const DescWrapper = styled.div`
+//this
+const DescWrapper = styled.div<{ isDisable: boolean }>`
   width: 100%;
+  ${({ isDisable }) => isDisable && ` opacity: 0.5;`}
 `;
 
-const ImgCard = styled.img`
+const ImgCard = styled.img<{ isDisable: boolean }>`
   width: 75px;
   height: 75px;
   object-fit: contain;
   display: inline;
+
+  ${({ isDisable }) => isDisable && ` opacity: 0.5;`}
 `;
 
 const Span = styled.span`
@@ -300,7 +332,7 @@ const Minus = styled.div<Props>`
   }
 `;
 
-const Plus = styled(Minus)`
+const Plus = styled(Minus)<{ isLoading: boolean }>`
   ${IConMinus}:nth-child(2) {
     width: 2px;
     height: 12px;
@@ -310,6 +342,15 @@ const Plus = styled(Minus)`
     top: 10px;
     left: 0;
     right: 0;
+  }
+
+  ${({ isLoading }) =>
+    isLoading &&
+    `pointer-events: none;
+     cursor: none;`}
+
+  ${IConMinus} {
+    ${({ isLoading }) => isLoading && `background: #ccc;`}
   }
 `;
 

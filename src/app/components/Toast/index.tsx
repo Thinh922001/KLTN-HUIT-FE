@@ -35,6 +35,22 @@ export const useAddToCartToast = () => {
   return handleAddToCart;
 };
 
+export const OutOfStockToast = () => {
+  toast(
+    <ToastContent>
+      <ToastText>Sản phẩm hết hàng</ToastText>
+    </ToastContent>,
+    {
+      position: 'bottom-right',
+      autoClose: 1500,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+    },
+  );
+};
+
 const ToastContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -68,3 +84,5 @@ const Button = styled.button`
   font-size: 14px;
   font-weight: 600;
 `;
+
+const Span = styled.span``;
