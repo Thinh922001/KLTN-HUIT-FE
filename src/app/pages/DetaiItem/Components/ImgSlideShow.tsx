@@ -244,7 +244,7 @@ const CountImg = styled.span`
   color: #344054;
   font-size: 1.2rem;
   font-style: normal;
-  z-index: 9;
+  z-index: 1;
   bottom: 0;
   right: 0;
 `;
