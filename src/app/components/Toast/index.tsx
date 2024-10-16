@@ -38,7 +38,7 @@ export const useAddToCartToast = () => {
 export const OutOfStockToast = () => {
   toast(
     <ToastContent>
-      <ToastText>Sản phẩm hết hàng</ToastText>
+      <ToastText marginRight={10}>Sản phẩm hết hàng</ToastText>
     </ToastContent>,
     {
       position: 'bottom-right',
@@ -47,6 +47,7 @@ export const OutOfStockToast = () => {
       closeOnClick: false,
       pauseOnHover: false,
       draggable: false,
+      style: { backgroundColor: '#f8d7da', color: '#721c24' },
     },
   );
 };
@@ -54,11 +55,10 @@ export const OutOfStockToast = () => {
 const ToastContent = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 10px;
 `;
 
-const ToastText = styled.span`
+const ToastText = styled.span<{ marginRight?: number }>`
   &::before {
     content: '';
     width: 26px;
@@ -69,7 +69,8 @@ const ToastText = styled.span`
     background-size: 100% auto;
     display: inline-block;
     vertical-align: middle;
-    margin-right: 2px;
+    margin-right: ${({ marginRight }) =>
+      marginRight ? `${marginRight}px` : '2px'};
   }
 `;
 

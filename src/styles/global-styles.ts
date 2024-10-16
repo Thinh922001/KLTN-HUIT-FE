@@ -26,30 +26,41 @@ html {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 1.6rem;
     background-color: ${p => p.theme.background};
+
+    ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f9f9f9;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #e0e0e0;
+    border-radius: 10px;
+    border: 2px solid #f9f9f9;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #d0d0d0; 
+  }
+
+ 
+  * {
+    scrollbar-width: thin; 
+    scrollbar-color: #e0e0e0 #f9f9f9; 
+  }
   }
 
   body.fontLoaded {
     font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-color: #f2f4f7;
 
-    ::-webkit-scrollbar-track {
-    border: 1px solid black;
-    background-color: #F5F5F5;
+   
 }
 
-
-::-webkit-scrollbar {
-    width: 10px;
-    background-color: #F5F5F5;
-}
-
-
-::-webkit-scrollbar-thumb {
-    background-color: #000000;
-}
-      
-  }
-  
  a {
     color: inherit;
     text-decoration: none;
