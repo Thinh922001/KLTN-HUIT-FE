@@ -1,6 +1,8 @@
-import styled from 'styled-components';
-import { BtnChosenLocation } from './BtnChosenLocation';
-import { useDispatch, useSelector } from 'react-redux';
+import { FloatingInput } from 'app/components/FloatingInput';
+import {
+  LocationBoxActions,
+  useLocationBoxSlice,
+} from 'app/components/Header/Features/LocationBox/slice';
 import {
   selectDistrictId,
   selectDistrictName,
@@ -12,12 +14,10 @@ import {
   selectWardName,
   selectWards,
 } from 'app/components/Header/Features/LocationBox/slice/selectors';
-import {
-  LocationBoxActions,
-  useLocationBoxSlice,
-} from 'app/components/Header/Features/LocationBox/slice';
 import { ChangeEvent, useEffect } from 'react';
-import { FloatingInput } from 'app/components/FloatingInput';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { BtnChosenLocation } from './BtnChosenLocation';
 
 export const CartLocation = () => {
   useLocationBoxSlice();

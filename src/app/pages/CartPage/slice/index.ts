@@ -120,6 +120,13 @@ const slice = createSlice({
     setIncreaseLoading(state, actions: PayloadAction<boolean>) {
       state.isIncreaseLoading = actions.payload;
     },
+    setDecrease(
+      state,
+      actions: PayloadAction<{ id: number; quantity: number }>,
+    ) {
+      state.increaseCartId = actions.payload.id;
+      state.increaseCartQuantity = actions.payload.quantity;
+    },
   },
 });
 

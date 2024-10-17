@@ -1,15 +1,14 @@
+import { OutOfStockToast } from 'app/components/Toast';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+import { request } from 'utils/request';
+import { BASE_URL } from 'utils/url';
+import { CartActions } from '.';
 import {
   selectCartItems,
   selectIdChosen,
   selectIncreaseId,
   selectIncreaseQuantity,
 } from './selector';
-import { request } from 'utils/request';
-import { BASE_URL } from 'utils/url';
-import { CartActions } from '.';
-import { ICart } from './type';
-import { OutOfStockToast } from 'app/components/Toast';
 
 export function* addToCart() {
   try {
@@ -96,8 +95,37 @@ export function* checkOutOfStock() {
   }
 }
 
+export function* checkDecreaseStock() {
+  try {
+    const detailId = yield select(selectIncreaseId);
+
+    const quantity = yield select(selectIncreaseQuantity);
+
+    const response = yield call(request, `${BASE_URL}/cart/manual-quantity`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        cartItems: [
+          {
+            productDetailId: detailId,
+            quantity: quantity,
+          },
+        ],
+      }),
+    });
+
+    if (response.data) {
+      yield put(CartActions.updateCartHasNoStock(response.data.productIds));
+      yield put(CartActions.decreaseQuantity(detailId));
+    }
+  } catch (error) {}
+}
+
 export function* CartFromSaga() {
   yield takeLatest(CartActions.loadAddToCart, addToCart);
   yield takeLatest(CartActions.setIncrease, checkOutOfStock);
+  yield takeLatest(CartActions.setDecrease, checkDecreaseStock);
   yield all([call(checkStock)]);
 }

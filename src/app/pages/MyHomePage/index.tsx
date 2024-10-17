@@ -1,13 +1,12 @@
-import * as React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Container } from 'app/components/container';
+import { Helmet } from 'react-helmet-async';
 import { Banner } from './components/banner';
-import { Category } from './components/category';
-import { Suggest } from './components/suggest';
-import { BannerWeek } from './components/banner-week';
 import { BannerOffer } from './components/banner-offer';
-import { HomeNews } from './components/home-news';
+import { BannerWeek } from './components/banner-week';
+import { Category } from './components/category';
 import { CommonSearch } from './components/common-search';
+import { HomeNews } from './components/home-news';
+import { Suggest } from './components/suggest';
 
 export function MyHomePage() {
   return (

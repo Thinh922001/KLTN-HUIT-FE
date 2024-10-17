@@ -10,6 +10,7 @@ import { useCartSlice } from '../slice';
 import { useSelector } from 'react-redux';
 import {
   selectCartItems,
+  selectIsExistHasNoStock,
   selectLengthCart,
   selectTotalPrice,
 } from '../slice/selector';
@@ -22,6 +23,8 @@ export function CartFound() {
   const cartLength = useSelector(selectLengthCart);
 
   const totalAmount = useSelector(selectTotalPrice);
+
+  const hasNoStock = useSelector(selectIsExistHasNoStock);
 
   const [isDegree, setIsDegree] = useState<boolean>(false);
   return (
@@ -37,7 +40,6 @@ export function CartFound() {
 
           <Total>
             <TotalWrapper>
-              {' '}
               <TotalText>Tạm tính ({cartLength} sản phẩm): </TotalText>
               <TotalText>{currencyVND(totalAmount)} </TotalText>
             </TotalWrapper>
@@ -46,14 +48,12 @@ export function CartFound() {
           <CartDisCount />
           <Total>
             <TotalPriceWrapper>
-              {' '}
               <TotalPrice>TổngTiền: </TotalPrice>
               <Price>{currencyVND(totalAmount)} </Price>
             </TotalPriceWrapper>
           </Total>
 
           <CheckBoxWrapper>
-            {' '}
             <CustomCheckbox
               id="degree"
               isChecked={isDegree}
@@ -63,12 +63,12 @@ export function CartFound() {
               Tôi đồng ý với{' '}
               <LinkPolicy href="#!">
                 Chính sách xử lý dữ liệu cá nhân
-              </LinkPolicy>{' '}
+              </LinkPolicy>
               của chúng tôi
             </LabelPolicy>
           </CheckBoxWrapper>
           <WrapperSubmit>
-            <SubmitOrder>Đặt Hàng</SubmitOrder>
+            <SubmitOrder hasNoStock={hasNoStock}>Đặt Hàng</SubmitOrder>
           </WrapperSubmit>
         </CartBody>
       </CartContainer>
@@ -174,7 +174,7 @@ const LinkPolicy = styled.a`
   color: #288ad6;
 `;
 
-const SubmitOrder = styled.button`
+const SubmitOrder = styled.button<{ hasNoStock: boolean }>`
   display: block;
   overflow: hidden;
   color: #fff;
@@ -188,6 +188,11 @@ const SubmitOrder = styled.button`
   font-size: 1.9rem;
   cursor: pointer;
   background: linear-gradient(180deg, #f79429, #f7712e);
+
+  ${({ hasNoStock }) =>
+    hasNoStock &&
+    ` opacity: 0.5;
+      pointer-events: none;`}
 `;
 
 const WrapperSubmit = styled.div`

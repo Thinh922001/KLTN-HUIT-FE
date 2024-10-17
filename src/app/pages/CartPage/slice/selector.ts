@@ -51,3 +51,8 @@ export const selectIncreaseLoading = createSelector(
   [(state: RootState) => state.cartState || initialState],
   state => state.isIncreaseLoading,
 );
+
+export const selectIsExistHasNoStock = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.cartItems.some(e => e.hasNoStock),
+);

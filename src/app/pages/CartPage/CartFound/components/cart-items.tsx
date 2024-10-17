@@ -1,14 +1,12 @@
-import styled from 'styled-components';
-import Img1 from './assets/1.jpg';
-import { ProductExpand } from './product-expand';
-import { ExpandContent } from './expand-content';
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { currencyVND } from 'utils/string';
-import { ICart } from '../../slice/type';
-import { CartActions, useCartSlice } from '../../slice';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectIncreaseLoading, selectOutOfStock } from '../../slice/selector';
-import { OutOfStockToast, useAddToCartToast } from 'app/components/Toast';
+import styled from 'styled-components';
+import { currencyVND } from 'utils/string';
+import { CartActions, useCartSlice } from '../../slice';
+import { selectIncreaseLoading } from '../../slice/selector';
+import { ICart } from '../../slice/type';
+import { ExpandContent } from './expand-content';
+import { ProductExpand } from './product-expand';
 
 interface Props {
   quantity?: number;
@@ -36,7 +34,16 @@ export const CardItem: React.FC<PropsCart> = ({ data }) => {
   };
 
   const decreaseQuantity = () => {
-    dispatch(CartActions.decreaseQuantity(data.productDetailId));
+    if (!data.hasNoStock) {
+      dispatch(CartActions.decreaseQuantity(data.productDetailId));
+    } else {
+      dispatch(
+        CartActions.setDecrease({
+          id: Number(data.productDetailId),
+          quantity: data.quantity - 1,
+        }),
+      );
+    }
   };
 
   const handleActiveExpand = () => {
