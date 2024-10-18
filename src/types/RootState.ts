@@ -1,4 +1,5 @@
 import { LocationBoxState } from 'app/components/Header/Features/LocationBox/slice/type';
+import { SearchState } from 'app/components/Header/Features/Search/slice/type';
 import { OverlayState } from 'app/components/Overlay/slice';
 import { CartState } from 'app/pages/CartPage/slice/type';
 import { ProductCateState } from 'app/pages/Category/slice/type';
@@ -21,5 +22,6 @@ export interface RootState {
   productCateState?: ProductCateState;
   productDetailState?: ProductDetailState;
   cartState?: CartState;
+  searchState?: SearchState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

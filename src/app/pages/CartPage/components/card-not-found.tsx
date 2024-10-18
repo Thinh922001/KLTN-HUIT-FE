@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 import Icon from './icon-card';
+import { useNavigate } from 'react-router-dom';
 
 export const CardNotFound = () => {
+  const navigate = useNavigate();
+
   return (
     <Wrapper>
       <CartContainer>
         <IconCart position="0 -98px" width="70px" height="55px" />
         <SpanCart>Không có sản phẩm nào trong giỏ hàng</SpanCart>
-        <BtnCart>Về Trang chủ</BtnCart>
+        <BtnCart onClick={() => navigate('/')}>Về Trang chủ</BtnCart>
         <SpanDesc>
           Khi cần trợ giúp vui lòng gọi 1900 232 461 hoặc 028.3948.6789 (8h00 -
           21h30)
@@ -55,6 +58,7 @@ const BtnCart = styled.button`
   color: #288ad6;
   width: 100%;
   height: 40px;
+  cursor: pointer;
 `;
 
 const SpanDesc = styled(SpanCart)`

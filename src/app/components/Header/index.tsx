@@ -1,29 +1,38 @@
 import IconLogin from 'app/components/icons';
 import { Input } from 'app/components/Input/Input';
+import { useCartSlice } from 'app/pages/CartPage/slice';
+import { selectLengthCart } from 'app/pages/CartPage/slice/selector';
+import { ChangeEvent, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { media } from 'styles/media';
-import { ReactComponent as MoreIcon } from './assets/more.svg';
 import { Container } from '../container';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { OverlayActions } from '../Overlay/slice';
-import { Menu } from './Menu';
+import { ReactComponent as MoreIcon } from './assets/more.svg';
 import { LocationBox } from './Features/LocationBox';
 import {
   LocationBoxActions,
   useLocationBoxSlice,
 } from './Features/LocationBox/slice';
 import { selectStatusBoxLocation } from './Features/LocationBox/slice/selectors';
-import { useCartSlice } from 'app/pages/CartPage/slice';
-import { selectLengthCart } from 'app/pages/CartPage/slice/selector';
+import { Search } from './Features/Search';
+import { SearchActions, useSearchSlice } from './Features/Search/slice';
+import { selectKeyWord } from './Features/Search/slice/selector';
+import { Menu } from './Menu';
 
 export default function MyHeader() {
   useCartSlice();
   useLocationBoxSlice();
+  useSearchSlice();
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const searchInput = useSelector(selectKeyWord);
 
   const isBoxLocationActive = useSelector(selectStatusBoxLocation);
 
@@ -31,6 +40,11 @@ export default function MyHeader() {
 
   const handleShowOverLay = () => {
     dispatch(OverlayActions.showOverlay());
+  };
+
+  const setSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(SearchActions.setKeyWord(e.target.value));
+    dispatch(SearchActions.loadSearch());
   };
 
   const navigateLogin = () => {
@@ -45,6 +59,22 @@ export default function MyHeader() {
     dispatch(OverlayActions.showOverlay());
     dispatch(LocationBoxActions.showLocationBox());
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        dispatch(SearchActions.setKeyWord(''));
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
 
   return (
     <HeaderWrapper>
@@ -65,9 +95,14 @@ export default function MyHeader() {
               onMouseLeave={handleHideOverLay}
             />
 
-            <HeaderSearch>
+            <HeaderSearch ref={wrapperRef}>
               <IconLogin position="-151px -18px" width="17px" height="17px" />
-              <Input placeholder="Bạn tìm gì..." />
+              <Input
+                onChange={e => setSearchInput(e)}
+                placeholder="Bạn tìm gì..."
+                value={searchInput}
+              />
+              {searchInput && <Search />}
             </HeaderSearch>
 
             <ButtonGroup>
@@ -165,6 +200,7 @@ const HeaderWarper = styled.div`
 `;
 
 const HeaderSearch = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
 
