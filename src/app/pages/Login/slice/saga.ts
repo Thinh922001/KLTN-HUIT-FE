@@ -24,9 +24,7 @@ export function* requestCode() {
       yield put(LoginActions.setIsLoadingLoaded(true));
       yield put(LoginActions.setFormState('OTP'));
     }
-  } catch (error: any) {
-    yield put(LoginActions.setError(error.response.data.error));
-  }
+  } catch (error: any) {}
 }
 
 export function* verifyCode() {
@@ -54,7 +52,9 @@ export function* verifyCode() {
       yield put(LoginActions.setLoginStatus('DONE'));
     }
   } catch (error: any) {
-    yield put(LoginActions.setError(error.response.data.error));
+    if (error.response.data.error === 'INVALID_CODE') {
+      yield put(LoginActions.setError(error.response.data.error));
+    }
   }
 }
 
