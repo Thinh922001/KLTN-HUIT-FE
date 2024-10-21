@@ -60,3 +60,13 @@ export const createQueryString = (params: Record<string, any>): string => {
 export const convertToJSON = data => {
   return JSON.stringify(data);
 };
+
+export const isValidPhoneNumber = phoneNumber => {
+  // Xóa bỏ tất cả các khoảng trắng và ký tự không phải số
+  const cleanedPhoneNumber = phoneNumber.replace(/\s+/g, '');
+
+  // Kiểm tra xem số điện thoại có đúng 10 số và bắt đầu bằng số 0
+  const phoneRegex = /^0\d{9}$/;
+
+  return phoneRegex.test(cleanedPhoneNumber);
+};

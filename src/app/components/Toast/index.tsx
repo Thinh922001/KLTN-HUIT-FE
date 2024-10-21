@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 

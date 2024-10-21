@@ -1,27 +1,18 @@
+import { Helmet } from 'react-helmet-async';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import ImgLogin from './assets/login.png';
-import IconLogin from 'app/components/IconLogin';
-import { formatPhoneNumber, onlyAllowNumbers } from 'utils/string';
-import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import OtpForm from './components/Form-otp';
+import { useLoginSlice } from './slice';
+import { selectFormState } from './slice/selector';
+import { Form } from './components/Form';
+import { useAuthSlice } from 'auth';
 
 export function LoginPage() {
-  const navigate = useNavigate();
+  useLoginSlice();
+  useAuthSlice();
 
-  const handleInputChange = e => {
-    const { value } = e.target;
-    const formattedValue = formatPhoneNumber(value);
-    e.target.value = formattedValue;
-  };
-
-  const NavigateToRegister = () => {
-    navigate('/register');
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-  };
-
+  const formState = useSelector(selectFormState);
   return (
     <>
       <Helmet>
@@ -35,42 +26,13 @@ export function LoginPage() {
           </LoginImg>
           <LoginForm>
             <LoginFormContainer>
-              <Header>Tra cứu thông tin đơn hàng</Header>
-              <form onSubmit={handleSubmit}>
-                <InputWrapper>
-                  <IconLogin
-                    position="-66px -19px;"
-                    width="14px"
-                    height="21px"
-                  />
-                  <Input
-                    type="tel"
-                    placeholder="Số điện thoại mua hàng"
-                    inputMode="numeric"
-                    autoComplete="off"
-                    pattern="[0-9]*"
-                    onKeyDown={onlyAllowNumbers}
-                    maxLength={19}
-                    onInput={handleInputChange}
-                  />
-                </InputWrapper>
-                <InputWrapper>
-                  <IconLogin
-                    position="-89px -19px;"
-                    width="18px"
-                    height="21px"
-                  />
-                  <Input
-                    type="password"
-                    placeholder="Nhập mật khẩu"
-                    autoComplete="off"
-                  />
-                </InputWrapper>
-                <BtnLogin type="submit">Đăng nhập</BtnLogin>
-                <RegisterBtn type="button" onClick={NavigateToRegister}>
-                  Đăng ký
-                </RegisterBtn>
-              </form>
+              <Header>
+                {' '}
+                {formState === 'LOGIN'
+                  ? 'Tra cứu thông tin đơn hàng'
+                  : 'Xác nhận mã OTP'}
+              </Header>
+              {formState === 'LOGIN' ? <Form /> : <OtpForm />}
             </LoginFormContainer>
           </LoginForm>
         </LoginContainer>

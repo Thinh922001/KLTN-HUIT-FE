@@ -5,6 +5,8 @@ import { CartState } from 'app/pages/CartPage/slice/type';
 import { ProductCateState } from 'app/pages/Category/slice/type';
 import { ProductDetailState } from 'app/pages/DetaiItem/slice/type';
 import { GithubRepoFormState } from 'app/pages/HomePage/Features/GithubRepoForm/slice/types';
+import { FormLoginState } from 'app/pages/Login/slice/type';
+import { AuthState } from 'auth/type';
 import { ThemeState } from 'styles/theme/slice/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
@@ -23,5 +25,7 @@ export interface RootState {
   productDetailState?: ProductDetailState;
   cartState?: CartState;
   searchState?: SearchState;
+  loginState?: FormLoginState;
+  authState?: AuthState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

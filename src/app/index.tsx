@@ -14,21 +14,24 @@ import { useTranslation } from 'react-i18next';
 import AppRoutes from './routes';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { NavigateProvider } from 'utils/contex/navigate';
 
 export function App() {
   const { i18n } = useTranslation();
   return (
     <BrowserRouter>
-      <Helmet
-        titleTemplate="%s - React Boilerplate"
-        defaultTitle="React Boilerplate"
-        htmlAttributes={{ lang: i18n.language }}
-      >
-        <meta name="description" content="A React Boilerplate application" />
-      </Helmet>
-      <AppRoutes />
-      <ToastContainer />
-      <GlobalStyle />
+      <NavigateProvider>
+        <Helmet
+          titleTemplate="%s - React Boilerplate"
+          defaultTitle="React Boilerplate"
+          htmlAttributes={{ lang: i18n.language }}
+        >
+          <meta name="description" content="A React Boilerplate application" />
+        </Helmet>
+        <AppRoutes />
+        <ToastContainer />
+        <GlobalStyle />
+      </NavigateProvider>
     </BrowserRouter>
   );
 }

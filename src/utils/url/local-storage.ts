@@ -1,4 +1,5 @@
 import { CartState } from 'app/pages/CartPage/slice/type';
+import { AuthState } from 'auth/type';
 
 export const getCartFromLocalStorage = (): CartState => {
   const serializedState = localStorage.getItem('cart');
@@ -21,4 +22,32 @@ export const getCartFromLocalStorage = (): CartState => {
     increaseCartQuantity: 0,
     isIncreaseLoading: false,
   };
+};
+
+export const getAuthFromLocalStorage = (): AuthState => {
+  const serializedState = localStorage.getItem('auth');
+
+  if (serializedState) {
+    const authState: AuthState = JSON.parse(serializedState);
+    if (authState.auth && authState.user) {
+      return authState;
+    }
+  }
+  return {
+    user: { id: 0 },
+    auth: { accessToken: '', refreshToken: '' },
+  };
+};
+
+export const setAuthLocalStorage = (auth: AuthState) => {
+  try {
+    const serializedState = JSON.stringify(auth);
+    localStorage.setItem('auth', serializedState);
+  } catch (e) {
+    console.warn('Could not serialize cart state', e);
+  }
+};
+
+export const isAuthenticated = () => {
+  return !!localStorage.getItem('auth');
 };

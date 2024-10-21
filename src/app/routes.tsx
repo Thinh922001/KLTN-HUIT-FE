@@ -3,12 +3,18 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { LZMyHomePage } from './pages/MyHomePage/Loadable';
 import { NoFooterLayout } from './layout/no-footer';
 import { LZCartPage } from './pages/CartPage/Loadable';
-import { RouteObject, useRoutes } from 'react-router-dom';
+import { Navigate, Outlet, RouteObject, useRoutes } from 'react-router-dom';
 import React from 'react';
 import { LZDetailItem } from './pages/DetaiItem/Loadable';
 import { LZLogin } from './pages/Login/Loadable';
 import { LZRegister } from './pages/Register/Loadable';
 import { LZCategory } from './pages/Category/Loadable';
+import { isAuthenticated } from 'utils/url/local-storage';
+import { LZPrivateRoute } from './pages/TestPrivateRoute/Loadable';
+
+const PrivateRoute: React.FC = () => {
+  return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
+};
 
 const routes: RouteObject[] = [
   {
@@ -31,6 +37,16 @@ const routes: RouteObject[] = [
       {
         path: '/danh-muc/:id',
         element: <LZCategory />,
+      },
+      {
+        path: '/private-route',
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: 'user',
+            element: <LZPrivateRoute />,
+          },
+        ],
       },
     ],
   },
