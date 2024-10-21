@@ -7,46 +7,54 @@ import { LoginActions } from '.';
 import { selectOTP, selectPhone } from './selector';
 
 export function* requestCode() {
-  yield delay(500);
-  const phone = yield select(selectPhone);
+  try {
+    yield delay(500);
+    const phone = yield select(selectPhone);
 
-  if (!phone) return;
+    if (!phone) return;
 
-  const data = yield call(post, `${BASE_URL}/users/auth/request_code`, {
-    phone,
-  });
+    const data = yield call(post, `${BASE_URL}/users/auth/request_code`, {
+      phone,
+    });
 
-  const isOtpAvailable = data?.data?.data?.length === 0;
+    const isOtpAvailable = data?.data?.data?.length === 0;
 
-  if (isOtpAvailable) {
-    yield put(LoginActions.otpLoaded());
-    yield put(LoginActions.setIsLoadingLoaded(true));
-    yield put(LoginActions.setFormState('OTP'));
+    if (isOtpAvailable) {
+      yield put(LoginActions.otpLoaded());
+      yield put(LoginActions.setIsLoadingLoaded(true));
+      yield put(LoginActions.setFormState('OTP'));
+    }
+  } catch (error: any) {
+    yield put(LoginActions.setError(error.response.data.error));
   }
 }
 
 export function* verifyCode() {
-  const phone = yield select(selectPhone);
-  const otp = yield select(selectOTP);
+  try {
+    const phone = yield select(selectPhone);
+    const otp = yield select(selectOTP);
 
-  if (!phone || !otp) return;
+    if (!phone || !otp) return;
 
-  const data = yield call(post, `${BASE_URL}/users/auth/verify_code`, {
-    phone,
-    code: otp,
-  });
+    const data = yield call(post, `${BASE_URL}/users/auth/verify_code`, {
+      phone,
+      code: otp,
+    });
 
-  if (data?.response?.data?.error) {
-    yield put(LoginActions.setError(data.response.data.error));
-    return;
-  }
+    if (data?.response?.data?.error) {
+      yield put(LoginActions.setError(data.response.data.error));
+      return;
+    }
 
-  const userData = data?.data?.data;
+    const userData = data?.data?.data;
 
-  if (userData) {
-    yield put(AuthActions.setAuth(userData));
-    yield put(LoginActions.loginLoaded());
-    yield put(LoginActions.setLoginStatus('DONE'));
+    if (userData) {
+      yield put(AuthActions.setAuth(userData));
+      yield put(LoginActions.loginLoaded());
+      yield put(LoginActions.setLoginStatus('DONE'));
+    }
+  } catch (error: any) {
+    yield put(LoginActions.setError(error.response.data.error));
   }
 }
 

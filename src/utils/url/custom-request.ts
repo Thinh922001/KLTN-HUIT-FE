@@ -6,7 +6,6 @@ import axios, {
 import { ERROR_TYPE } from 'utils/error';
 import { BASE_URL } from '.';
 import showErrorToast from 'app/components/Toast/components/Toast-error';
-import { useNavigateContext } from 'utils/contex/navigate';
 
 const authData = JSON.parse(localStorage.getItem('auth') || '{}');
 let accessToken = authData?.auth?.accessToken;
@@ -38,7 +37,6 @@ axiosInstance.interceptors.response.use(
   },
   async (error: any) => {
     const originalRequest = error.config;
-    const navigate = useNavigateContext();
 
     if (
       error.response &&
@@ -74,7 +72,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         showErrorToast('Phiên đã hết hạn, vui lòng đăng nhập lại.');
-        navigate('/login');
+
         return Promise.reject(refreshError);
       }
     }
