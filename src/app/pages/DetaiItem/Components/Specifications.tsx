@@ -4,6 +4,7 @@ import { BoxSpecif } from './BoxSpecif';
 import { useProductDetailSlice } from '../slice';
 import { useSelector } from 'react-redux';
 import { selectSpecData } from '../slice/selector';
+import { Review } from '../Features/Review';
 
 export const Specifications = () => {
   useProductDetailSlice();
@@ -32,11 +33,14 @@ export const Specifications = () => {
             Bài viết đánh giá
           </BtnSpec>
         </BtnWrapper>
-
-        <SpecsWrapper>
-          {specData.length &&
-            specData.map((e, index) => <BoxSpecif data={e} key={index} />)}
-        </SpecsWrapper>
+        {componentActive === 'SPEC' ? (
+          <SpecsWrapper>
+            {specData.length &&
+              specData.map((e, index) => <BoxSpecif data={e} key={index} />)}
+          </SpecsWrapper>
+        ) : (
+          <Review />
+        )}
       </Content>
     </Wrapper>
   );

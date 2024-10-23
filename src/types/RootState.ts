@@ -3,6 +3,7 @@ import { SearchState } from 'app/components/Header/Features/Search/slice/type';
 import { OverlayState } from 'app/components/Overlay/slice';
 import { CartState } from 'app/pages/CartPage/slice/type';
 import { ProductCateState } from 'app/pages/Category/slice/type';
+import { CommentBoxState } from 'app/pages/DetaiItem/Features/Review/slice/type';
 import { ProductDetailState } from 'app/pages/DetaiItem/slice/type';
 import { GithubRepoFormState } from 'app/pages/HomePage/Features/GithubRepoForm/slice/types';
 import { FormLoginState } from 'app/pages/Login/slice/type';
@@ -27,5 +28,6 @@ export interface RootState {
   searchState?: SearchState;
   loginState?: FormLoginState;
   authState?: AuthState;
+  commentBoxState?: CommentBoxState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

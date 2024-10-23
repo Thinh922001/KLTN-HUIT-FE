@@ -1,24 +1,26 @@
 import { Container } from 'app/components/container';
+import { CenteredLoading } from 'app/components/LoadingCenter';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { BreakCum } from './Components/BreakCum';
+import { Buy } from './Components/Buy';
 import { HeaderItem } from './Components/HeaderItem';
 import { ImgSlideShow } from './Components/ImgSlideShow';
-import { WeCommit } from './Components/WeCommit';
+import { Location } from './Components/Location';
+import { Price } from './Components/Price';
 import { Specifications } from './Components/Specifications';
 import { Variants } from './Components/Variant';
-import { Price } from './Components/Price';
-import { Location } from './Components/Location';
-import { Buy } from './Components/Buy';
-import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { WeCommit } from './Components/WeCommit';
 import { ProductDetailActions, useProductDetailSlice } from './slice';
-import { selectIsLoading, selectVariantChosen } from './slice/selector';
-import { CenteredLoading } from 'app/components/LoadingCenter';
+import { selectIsLoading } from './slice/selector';
+import { useCommentBoxSlice } from './Features/Review/slice';
 
 export function DetailItem() {
   useProductDetailSlice();
+  useCommentBoxSlice();
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
 

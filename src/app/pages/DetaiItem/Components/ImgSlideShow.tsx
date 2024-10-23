@@ -59,7 +59,7 @@ export const ImgSlideShow = () => {
 
   const onPrev = () => {
     if (currenIndex > 0) {
-      setCurrentIndex(index => index - 1);
+      setCurrentIndex(currenIndex - 1);
     }
   };
   return (
