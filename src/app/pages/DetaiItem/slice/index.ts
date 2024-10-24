@@ -10,6 +10,7 @@ export const initialState: ProductDetailState = {
   productDetail: {} as IProductDetail,
   variationChosen: {},
   isVariantLoading: false,
+  componentActive: 'SPEC',
 };
 
 const slice = createSlice({
@@ -58,6 +59,9 @@ const slice = createSlice({
     },
     resetProductDetail(state) {
       return initialState;
+    },
+    setComponentActive(state, actions: PayloadAction<'SPEC' | 'RATE'>) {
+      state.componentActive = actions.payload;
     },
   },
 });

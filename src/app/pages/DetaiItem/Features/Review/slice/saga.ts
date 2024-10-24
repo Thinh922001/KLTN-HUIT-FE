@@ -66,10 +66,8 @@ export function* createComment() {
       },
     });
 
-    if (response.data.data.length > 0) {
-      yield put(CommentBoxAction.createCmtLoaded());
-      CmtSuccess();
-    }
+    yield put(CommentBoxAction.createCmtLoaded());
+    CmtSuccess();
   } catch (error) {
     showErrorToast('Có lỗi xảy ra');
   }

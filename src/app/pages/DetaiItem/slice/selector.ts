@@ -74,3 +74,8 @@ export const selectImgProductDetail = createSelector(
   [(state: RootState) => state.productDetailState || initialState],
   state => state.productDetail.img,
 );
+
+export const selectComponentActive = createSelector(
+  [(state: RootState) => state.productDetailState || initialState],
+  state => state.componentActive,
+);

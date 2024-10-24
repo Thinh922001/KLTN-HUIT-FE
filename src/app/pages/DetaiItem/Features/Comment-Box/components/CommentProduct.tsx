@@ -8,25 +8,24 @@ import {
   selectFullName,
   selectPhone,
   selectStartRate,
+  selectUpLoadLoading,
 } from '../../Review/slice/selector';
 import CommentInput from './Comment';
 import { FloatingInput } from 'app/components/FloatingInput';
 import CustomCheckbox from 'app/components/CustomCheckBox';
 import { ChangeEvent, useState } from 'react';
 import { selectImgProductDetail } from 'app/pages/DetaiItem/slice/selector';
+import { CenteredLoading } from 'app/components/LoadingCenter';
 
 export const CommentProduct = () => {
   const dispatch = useDispatch();
 
   const startRate = useSelector(selectStartRate);
-
   const voteArr = generateStars(startRate);
-
   const productImg = useSelector(selectImgProductDetail);
-
   const phone = useSelector(selectPhone);
-
   const fullName = useSelector(selectFullName);
+  const isUploadLoading = useSelector(selectUpLoadLoading);
 
   const changeStartRate = (startRate: number) => {
     dispatch(CommentBoxAction.setStartRate(startRate));
@@ -97,7 +96,7 @@ export const CommentProduct = () => {
             onChange={checked => setIsDegree(checked)}
           />
           <LabelPolicy htmlFor="degree">
-            Tôi đồng ý với{' '}
+            Tôi đồng ý với
             <LinkPolicy href="#!">Chính sách xử lý dữ liệu cá nhân </LinkPolicy>
             của chúng tôi
           </LabelPolicy>
@@ -105,7 +104,11 @@ export const CommentProduct = () => {
       </FormGroup>
       <FormGroup>
         <BtnWrite onClick={() => dispatch(CommentBoxAction.loadCreateCmt())}>
-          Gửi đánh giá
+          {isUploadLoading ? (
+            <CenteredLoading tiny minHeight="100%" />
+          ) : (
+            'Gửi đánh giá'
+          )}
         </BtnWrite>
       </FormGroup>
     </Wrapper>

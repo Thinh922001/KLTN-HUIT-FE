@@ -1,20 +1,17 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { BoxSpecif } from './BoxSpecif';
-import { useProductDetailSlice } from '../slice';
-import { useSelector } from 'react-redux';
-import { selectSpecData } from '../slice/selector';
+import { ProductDetailActions, useProductDetailSlice } from '../slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectComponentActive, selectSpecData } from '../slice/selector';
 import { Review } from '../Features/Review';
 
 export const Specifications = () => {
   useProductDetailSlice();
 
   const specData = useSelector(selectSpecData);
-  const [componentActive, setComponentActive] = useState<string>('SPEC');
-
-  const handleSetComponentActive = (name: string) => {
-    setComponentActive(name);
-  };
+  const dispatch = useDispatch();
+  const componentActive = useSelector(selectComponentActive);
 
   return (
     <Wrapper>
@@ -22,12 +19,16 @@ export const Specifications = () => {
         <BtnWrapper>
           <BtnSpec
             isActive={componentActive === 'SPEC'}
-            onClick={() => handleSetComponentActive('SPEC')}
+            onClick={() =>
+              dispatch(ProductDetailActions.setComponentActive('SPEC'))
+            }
           >
             Thông số kỹ thuật
           </BtnSpec>
           <BtnSpec
-            onClick={() => handleSetComponentActive('RATE')}
+            onClick={() =>
+              dispatch(ProductDetailActions.setComponentActive('RATE'))
+            }
             isActive={componentActive === 'RATE'}
           >
             Bài viết đánh giá

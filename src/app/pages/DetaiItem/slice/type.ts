@@ -38,4 +38,5 @@ export interface ProductDetailState {
   productDetail: IProductDetail;
   variationChosen: IVariationChosen;
   isVariantLoading: boolean;
+  componentActive: 'SPEC' | 'RATE';
 }

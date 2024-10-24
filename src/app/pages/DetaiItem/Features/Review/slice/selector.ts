@@ -66,3 +66,8 @@ export const selectFullName = createSelector(
   [(state: RootState) => state.commentBoxState || initialState],
   state => state.fullName,
 );
+
+export const selectUpLoadLoading = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.loadingCreateCmt,
+);

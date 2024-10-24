@@ -10,8 +10,18 @@ interface CommentInputProps {}
 const CommentInput: React.FC<CommentInputProps> = () => {
   const commentRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const comment = useSelector(selectCommentStore);
-  const images = useSelector(selectImages);
+
+  const img = useSelector(selectImages);
+
+  const handleSetImg = (img: string) => {
+    dispatch(CommentBoxAction.overWriteImg(img));
+  };
+
+  const setImg = (img: string[]) => {
+    dispatch(CommentBoxAction.setImg(img));
+  };
 
   const dispatch = useDispatch();
 
@@ -19,13 +29,6 @@ const CommentInput: React.FC<CommentInputProps> = () => {
     dispatch(CommentBoxAction.setComment(cmt));
   };
 
-  const handleSetImg = (newImages: string) => {
-    dispatch(CommentBoxAction.overWriteImg(newImages));
-  };
-
-  const setImg = (newImages: string[]) => {
-    dispatch(CommentBoxAction.setImg(newImages));
-  };
   useEffect(() => {
     if (commentRef.current) {
       commentRef.current.textContent = comment;
@@ -42,13 +45,7 @@ const CommentInput: React.FC<CommentInputProps> = () => {
         hasImage = true;
         const file = items[i].getAsFile();
         if (file) {
-          const reader = new FileReader();
-          reader.onload = function () {
-            if (reader.result) {
-              handleSetImg(reader.result as string);
-            }
-          };
-          reader.readAsDataURL(file);
+          handleSetImg(URL.createObjectURL(file));
         }
       }
     }
@@ -66,20 +63,15 @@ const CommentInput: React.FC<CommentInputProps> = () => {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         if (file.type.indexOf('image') !== -1) {
-          const reader = new FileReader();
-          reader.onload = function () {
-            if (reader.result) {
-              handleSetImg(reader.result as string);
-            }
-          };
-          reader.readAsDataURL(file);
+          handleSetImg(URL.createObjectURL(file));
         }
       }
     }
   };
 
+  // Xóa ảnh khỏi local state
   const handleRemoveImage = (index: number) => {
-    setImg(images.filter((_, i) => i !== index));
+    setImg(img.filter((_, i) => i !== index));
   };
 
   const triggerFileInput = () => {
@@ -120,9 +112,9 @@ const CommentInput: React.FC<CommentInputProps> = () => {
           onChange={handleFileChange}
           multiple
         />
-        {images.length > 0 && (
+        {img.length > 0 && (
           <ImagePreview>
-            {images.map((image, index) => (
+            {img.map((image, index) => (
               <ImageWrapper key={index}>
                 <img src={image} alt={`preview-${index}`} />
                 <RemoveButton onClick={() => handleRemoveImage(index)}>

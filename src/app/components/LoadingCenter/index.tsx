@@ -4,12 +4,13 @@ import React from 'react';
 
 interface Props {
   minHeight?: string;
+  tiny?: boolean;
 }
 
-export const CenteredLoading: React.FC<Props> = ({ minHeight }) => {
+export const CenteredLoading: React.FC<Props> = ({ minHeight, tiny }) => {
   return (
     <CenteredWrapper minHeight={minHeight}>
-      <LoadingIndicator />
+      <LoadingIndicator tiny={tiny} />
     </CenteredWrapper>
   );
 };

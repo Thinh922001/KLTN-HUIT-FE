@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components/macro';
 interface Props extends SvgProps {}
 
 export const LoadingIndicator = (props: Props) => (
-  <Svg viewBox="-24 -24 48 48" small={props.small}>
+  <Svg viewBox="-24 -24 48 48" small={props.small} tiny={props.tiny}>
     <Circle cx="0" cy="0" r="20" fill="none" strokeWidth="4"></Circle>
   </Svg>
 );
@@ -34,12 +34,13 @@ const dash = keyframes`
 
 interface SvgProps {
   small?: boolean;
+  tiny?: boolean; // Thêm thuộc tính tiny
 }
 
 const Svg = styled.svg<SvgProps>`
   animation: ${rotate} ${speed * 1.75}s linear infinite;
-  height: ${p => (p.small ? '1.25rem' : '3rem')};
-  width: ${p => (p.small ? '1.25rem' : '3rem')};
+  height: ${p => (p.tiny ? '1.5rem' : p.small ? '1.25rem' : '3rem')};
+  width: ${p => (p.tiny ? '1.5rem' : p.small ? '1.25rem' : '3rem')};
   transform-origin: center;
 `;
 
