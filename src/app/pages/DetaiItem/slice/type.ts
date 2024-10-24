@@ -20,6 +20,7 @@ export interface IProductDetail {
   id: number;
   title?: string;
   subImg?: string[];
+  img: string;
   labels: ILabel[];
   discount?: IDiscount;
   price: number;
@@ -36,5 +37,5 @@ export interface ProductDetailState {
   productId: string;
   productDetail: IProductDetail;
   variationChosen: IVariationChosen;
-  isVariantLoading : boolean
+  isVariantLoading: boolean;
 }

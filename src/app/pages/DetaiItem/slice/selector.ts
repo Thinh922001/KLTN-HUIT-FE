@@ -69,3 +69,8 @@ export const selectProductDetailId = createSelector(
   [(state: RootState) => state.productDetailState || initialState],
   state => state.productDetail.id,
 );
+
+export const selectImgProductDetail = createSelector(
+  [(state: RootState) => state.productDetailState || initialState],
+  state => state.productDetail.img,
+);

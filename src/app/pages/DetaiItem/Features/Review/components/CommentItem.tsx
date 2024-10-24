@@ -1,18 +1,20 @@
 import styled from 'styled-components';
 import { generateStars } from 'utils/array';
 import { Icon } from '../../assets/Icon';
+import { iconProps } from 'utils/url';
+import { IComment } from '../slice/type';
+import React from 'react';
 
-export const CommentItem = () => {
-  const numStart = generateStars(4);
+interface Props {
+  data: IComment;
+}
 
-  const iconProps = {
-    1: { position: '-140px -25px', height: '11px', width: '12px' },
-    0: { position: '-160px -25px', height: '11px', width: '12px' },
-  };
+export const CommentItem: React.FC<Props> = ({ data }) => {
+  const numStart = generateStars(data.rating);
 
   return (
     <Wrapper>
-      <CmtName>Lê Cường Thịnh</CmtName>
+      <CmtName>{data.owner.aliasName}</CmtName>
       <StartWrapper>
         {numStart.map((e, index) => (
           <Icon
@@ -33,12 +35,13 @@ export const CommentItem = () => {
         </TxtIntroWrapper>
       </StartWrapper>
       <CmtContent>
-        <CmtTxt>Sản phẩm rất tốt</CmtTxt>
+        <CmtTxt>{data.comment}</CmtTxt>
       </CmtContent>
+
       <CmtImgWrapper>
-        <CmtImg src="https://cdn.tgdd.vn/comment/54051064/16815383878655130338128515518280-20230415130005.jpg" />
-        <CmtImg src="https://cdn.tgdd.vn/comment/54051064/16815383878655130338128515518280-20230415130005.jpg" />
-        <CmtImg src="https://cdn.tgdd.vn/comment/54051064/16815383878655130338128515518280-20230415130005.jpg" />
+        {data.img &&
+          data.img?.length > 0 &&
+          data.img?.map((e, index) => <CmtImg key={index} src={e} />)}
       </CmtImgWrapper>
       <CmtCommand>
         <Icon
@@ -47,7 +50,9 @@ export const CommentItem = () => {
           width="15px"
           style={{ transform: 'translateY(-2px)', cursor: 'pointer' }}
         />
-        <CmtCmdText>Hữu ích</CmtCmdText>
+        <CmtCmdText>
+          {data.totalReaction ? `${data.totalReaction} ` : null} Hữu ích
+        </CmtCmdText>
         <TxtDate>2 ngày trước</TxtDate>
       </CmtCommand>
     </Wrapper>

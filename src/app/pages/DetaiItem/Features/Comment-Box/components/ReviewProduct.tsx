@@ -1,25 +1,31 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { CommentBoxAction } from '../../Review/slice';
 import { StartVote } from './StartVote';
 import { VoteData } from 'utils/data';
 import { useEffect, useState } from 'react';
+import {
+  selectImgProductDetail,
+  selectTitle,
+} from 'app/pages/DetaiItem/slice/selector';
 
 export const ReviewProduct = () => {
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
 
+  const img = useSelector(selectImgProductDetail);
+
+  const title = useSelector(selectTitle);
+
   const handleOnClick = (value: number) => {
-    // Ẩn component trước khi chuyển sang CommentProduct
     setIsVisible(false);
     setTimeout(() => {
       dispatch(CommentBoxAction.setStateBoxComment('COMMENT'));
       dispatch(CommentBoxAction.setStartRate(value));
-    }, 300); // Đợi 300ms để hoàn thành hiệu ứng trước khi chuyển
+    }, 300);
   };
 
   useEffect(() => {
-    // Hiện component khi nó được mount
     setTimeout(() => {
       setIsVisible(true);
     }, 100);
@@ -37,11 +43,9 @@ export const ReviewProduct = () => {
         <HeaderTitle>Đánh giá sản phẩm</HeaderTitle>
       </HeaderWrapper>
       <ImgWrapper>
-        <Img src="https://cdn.tgdd.vn/Products/Images/3385/326047/TimerThumb/may-loc-nuoc-ro-sunhouse-sha76623kl-11-loi-(4).jpg" />
+        <Img src={img} />
       </ImgWrapper>
-      <TitleProduct>
-        Máy lọc nước RO nóng nguội lạnh Sunhouse UltraPURE SHA76623KL 11 lõi
-      </TitleProduct>
+      <TitleProduct>{title}</TitleProduct>
       <StartVoteWrapper>
         {VoteData.map((e, index) => (
           <StartVote

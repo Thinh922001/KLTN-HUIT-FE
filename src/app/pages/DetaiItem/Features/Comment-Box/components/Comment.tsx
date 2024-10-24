@@ -1,15 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Icon } from '../../assets/Icon';
+import { useDispatch, useSelector } from 'react-redux';
+import { CommentBoxAction } from '../../Review/slice';
+import { selectCommentStore, selectImages } from '../../Review/slice/selector';
 
 interface CommentInputProps {}
 
 const CommentInput: React.FC<CommentInputProps> = () => {
-  const [comment, setComment] = useState<string>('');
-  const [images, setImages] = useState<string[]>([]);
   const commentRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const comment = useSelector(selectCommentStore);
+  const images = useSelector(selectImages);
 
+  const dispatch = useDispatch();
+
+  const handleSetComment = (cmt: string) => {
+    dispatch(CommentBoxAction.setComment(cmt));
+  };
+
+  const handleSetImg = (newImages: string) => {
+    dispatch(CommentBoxAction.overWriteImg(newImages));
+  };
+
+  const setImg = (newImages: string[]) => {
+    dispatch(CommentBoxAction.setImg(newImages));
+  };
   useEffect(() => {
     if (commentRef.current) {
       commentRef.current.textContent = comment;
@@ -29,7 +45,7 @@ const CommentInput: React.FC<CommentInputProps> = () => {
           const reader = new FileReader();
           reader.onload = function () {
             if (reader.result) {
-              setImages(prevImages => [...prevImages, reader.result as string]);
+              handleSetImg(reader.result as string);
             }
           };
           reader.readAsDataURL(file);
@@ -53,7 +69,7 @@ const CommentInput: React.FC<CommentInputProps> = () => {
           const reader = new FileReader();
           reader.onload = function () {
             if (reader.result) {
-              setImages(prevImages => [...prevImages, reader.result as string]);
+              handleSetImg(reader.result as string);
             }
           };
           reader.readAsDataURL(file);
@@ -63,7 +79,7 @@ const CommentInput: React.FC<CommentInputProps> = () => {
   };
 
   const handleRemoveImage = (index: number) => {
-    setImages(prevImages => prevImages.filter((_, i) => i !== index));
+    setImg(images.filter((_, i) => i !== index));
   };
 
   const triggerFileInput = () => {
@@ -73,7 +89,7 @@ const CommentInput: React.FC<CommentInputProps> = () => {
   };
 
   const handleInput = (event: React.FormEvent<HTMLDivElement>) => {
-    setComment(event.currentTarget.textContent || '');
+    handleSetComment(event.currentTarget.textContent || '');
   };
 
   return (

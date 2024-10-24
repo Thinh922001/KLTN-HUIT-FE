@@ -1,14 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { CommentBoxAction } from '../../Review/slice';
+import { CommentBoxAction, useCommentBoxSlice } from '../../Review/slice';
 import { VoteData } from 'utils/data';
 import { StartVote } from './StartVote';
 import { generateStars } from 'utils/array';
-import { selectStartRate } from '../../Review/slice/selector';
+import {
+  selectFullName,
+  selectPhone,
+  selectStartRate,
+} from '../../Review/slice/selector';
 import CommentInput from './Comment';
 import { FloatingInput } from 'app/components/FloatingInput';
 import CustomCheckbox from 'app/components/CustomCheckBox';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+import { selectImgProductDetail } from 'app/pages/DetaiItem/slice/selector';
 
 export const CommentProduct = () => {
   const dispatch = useDispatch();
@@ -17,8 +22,22 @@ export const CommentProduct = () => {
 
   const voteArr = generateStars(startRate);
 
+  const productImg = useSelector(selectImgProductDetail);
+
+  const phone = useSelector(selectPhone);
+
+  const fullName = useSelector(selectFullName);
+
   const changeStartRate = (startRate: number) => {
     dispatch(CommentBoxAction.setStartRate(startRate));
+  };
+
+  const handleSetPhone = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(CommentBoxAction.setPhone(event.target.value));
+  };
+
+  const handleSetFullName = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(CommentBoxAction.setFullName(event.target.value));
   };
 
   const [isDegree, setIsDegree] = useState<boolean>(false);
@@ -34,7 +53,7 @@ export const CommentProduct = () => {
         <HeaderTitle>Đánh giá sản phẩm </HeaderTitle>
       </HeaderWrapper>
       <ImgWrapper>
-        <Img src="https://cdn.tgdd.vn/Products/Images/3385/326047/TimerThumb/may-loc-nuoc-ro-sunhouse-sha76623kl-11-loi-(4).jpg" />
+        <Img src={productImg} />
       </ImgWrapper>
       <StartVoteWrapper>
         {voteArr.map((e, index) => (
@@ -56,6 +75,8 @@ export const CommentProduct = () => {
           label="Họ và Tên (bắc buộc)"
           disableFloating={true}
           disableFocusColor={true}
+          onChange={handleSetFullName}
+          value={fullName}
         />
         <FloatingInput
           customColor="#333;"
@@ -64,6 +85,8 @@ export const CommentProduct = () => {
           label="Số điện thoại (bắc buộc)"
           disableFloating={true}
           disableFocusColor={true}
+          onChange={handleSetPhone}
+          value={phone}
         />
       </FormGroupInput>
       <FormGroup>
@@ -81,7 +104,9 @@ export const CommentProduct = () => {
         </CheckBoxWrapper>
       </FormGroup>
       <FormGroup>
-        <BtnWrite>Gửi đánh giá</BtnWrite>
+        <BtnWrite onClick={() => dispatch(CommentBoxAction.loadCreateCmt())}>
+          Gửi đánh giá
+        </BtnWrite>
       </FormGroup>
     </Wrapper>
   );

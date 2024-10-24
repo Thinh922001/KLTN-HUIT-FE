@@ -52,6 +52,23 @@ export const OutOfStockToast = () => {
   );
 };
 
+export const CmtSuccess = () => {
+  toast(
+    <ToastContent>
+      <ToastText marginRight={10}>Sản phẩm hết hàng</ToastText>
+    </ToastContent>,
+    {
+      position: 'bottom-right',
+      autoClose: 1500,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      style: { backgroundColor: '#f8d7da', color: '#721c24' },
+    },
+  );
+};
+
 const ToastContent = styled.div`
   display: flex;
   flex-direction: column;

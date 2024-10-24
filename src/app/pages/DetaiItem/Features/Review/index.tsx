@@ -3,8 +3,14 @@ import styled from 'styled-components';
 import { CommentBox } from '../Comment-Box';
 import { Comment } from './components/Comment';
 import { Rate } from './components/Rate';
-import { CommentBoxAction } from './slice';
-import { selectIsShow } from './slice/selector';
+import { CommentBoxAction, useCommentBoxSlice } from './slice';
+import {
+  selectComment,
+  selectIsShow,
+  selectLengthComment,
+  selectTotal,
+} from './slice/selector';
+import { useEffect } from 'react';
 
 export const Review = () => {
   const dispatch = useDispatch();
@@ -15,12 +21,23 @@ export const Review = () => {
 
   const isShow = useSelector(selectIsShow);
 
+  const totalComment = useSelector(selectTotal);
+
+  const lengthComment = useSelector(selectLengthComment);
+
+  useEffect(() => {
+    dispatch(CommentBoxAction.loadComment());
+  }, [dispatch]);
+
   return (
     <Wrapper>
       <Rate />
       <Comment />
-      <BtnWrapper>
-        <BtnViewAll>Xem 67 đánh giá</BtnViewAll>
+      <BtnWrapper isMore={totalComment < lengthComment}>
+        {totalComment < lengthComment && (
+          <BtnViewAll>Xem {totalComment - lengthComment} đánh giá</BtnViewAll>
+        )}
+
         <BtnWrite onClick={setIsShow}> Viết đánh giá</BtnWrite>
       </BtnWrapper>
       {isShow && <CommentBox />}
@@ -32,10 +49,12 @@ const Wrapper = styled.div`
   margin-top: 20px;
 `;
 
-const BtnWrapper = styled.div`
-  display: flex;
+const BtnWrapper = styled.div<{ isMore: boolean }>`
+  display: grid;
+  grid-template-columns: 1fr ${({ isMore }) => isMore && '1fr'};
   gap: 10px;
   margin-top: 10px;
+  align-items: center;
 `;
 
 const Btn = styled.button`
@@ -48,7 +67,7 @@ const Btn = styled.button`
   padding: 14px 10px;
   text-align: center;
   transition: 0.3s;
-  width: 50%;
+  width: 100%;
 `;
 
 const BtnViewAll = styled(Btn)`

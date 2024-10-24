@@ -16,3 +16,53 @@ export const selectStateBoxComment = createSelector(
   [(state: RootState) => state.commentBoxState || initialState],
   state => state.stateBoxComment,
 );
+
+export const selectComment = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.comments,
+);
+
+export const selectIsLoading = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.isLoading,
+);
+
+export const selectTake = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.take,
+);
+
+export const selectSkip = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.skip,
+);
+
+export const selectLengthComment = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.comments.length,
+);
+
+export const selectTotal = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.total,
+);
+
+export const selectCommentStore = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.comment,
+);
+
+export const selectImages = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.images,
+);
+
+export const selectPhone = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.phone,
+);
+
+export const selectFullName = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.fullName,
+);

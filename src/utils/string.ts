@@ -70,3 +70,31 @@ export const isValidPhoneNumber = phoneNumber => {
 
   return phoneRegex.test(cleanedPhoneNumber);
 };
+
+export const createFormDataCmt = (data: {
+  productId: string;
+  comment: string;
+  phone: string;
+  fullName: string;
+  rating: string;
+  images: File[];
+  type?: 'NO_AUTH' | 'AUTH';
+}): FormData => {
+  const formData = new FormData();
+
+  formData.append('productId', data.productId);
+  formData.append('comment', data.comment);
+  formData.append('phone', data.phone);
+  formData.append('fullName', data.fullName);
+  formData.append('rating', data.rating);
+
+  formData.append('type', data.type || 'NO_AUTH');
+
+  if (data.images && data.images.length > 0) {
+    data.images.forEach(image => {
+      formData.append('img', image);
+    });
+  }
+
+  return formData;
+};
