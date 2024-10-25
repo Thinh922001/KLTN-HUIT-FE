@@ -1,19 +1,24 @@
 import styled from 'styled-components';
 import { CommentItem } from './CommentItem';
 import { useSelector } from 'react-redux';
-import { selectComment, selectIsLoading } from '../slice/selector';
+import {
+  selectComment,
+  selectIsLoading,
+  selectLengthComment,
+} from '../slice/selector';
 import { CenteredLoading } from 'app/components/LoadingCenter';
 
 export const Comment = () => {
   const comment = useSelector(selectComment);
   const isLoading = useSelector(selectIsLoading);
+  const lengthComment = useSelector(selectLengthComment);
 
   return (
     <Wrapper>
-      {isLoading ? (
+      {isLoading && lengthComment === 0 ? (
         <CenteredLoading />
       ) : comment.length > 0 ? (
-        comment.map((e, index) => <CommentItem key={index} data={e} />)
+        comment.map(e => <CommentItem key={e.id} data={e} />)
       ) : (
         <NoCommentsMessage>Chưa có bài đánh giá nào</NoCommentsMessage>
       )}

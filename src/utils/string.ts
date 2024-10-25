@@ -71,15 +71,15 @@ export const isValidPhoneNumber = phoneNumber => {
   return phoneRegex.test(cleanedPhoneNumber);
 };
 
-export const createFormDataCmt = (data: {
+export const createFormDataCmt = async (data: {
   productId: string;
   comment: string;
   phone: string;
   fullName: string;
   rating: string;
-  images: File[];
+  images: string[];
   type?: 'NO_AUTH' | 'AUTH';
-}): FormData => {
+}): Promise<FormData> => {
   const formData = new FormData();
 
   formData.append('productId', data.productId);
@@ -87,12 +87,18 @@ export const createFormDataCmt = (data: {
   formData.append('phone', data.phone);
   formData.append('fullName', data.fullName);
   formData.append('rating', data.rating);
-
   formData.append('type', data.type || 'NO_AUTH');
 
   if (data.images && data.images.length > 0) {
-    data.images.forEach(image => {
-      formData.append('img', image);
+    const blobs = await Promise.all(
+      data.images.map(async image => {
+        const response = await fetch(image);
+        return await response.blob();
+      }),
+    );
+
+    blobs.forEach((blob, index) => {
+      formData.append('img', blob, `image-${index}.png`);
     });
   }
 

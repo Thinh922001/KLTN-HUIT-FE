@@ -49,7 +49,7 @@ export function* createComment() {
     const fullName = yield select(selectFullName);
     const rating = yield select(selectStartRate);
 
-    const formData: FormData = createFormDataCmt({
+    const formData: FormData = yield call(createFormDataCmt, {
       productId,
       comment,
       phone,
@@ -58,9 +58,7 @@ export function* createComment() {
       rating,
     });
 
-    console.log(formData);
-
-    const response = yield call(post, `${BASE_URL}/comment`, formData, {
+    yield call(post, `${BASE_URL}/comment`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -76,4 +74,5 @@ export function* createComment() {
 export function* boxCommentFromSaga() {
   yield takeLatest(CommentBoxAction.loadComment, getComment);
   yield takeLatest(CommentBoxAction.loadCreateCmt, createComment);
+  yield takeLatest(CommentBoxAction.LoadMoreComment, getComment);
 }

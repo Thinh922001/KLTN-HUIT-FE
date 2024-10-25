@@ -6,11 +6,13 @@ import { Rate } from './components/Rate';
 import { CommentBoxAction, useCommentBoxSlice } from './slice';
 import {
   selectComment,
+  selectIsLoading,
   selectIsShow,
   selectLengthComment,
   selectTotal,
 } from './slice/selector';
 import { useEffect } from 'react';
+import { CenteredLoading } from 'app/components/LoadingCenter';
 
 export const Review = () => {
   const dispatch = useDispatch();
@@ -20,10 +22,13 @@ export const Review = () => {
   };
 
   const isShow = useSelector(selectIsShow);
-
   const totalComment = useSelector(selectTotal);
-
   const lengthComment = useSelector(selectLengthComment);
+  const isLoading = useSelector(selectIsLoading);
+
+  useEffect(() => {
+    dispatch(CommentBoxAction.resetComment());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(CommentBoxAction.loadComment());
@@ -33,13 +38,21 @@ export const Review = () => {
     <Wrapper>
       <Rate />
       <Comment />
-      <BtnWrapper isMore={totalComment < lengthComment}>
-        {totalComment < lengthComment && (
-          <BtnViewAll>Xem {totalComment - lengthComment} đánh giá</BtnViewAll>
-        )}
+      {isLoading && lengthComment > 0 ? (
+        <CenteredLoading />
+      ) : (
+        <BtnWrapper isMore={totalComment > lengthComment}>
+          {totalComment > lengthComment && (
+            <BtnViewAll
+              onClick={() => dispatch(CommentBoxAction.LoadMoreComment())}
+            >
+              Xem thêm {totalComment - lengthComment} đánh giá
+            </BtnViewAll>
+          )}
+          <BtnWrite onClick={setIsShow}> Viết đánh giá</BtnWrite>
+        </BtnWrapper>
+      )}
 
-        <BtnWrite onClick={setIsShow}> Viết đánh giá</BtnWrite>
-      </BtnWrapper>
       {isShow && <CommentBox />}
     </Wrapper>
   );
