@@ -38,6 +38,7 @@ const slice = createSlice({
       state.startRate = 0;
       state.stateBoxComment = 'REVIEW';
       state.images.forEach(e => URL.revokeObjectURL(e));
+      state.images = [];
     },
     loadComment(state) {
       state.isLoading = true;
@@ -76,10 +77,21 @@ const slice = createSlice({
     },
     createCmtLoaded(state) {
       state.images.forEach(e => URL.revokeObjectURL(e));
-      Object.assign(state, initialState);
+      state.isShow = false;
+      state.startRate = 0;
+      state.stateBoxComment = 'REVIEW';
+      state.images = [];
     },
     resetComment() {
       return initialState;
+    },
+    setNewComment(state, actions: PayloadAction<IComment>) {
+      const newComment = actions.payload;
+      if (state.comments.length >= state.take) {
+        state.comments.pop();
+      }
+      state.comments = [newComment, ...state.comments];
+      state.total += 1;
     },
   },
 });

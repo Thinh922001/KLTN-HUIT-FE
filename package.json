@@ -106,6 +106,7 @@
     "redux-injectors": "1.3.0",
     "redux-saga": "1.2.1",
     "sanitize.css": "13.0.0",
+    "socket.io-client": "4.8.0",
     "styled-components": "5.3.5",
     "styled-reset": "4.5.2",
     "web-vitals": "2.1.4"
