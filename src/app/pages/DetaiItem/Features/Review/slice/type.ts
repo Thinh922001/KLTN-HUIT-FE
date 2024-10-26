@@ -12,6 +12,8 @@ export interface CommentBoxState {
   total: number;
   comments: IComment[];
   loadingCreateCmt: boolean;
+  commentIdChosen: number;
+  reactType: 'LIKE';
 }
 
 export interface IOwner {
@@ -26,4 +28,7 @@ export interface IComment {
   rating: number;
   img?: string[];
   owner: IOwner;
+  time: string;
+  liked: boolean;
+  isLoading: boolean;
 }

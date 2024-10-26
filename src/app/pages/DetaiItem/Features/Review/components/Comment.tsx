@@ -28,10 +28,20 @@ export const Comment = () => {
       dispatch(CommentBoxAction.setNewComment(comment));
     };
 
+    const handleUpdateComment = (updateData: {
+      commentId: number;
+      totalReaction: number;
+    }) => {
+      dispatch(CommentBoxAction.updateCommentReaction(updateData));
+    };
+
     socket.on('newComment', handleNewComment);
+
+    socket.on('updateComment', handleUpdateComment);
 
     return () => {
       socket.off('newComment', handleNewComment);
+      socket.off('updateComment', handleUpdateComment);
     };
   }, [productId]);
 

@@ -71,3 +71,13 @@ export const selectUpLoadLoading = createSelector(
   [(state: RootState) => state.commentBoxState || initialState],
   state => state.loadingCreateCmt,
 );
+
+export const selectCommentIdChosen = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.commentIdChosen,
+);
+
+export const selectReactType = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.reactType,
+);

@@ -1,14 +1,16 @@
 import showErrorToast from 'app/components/Toast/components/Toast-error';
 import { selectProductId } from 'app/pages/DetaiItem/slice/selector';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 import { BASE_URL } from 'utils/url';
 import { get, post } from 'utils/url/custom-request';
 import { CommentBoxAction } from '.';
 import {
+  selectCommentIdChosen,
   selectCommentStore,
   selectFullName,
   selectImages,
   selectPhone,
+  selectReactType,
   selectSkip,
   selectStartRate,
   selectTake,
@@ -66,8 +68,27 @@ export function* createComment() {
 
     yield put(CommentBoxAction.createCmtLoaded());
     CmtSuccess();
-  } catch (error) {
+  } catch (error: any) {
     showErrorToast('Có lỗi xảy ra');
+  }
+}
+
+export function* reaction() {
+  try {
+    delay(500);
+    const commentId = yield select(selectCommentIdChosen);
+    const reactionType = yield select(selectReactType);
+    const productId = yield select(selectProductId);
+
+    yield call(post, `${BASE_URL}/user-reaction`, {
+      productId: Number(productId),
+      commentId,
+      reactionType,
+    });
+
+    yield put(CommentBoxAction.reactLoaded());
+  } catch (error: any) {
+    yield put(CommentBoxAction.setReactLoading(false));
   }
 }
 
@@ -75,4 +96,5 @@ export function* boxCommentFromSaga() {
   yield takeLatest(CommentBoxAction.loadComment, getComment);
   yield takeLatest(CommentBoxAction.loadCreateCmt, createComment);
   yield takeLatest(CommentBoxAction.LoadMoreComment, getComment);
+  yield takeLatest(CommentBoxAction.loadingReaction, reaction);
 }

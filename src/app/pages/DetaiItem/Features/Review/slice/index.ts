@@ -18,6 +18,8 @@ export const initialState: CommentBoxState = {
   comments: [],
   total: 0,
   loadingCreateCmt: false,
+  commentIdChosen: 0,
+  reactType: 'LIKE',
 };
 
 const slice = createSlice({
@@ -92,6 +94,37 @@ const slice = createSlice({
       }
       state.comments = [newComment, ...state.comments];
       state.total += 1;
+    },
+    setCommentIdChosen(state, actions: PayloadAction<number>) {
+      state.commentIdChosen = actions.payload;
+    },
+    loadingReaction(state) {
+      const comment = state.comments.find(e => e.id === state.commentIdChosen);
+      if (comment) {
+        comment.isLoading = true;
+      }
+    },
+    setReactLoading(state, actions: PayloadAction<boolean>) {
+      const comment = state.comments.find(e => e.id === state.commentIdChosen);
+      if (comment) {
+        comment.isLoading = actions.payload;
+      }
+    },
+    reactLoaded(state) {
+      const comment = state.comments.find(e => e.id === state.commentIdChosen);
+      if (comment) {
+        comment.isLoading = false;
+        comment.liked = !comment.liked;
+      }
+    },
+    updateCommentReaction(
+      state,
+      {
+        payload: { commentId, totalReaction },
+      }: PayloadAction<{ commentId: number; totalReaction: number }>,
+    ) {
+      const comment = state.comments.find(e => e.id === commentId);
+      if (comment) comment.totalReaction = totalReaction;
     },
   },
 });

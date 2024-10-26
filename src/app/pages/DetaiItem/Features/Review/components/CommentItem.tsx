@@ -4,6 +4,11 @@ import { Icon } from '../../assets/Icon';
 import { iconProps } from 'utils/url';
 import { IComment } from '../slice/type';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { CommentBoxAction } from '../slice';
+import { CenteredLoading } from 'app/components/LoadingCenter';
+import { isAuthenticated } from 'utils/url/local-storage';
+import showErrorToast from 'app/components/Toast/components/Toast-error';
 
 interface Props {
   data: IComment;
@@ -11,6 +16,18 @@ interface Props {
 
 export const CommentItem: React.FC<Props> = ({ data }) => {
   const numStart = generateStars(data.rating);
+
+  const dispatch = useDispatch();
+
+  const isLoading = data?.isLoading ?? false;
+
+  const handleReaction = () => {
+    if (!isAuthenticated())
+      return showErrorToast('Bạn cần đăng nhập để thao tác');
+
+    dispatch(CommentBoxAction.setCommentIdChosen(data.id));
+    dispatch(CommentBoxAction.loadingReaction());
+  };
 
   return (
     <Wrapper>
@@ -40,20 +57,33 @@ export const CommentItem: React.FC<Props> = ({ data }) => {
 
       <CmtImgWrapper>
         {data.img &&
-          data.img?.length > 0 &&
-          data.img?.map((e, index) => <CmtImg key={index} src={e} />)}
+          data.img.length > 0 &&
+          data.img.map((e, index) => <CmtImg key={index} src={e} />)}
       </CmtImgWrapper>
       <CmtCommand>
-        <Icon
-          position="-179px -43px"
-          height="15px"
-          width="15px"
-          style={{ transform: 'translateY(-2px)', cursor: 'pointer' }}
-        />
+        {isLoading ? (
+          <CenteredLoading minHeight="100%" tiny />
+        ) : data.liked ? (
+          <Icon
+            position="-157px -41px"
+            height="15px"
+            width="15px"
+            style={{ transform: 'translateY(-2px)', cursor: 'pointer' }}
+            onClick={handleReaction}
+          />
+        ) : (
+          <Icon
+            position="-179px -43px"
+            height="15px"
+            width="15px"
+            style={{ transform: 'translateY(-2px)', cursor: 'pointer' }}
+            onClick={handleReaction}
+          />
+        )}
         <CmtCmdText>
           {data.totalReaction ? `${data.totalReaction} ` : null} Hữu ích
         </CmtCmdText>
-        <TxtDate>2 ngày trước</TxtDate>
+        <TxtDate>{data.time}</TxtDate>
       </CmtCommand>
     </Wrapper>
   );
