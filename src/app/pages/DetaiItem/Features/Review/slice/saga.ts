@@ -17,6 +17,7 @@ import {
 } from './selector';
 import { createFormDataCmt } from 'utils/string';
 import { CmtSuccess } from 'app/components/Toast';
+import { isAuthenticated } from 'utils/url/local-storage';
 
 export function* getComment() {
   try {
@@ -51,6 +52,8 @@ export function* createComment() {
     const fullName = yield select(selectFullName);
     const rating = yield select(selectStartRate);
 
+    const authType = yield isAuthenticated() ? 'AUTH' : 'NO_AUTH';
+
     const formData: FormData = yield call(createFormDataCmt, {
       productId,
       comment,
@@ -58,6 +61,7 @@ export function* createComment() {
       fullName,
       images,
       rating,
+      type: authType,
     });
 
     yield call(post, `${BASE_URL}/comment`, formData, {
@@ -92,9 +96,37 @@ export function* reaction() {
   }
 }
 
+export function* StatisticComment() {
+  try {
+    const productId = yield select(selectProductId);
+    const data = yield call(get, `${BASE_URL}/comment/statistic`, {
+      params: {
+        productId,
+      },
+    });
+
+    yield put(
+      CommentBoxAction.ratingLoaded({
+        avgRating: data.data.data.avgRating,
+        ratings: data.data.data.ratings,
+      }),
+    );
+  } catch (error) {
+    yield put(
+      CommentBoxAction.ratingLoaded({
+        avgRating: 0,
+        ratings: [],
+      }),
+    );
+
+    showErrorToast('Có lỗi xảy ra');
+  }
+}
+
 export function* boxCommentFromSaga() {
   yield takeLatest(CommentBoxAction.loadComment, getComment);
   yield takeLatest(CommentBoxAction.loadCreateCmt, createComment);
   yield takeLatest(CommentBoxAction.LoadMoreComment, getComment);
   yield takeLatest(CommentBoxAction.loadingReaction, reaction);
+  yield takeLatest(CommentBoxAction.loadingRating, StatisticComment);
 }

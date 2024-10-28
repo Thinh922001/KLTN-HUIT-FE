@@ -7,9 +7,15 @@ import { ERROR_TYPE } from 'utils/error';
 import { BASE_URL } from '.';
 import showErrorToast from 'app/components/Toast/components/Toast-error';
 
-const authData = JSON.parse(localStorage.getItem('auth') || '{}');
-let accessToken = authData?.auth?.accessToken;
-let refreshToken = authData?.auth?.refreshToken;
+// Hàm getAuth để lấy accessToken và refreshToken từ localStorage
+function getAuth() {
+  const authData = JSON.parse(localStorage.getItem('auth') || '{}');
+  return {
+    accessToken: authData?.auth?.accessToken || null,
+    refreshToken: authData?.auth?.refreshToken || null,
+    tokenType: authData?.auth?.tokenType || 'Bearer',
+  };
+}
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -19,10 +25,9 @@ const axiosInstance = axios.create({
 // Interceptor để thêm accessToken vào header của mỗi request
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    const { accessToken, tokenType } = getAuth();
     if (accessToken) {
-      config.headers['Authorization'] = `${
-        authData?.auth?.tokenType || 'Bearer'
-      } ${accessToken}`;
+      config.headers['Authorization'] = `${tokenType} ${accessToken}`;
     }
     return config;
   },
@@ -37,6 +42,7 @@ axiosInstance.interceptors.response.use(
   },
   async (error: any) => {
     const originalRequest = error.config;
+    const { refreshToken } = getAuth();
 
     if (
       error.response &&
@@ -55,9 +61,7 @@ axiosInstance.interceptors.response.use(
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           refreshResponse.data;
 
-        accessToken = newAccessToken;
-        refreshToken = newRefreshToken;
-
+        const authData = JSON.parse(localStorage.getItem('auth') || '{}');
         const updatedAuthData = {
           ...authData,
           auth: {
@@ -74,7 +78,6 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         showErrorToast('Phiên đã hết hạn, vui lòng đăng nhập lại.');
-
         return Promise.reject(refreshError);
       }
     }

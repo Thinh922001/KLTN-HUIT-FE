@@ -16,6 +16,7 @@ import CustomCheckbox from 'app/components/CustomCheckBox';
 import { ChangeEvent, useState } from 'react';
 import { selectImgProductDetail } from 'app/pages/DetaiItem/slice/selector';
 import { CenteredLoading } from 'app/components/LoadingCenter';
+import { isAuthenticated } from 'utils/url/local-storage';
 
 export const CommentProduct = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,10 @@ export const CommentProduct = () => {
   const phone = useSelector(selectPhone);
   const fullName = useSelector(selectFullName);
   const isUploadLoading = useSelector(selectUpLoadLoading);
+
+  const isAuth = isAuthenticated();
+
+  console.log(fullName);
 
   const changeStartRate = (startRate: number) => {
     dispatch(CommentBoxAction.setStartRate(startRate));
@@ -76,17 +81,20 @@ export const CommentProduct = () => {
           disableFocusColor={true}
           onChange={handleSetFullName}
           value={fullName}
+          isReadOnly={isAuth}
         />
-        <FloatingInput
-          customColor="#333;"
-          customBorder="1px solid #d1d1d1"
-          name="phoneNumber"
-          label="Số điện thoại (bắc buộc)"
-          disableFloating={true}
-          disableFocusColor={true}
-          onChange={handleSetPhone}
-          value={phone}
-        />
+        {isAuth ? null : (
+          <FloatingInput
+            customColor="#333;"
+            customBorder="1px solid #d1d1d1"
+            name="phoneNumber"
+            label="Số điện thoại (bắc buộc)"
+            disableFloating={true}
+            disableFocusColor={true}
+            onChange={handleSetPhone}
+            value={phone}
+          />
+        )}
       </FormGroupInput>
       <FormGroup>
         <CheckBoxWrapper>

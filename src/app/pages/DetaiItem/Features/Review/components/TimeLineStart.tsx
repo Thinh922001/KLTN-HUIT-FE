@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { Icon } from '../../assets/Icon';
 
 export interface ITimeLineStart {
-  start: number;
-  percent: number;
+  rating: number;
+  ratingReaction: number;
 }
 
 interface Props {
@@ -16,14 +16,14 @@ export const TimeLineStart: React.FC<Props> = ({ data }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setWidth(`${data.percent}%`);
+      setWidth(`${data.ratingReaction}%`);
     }, 100);
     return () => clearTimeout(timer);
-  }, [data.percent]);
+  }, [data.ratingReaction]);
 
   return (
     <Wrapper>
-      <NumberStart>{data.start}</NumberStart>
+      <NumberStart>{data.rating}</NumberStart>
       <Icon position="-160px -65px" height="11px" width="12px" />
       <WrapperTiming>
         <Timing tWidth={width} />

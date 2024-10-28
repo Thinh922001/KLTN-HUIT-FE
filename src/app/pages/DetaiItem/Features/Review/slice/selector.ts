@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from 'types';
 import { initialState } from '.';
+import { getNameLocalStorage, isAuthenticated } from 'utils/url/local-storage';
 
 export const selectIsShow = createSelector(
   [(state: RootState) => state.commentBoxState || initialState],
@@ -64,7 +65,12 @@ export const selectPhone = createSelector(
 
 export const selectFullName = createSelector(
   [(state: RootState) => state.commentBoxState || initialState],
-  state => state.fullName,
+  state => {
+    if (isAuthenticated()) {
+      return getNameLocalStorage();
+    }
+    return state.fullName;
+  },
 );
 
 export const selectUpLoadLoading = createSelector(
@@ -80,4 +86,19 @@ export const selectCommentIdChosen = createSelector(
 export const selectReactType = createSelector(
   [(state: RootState) => state.commentBoxState || initialState],
   state => state.reactType,
+);
+
+export const selectRatingLoading = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.loadingRating,
+);
+
+export const selectAvgRating = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.avgRating,
+);
+
+export const selectRatings = createSelector(
+  [(state: RootState) => state.commentBoxState || initialState],
+  state => state.ratings,
 );

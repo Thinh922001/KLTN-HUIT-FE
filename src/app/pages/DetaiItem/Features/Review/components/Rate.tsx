@@ -2,10 +2,14 @@ import styled from 'styled-components';
 import { Icon } from '../../assets/Icon';
 import { generateStars } from 'utils/array';
 import { ITimeLineStart, TimeLineStart } from './TimeLineStart';
+import { useSelector } from 'react-redux';
+import { selectAvgRating, selectRatings, selectTotal } from '../slice/selector';
+import { selectTitle } from 'app/pages/DetaiItem/slice/selector';
 
 export const Rate = () => {
-  const avgStart = 2.7;
+  const avgStart = useSelector(selectAvgRating);
   const array = generateStars(avgStart);
+  const title = useSelector(selectTitle);
 
   const iconProps = {
     1: { position: '0 -75px', height: '17px', width: '18px' },
@@ -13,34 +17,23 @@ export const Rate = () => {
     '-1': { position: '-25px -75px', height: '17px', width: '17px' },
   };
 
-  const TimeLineStartsData: ITimeLineStart[] = [
-    {
-      start: 5,
-      percent: 49,
-    },
-    {
-      start: 4,
-      percent: 33,
-    },
-    {
-      start: 3,
-      percent: 12,
-    },
-    {
-      start: 2,
-      percent: 3,
-    },
-    {
-      start: 1,
-      percent: 3,
-    },
-  ];
+  const TimeLineStartsDefault: ITimeLineStart[] = Array.from(
+    { length: 5 },
+    (_, i) => ({
+      rating: 5 - i,
+      ratingReaction: 0,
+    }),
+  );
+
+  const ratings = [...useSelector(selectRatings)].reverse();
+
+  const rating = ratings.length > 0 ? ratings : TimeLineStartsDefault;
+
+  const total = useSelector(selectTotal);
 
   return (
     <Wrapper>
-      <HeaderTitle>
-        Đánh giá Điện thoại Samsung Galaxy Z Flip6 5G 12GB/256GB
-      </HeaderTitle>
+      <HeaderTitle>{title}</HeaderTitle>
       <PointWrapper>
         <PointAVG>{avgStart}</PointAVG>
         {array.map((e, index) => {
@@ -55,11 +48,11 @@ export const Rate = () => {
         })}
 
         <TotalRateWrapper>
-          <TotalRate>67 đánh giá</TotalRate>
+          <TotalRate>{total} đánh giá</TotalRate>
         </TotalRateWrapper>
       </PointWrapper>
       <TimeLineStartWrapper>
-        {TimeLineStartsData.map((e, index) => (
+        {rating.map((e, index) => (
           <TimeLineStart data={e} key={index} />
         ))}
       </TimeLineStartWrapper>

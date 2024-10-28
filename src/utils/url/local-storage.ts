@@ -34,7 +34,7 @@ export const getAuthFromLocalStorage = (): AuthState => {
     }
   }
   return {
-    user: { id: 0 },
+    user: { id: 0, name: '' },
     auth: { accessToken: '', refreshToken: '' },
   };
 };
@@ -50,4 +50,14 @@ export const setAuthLocalStorage = (auth: AuthState) => {
 
 export const isAuthenticated = () => {
   return !!localStorage.getItem('auth');
+};
+
+export const getNameLocalStorage = () => {
+  if (isAuthenticated()) {
+    const auth: AuthState = JSON.parse(
+      localStorage.getItem('auth') || '{}',
+    ) as AuthState;
+    return auth.user.name;
+  }
+  return '';
 };

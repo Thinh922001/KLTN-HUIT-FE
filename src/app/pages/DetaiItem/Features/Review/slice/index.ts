@@ -1,6 +1,6 @@
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
-import { CommentBoxState, IComment } from './type';
+import { CommentBoxState, IComment, IRating } from './type';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { boxCommentFromSaga } from './saga';
 
@@ -20,6 +20,9 @@ export const initialState: CommentBoxState = {
   loadingCreateCmt: false,
   commentIdChosen: 0,
   reactType: 'LIKE',
+  ratings: [],
+  avgRating: 0,
+  loadingRating: false,
 };
 
 const slice = createSlice({
@@ -125,6 +128,19 @@ const slice = createSlice({
     ) {
       const comment = state.comments.find(e => e.id === commentId);
       if (comment) comment.totalReaction = totalReaction;
+    },
+    loadingRating(state) {
+      state.loadingRating = true;
+      state.avgRating = 0;
+      state.ratings = [];
+    },
+    ratingLoaded(
+      state,
+      actions: PayloadAction<{ avgRating; ratings: IRating[] }>,
+    ) {
+      state.loadingRating = false;
+      state.avgRating = actions.payload.avgRating;
+      state.ratings = actions.payload.ratings;
     },
   },
 });

@@ -14,11 +14,19 @@ export interface CommentBoxState {
   loadingCreateCmt: boolean;
   commentIdChosen: number;
   reactType: 'LIKE';
+  ratings: IRating[];
+  avgRating: number;
+  loadingRating: boolean;
 }
 
 export interface IOwner {
   id: number;
   aliasName: string;
+}
+
+export interface IRating {
+  rating: number;
+  ratingReaction: number;
 }
 
 export interface IComment {

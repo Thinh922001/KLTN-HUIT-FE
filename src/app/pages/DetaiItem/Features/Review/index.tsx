@@ -9,6 +9,7 @@ import {
   selectIsLoading,
   selectIsShow,
   selectLengthComment,
+  selectRatingLoading,
   selectTotal,
 } from './slice/selector';
 import { useEffect } from 'react';
@@ -25,6 +26,7 @@ export const Review = () => {
   const totalComment = useSelector(selectTotal);
   const lengthComment = useSelector(selectLengthComment);
   const isLoading = useSelector(selectIsLoading);
+  const isRatingLoading = useSelector(selectRatingLoading);
 
   useEffect(() => {
     dispatch(CommentBoxAction.resetComment());
@@ -32,13 +34,14 @@ export const Review = () => {
 
   useEffect(() => {
     dispatch(CommentBoxAction.loadComment());
+    dispatch(CommentBoxAction.loadingRating());
   }, [dispatch]);
 
   return (
     <Wrapper>
       <Rate />
       <Comment />
-      {isLoading && lengthComment > 0 ? (
+      {isLoading && lengthComment > 0 && isRatingLoading ? (
         <CenteredLoading />
       ) : (
         <BtnWrapper isMore={totalComment > lengthComment}>

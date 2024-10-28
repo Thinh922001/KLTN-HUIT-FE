@@ -74,20 +74,20 @@ export const isValidPhoneNumber = phoneNumber => {
 export const createFormDataCmt = async (data: {
   productId: string;
   comment: string;
-  phone: string;
-  fullName: string;
+  phone: string | null;
+  fullName: string | null;
   rating: string;
   images: string[];
-  type?: 'NO_AUTH' | 'AUTH';
+  type: 'NO_AUTH' | 'AUTH';
 }): Promise<FormData> => {
   const formData = new FormData();
 
   formData.append('productId', data.productId);
   formData.append('comment', data.comment);
-  formData.append('phone', data.phone);
-  formData.append('fullName', data.fullName);
+  if (data.phone) formData.append('phone', data.phone);
+  if (data.fullName) formData.append('fullName', data.fullName);
   formData.append('rating', data.rating);
-  formData.append('type', data.type || 'NO_AUTH');
+  formData.append('type', data.type);
 
   if (data.images && data.images.length > 0) {
     const blobs = await Promise.all(

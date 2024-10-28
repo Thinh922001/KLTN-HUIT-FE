@@ -1,11 +1,11 @@
+import { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from 'utils/@reduxjs/toolkit';
+import { useInjectReducer } from 'utils/redux-injectors';
 import {
   getAuthFromLocalStorage,
   setAuthLocalStorage,
 } from 'utils/url/local-storage';
 import { AuthState } from './type';
-import { createSlice } from 'utils/@reduxjs/toolkit';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 
 export const initialState: AuthState = getAuthFromLocalStorage();
 

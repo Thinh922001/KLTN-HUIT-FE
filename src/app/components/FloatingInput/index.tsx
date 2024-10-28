@@ -11,6 +11,7 @@ interface Props {
   customWidth?: string;
   disableFloating?: boolean;
   disableFocusColor?: boolean;
+  isReadOnly?: boolean;
 }
 
 export const FloatingInput: React.FC<Props> = ({
@@ -23,6 +24,7 @@ export const FloatingInput: React.FC<Props> = ({
   customWidth,
   disableFloating,
   disableFocusColor,
+  isReadOnly,
 }) => {
   return (
     <Wrapper>
@@ -38,6 +40,7 @@ export const FloatingInput: React.FC<Props> = ({
         customWidth={customWidth}
         disableFloating={disableFloating}
         disableFocusColor={disableFocusColor}
+        readOnly={isReadOnly}
       />
       {!disableFloating && (
         <Label customColor={customColor} htmlFor={name}>
