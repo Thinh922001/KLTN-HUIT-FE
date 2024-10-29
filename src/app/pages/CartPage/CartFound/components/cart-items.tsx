@@ -36,6 +36,7 @@ export const CardItem: React.FC<PropsCart> = ({ data }) => {
   const decreaseQuantity = () => {
     if (!data.hasNoStock) {
       dispatch(CartActions.decreaseQuantity(data.productDetailId));
+      dispatch(CartActions.LoadingSyncCart());
     } else {
       dispatch(
         CartActions.setDecrease({
@@ -43,6 +44,7 @@ export const CardItem: React.FC<PropsCart> = ({ data }) => {
           quantity: data.quantity - 1,
         }),
       );
+      dispatch(CartActions.LoadingSyncCart());
     }
   };
 
@@ -64,9 +66,10 @@ export const CardItem: React.FC<PropsCart> = ({ data }) => {
         <ImgCard isDisable={data.hasNoStock} src={data.img} />
         <Div>
           <BtnRemoveCard
-            onClick={() =>
-              dispatch(CartActions.removeFromCart(data.productDetailId))
-            }
+            onClick={() => {
+              dispatch(CartActions.removeFromCart(data.productDetailId));
+              dispatch(CartActions.LoadDeleteCart());
+            }}
           >
             <Span /> Xóa
           </BtnRemoveCard>

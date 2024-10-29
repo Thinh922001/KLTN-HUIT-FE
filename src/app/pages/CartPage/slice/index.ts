@@ -27,12 +27,29 @@ const slice = createSlice({
       state.totalAmount += action.payload.price * action.payload.quantity;
       state.totalQuantity += action.payload.quantity;
     },
+    resetAndAddMultipleToCart(state, action: PayloadAction<ICart[]>) {
+      state.cartItems = [];
+      state.totalAmount = 0;
+      state.totalQuantity = 0;
+
+      action.payload.forEach(product => {
+        state.cartItems.push({
+          ...product,
+          quantity: product.quantity,
+        });
+
+        state.totalAmount += product.price * product.quantity;
+        state.totalQuantity += product.quantity;
+      });
+    },
+
     removeFromCart(state, action: PayloadAction<string>) {
       const itemIndex = state.cartItems.findIndex(
         item => item.productDetailId === action.payload,
       );
 
       if (itemIndex >= 0) {
+        state.skuId = Number(action.payload);
         const item = state.cartItems[itemIndex];
         state.totalAmount -= item.price * item.quantity;
         state.totalQuantity -= item.quantity;
@@ -126,6 +143,18 @@ const slice = createSlice({
     ) {
       state.increaseCartId = actions.payload.id;
       state.increaseCartQuantity = actions.payload.quantity;
+    },
+    LoadingSyncCart(state) {
+      state.IsSyncing = true;
+    },
+    syncCartLoaded(state) {
+      state.IsSyncing = false;
+    },
+    LoadDeleteCart(state) {
+      state.IsSyncing = true;
+    },
+    deleteCartLoaded(state) {
+      state.IsSyncing = false;
     },
   },
 });

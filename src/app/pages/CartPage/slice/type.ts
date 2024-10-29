@@ -20,4 +20,6 @@ export interface CartState {
   increaseCartId: number;
   increaseCartQuantity: number;
   isIncreaseLoading: boolean;
+  IsSyncing: boolean;
+  skuId: number;
 }

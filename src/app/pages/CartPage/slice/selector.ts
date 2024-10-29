@@ -56,3 +56,23 @@ export const selectIsExistHasNoStock = createSelector(
   [(state: RootState) => state.cartState || initialState],
   state => state.cartItems.some(e => e.hasNoStock),
 );
+
+export const selectSyncCart = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => {
+    if (state.cartItems.length && state.cartItems.length > 0) {
+      return state.cartItems.map(e => {
+        return {
+          id: e.productDetailId,
+          quantity: e.quantity,
+        };
+      });
+    }
+    return [];
+  },
+);
+
+export const selectSkuId = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.skuId,
+);

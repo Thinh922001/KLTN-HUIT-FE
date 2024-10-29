@@ -2,7 +2,9 @@ import { CartState } from 'app/pages/CartPage/slice/type';
 import { AuthState } from 'auth/type';
 
 export const getCartFromLocalStorage = (): CartState => {
-  const serializedState = localStorage.getItem('cart');
+  const serializedState = isAuthenticated()
+    ? localStorage.getItem('cart-auth')
+    : localStorage.getItem('cart');
   if (serializedState) {
     const cartState: CartState = JSON.parse(serializedState);
     if (cartState && Array.isArray(cartState.cartItems)) {
@@ -21,6 +23,8 @@ export const getCartFromLocalStorage = (): CartState => {
     increaseCartId: 0,
     increaseCartQuantity: 0,
     isIncreaseLoading: false,
+    IsSyncing: false,
+    skuId: 0,
   };
 };
 

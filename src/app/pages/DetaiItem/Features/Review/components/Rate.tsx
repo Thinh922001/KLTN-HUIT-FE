@@ -35,7 +35,7 @@ export const Rate = () => {
     <Wrapper>
       <HeaderTitle>{title}</HeaderTitle>
       <PointWrapper>
-        <PointAVG>{avgStart}</PointAVG>
+        <PointAVG>{avgStart.toFixed(1)}</PointAVG>
         {array.map((e, index) => {
           return (
             <Icon

@@ -78,6 +78,8 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         showErrorToast('Phiên đã hết hạn, vui lòng đăng nhập lại.');
+        localStorage.removeItem('auth');
+        localStorage.removeItem('cart-auth');
         return Promise.reject(refreshError);
       }
     }

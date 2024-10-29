@@ -30,8 +30,6 @@ export const CommentProduct = () => {
 
   const isAuth = isAuthenticated();
 
-  console.log(fullName);
-
   const changeStartRate = (startRate: number) => {
     dispatch(CommentBoxAction.setStartRate(startRate));
   };
