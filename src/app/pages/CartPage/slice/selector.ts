@@ -76,3 +76,53 @@ export const selectSkuId = createSelector(
   [(state: RootState) => state.cartState || initialState],
   state => state.skuId,
 );
+
+export const selectCoupon = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.coupon,
+);
+
+export const selectLoadingCoupon = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.isCheckingCoupon,
+);
+
+export const selectCouponResult = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.couponResult,
+);
+
+export const selectCouponError = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.couponError,
+);
+
+export const selectName = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.name,
+);
+
+export const selectPhone = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.phone,
+);
+
+export const selectGender = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.gender,
+);
+
+export const selectNote = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.note,
+);
+
+export const selectOrderLoading = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.loadingOrder,
+);
+
+export const selectOrderDone = createSelector(
+  [(state: RootState) => state.cartState || initialState],
+  state => state.isOrderDone,
+);

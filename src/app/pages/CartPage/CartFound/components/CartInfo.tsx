@@ -5,15 +5,18 @@ import { Gender } from './type';
 import { FloatingInput } from 'app/components/FloatingInput';
 import { CartLocation } from './CartLocation';
 import { ReceiveSM } from './ReceiveSM';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LocationBoxActions } from 'app/components/Header/Features/LocationBox/slice';
 import CustomCheckbox from 'app/components/CustomCheckBox';
 import { OtherReceive } from './OtherRecevie';
 import { InvoiceCompany } from './InvoiceCompany';
+import { CartActions } from '../../slice';
+import { selectGender, selectName, selectPhone } from '../../slice/selector';
 
 export const CartInfo = () => {
   const dispatch = useDispatch();
-  const [selectedRadio, setSelectedRadio] = useState<Gender>(0);
+
+  const selectedRadio = useSelector(selectGender);
 
   const [receive, setReceive] = useState<string>('YOUR_PLACE');
 
@@ -21,8 +24,20 @@ export const CartInfo = () => {
 
   const [isInvoice, setIsInvoice] = useState(false);
 
+  const name = useSelector(selectName);
+
+  const phone = useSelector(selectPhone);
+
+  const handleSetName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(CartActions.setName(event.target.value));
+  };
+
+  const handleSetPhone = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(CartActions.setPhone(event.target.value));
+  };
+
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedRadio(+e.target.value);
+    dispatch(CartActions.setGender(e.target.value as Gender));
   };
 
   const handleMethodReceiveGoods = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,14 +54,14 @@ export const CartInfo = () => {
         <Header>Thông tin khách hàng</Header>
         <FormGroup>
           <CustomRadio
-            id={String(Gender.MALE)}
+            id={Gender.MALE}
             isChecked={selectedRadio == Gender.MALE}
             label="Anh"
             name="Gender"
             onChange={handleRadioChange}
           />
           <CustomRadio
-            id={String(Gender.FEMALE)}
+            id={Gender.FEMALE}
             isChecked={selectedRadio == Gender.FEMALE}
             label="Chị"
             name="Gender"
@@ -60,12 +75,16 @@ export const CartInfo = () => {
             customBorder="1px solid #d1d1d1"
             name="fullName"
             label="Họ và Tên"
+            onChange={handleSetName}
+            value={name}
           />
           <FloatingInput
             customColor="#333;"
             customBorder="1px solid #d1d1d1"
             name="phoneNumber"
             label="Số điện thoại"
+            onChange={handleSetPhone}
+            value={phone}
           />
         </FormGroupInput>
 

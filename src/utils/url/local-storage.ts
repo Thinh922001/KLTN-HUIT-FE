@@ -25,6 +25,20 @@ export const getCartFromLocalStorage = (): CartState => {
     isIncreaseLoading: false,
     IsSyncing: false,
     skuId: 0,
+    coupon: '',
+    isCheckingCoupon: false,
+    couponError: '',
+    couponResult: {
+      disCountType: '',
+      disCountValue: 0,
+      totalAmount: 0,
+    },
+    name: '',
+    phone: '',
+    gender: 'male',
+    note: '',
+    loadingOrder: false,
+    isOrderDone: false,
   };
 };
 

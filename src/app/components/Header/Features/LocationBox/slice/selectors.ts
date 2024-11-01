@@ -50,7 +50,7 @@ export const selectDoneLocation = createSelector(
 export const selectLocationName = createSelector(
   [(state: RootState) => state.locationBox || initialState],
   state => {
-    return `${state.selectedDWardName}, ${state.selectedDistrictName}, ${state.selectedProvinceName}`;
+    return `${state.address}, ${state.selectedDWardName}, ${state.selectedDistrictName}, ${state.selectedProvinceName}`;
   },
 );
 

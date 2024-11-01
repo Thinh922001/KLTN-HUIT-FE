@@ -1,19 +1,27 @@
 import { OutOfStockToast } from 'app/components/Toast';
-import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, put, select, takeLatest } from 'redux-saga/effects';
 import { request } from 'utils/request';
 import { BASE_URL } from 'utils/url';
 import { CartActions } from '.';
 import {
   selectCartItems,
+  selectCoupon,
+  selectGender,
   selectIdChosen,
   selectIncreaseId,
   selectIncreaseQuantity,
+  selectName,
+  selectNote,
+  selectPhone,
   selectSkuId,
   selectSyncCart,
+  selectTotalPrice,
 } from './selector';
 import { del, get, post } from 'utils/url/custom-request';
 import showErrorToast from 'app/components/Toast/components/Toast-error';
 import { isAuthenticated } from 'utils/url/local-storage';
+import { selectLocationName } from 'app/components/Header/Features/LocationBox/slice/selectors';
+import { genBodyOrder } from 'utils/body';
 
 export function* addToCart() {
   try {
@@ -172,11 +180,61 @@ export function* getCart() {
   }
 }
 
+export function* order() {
+  try {
+    delay(500);
+    const syncData = yield select(selectSyncCart);
+    const fullName = yield select(selectName);
+    const phone = yield select(selectPhone);
+    const gender = yield select(selectGender);
+    const coupon = yield select(selectCoupon);
+    const note = yield select(selectNote);
+    const address = yield select(selectLocationName);
+    const data = genBodyOrder(
+      fullName,
+      gender,
+      phone,
+      address,
+      syncData,
+      coupon,
+      note,
+    );
+
+    yield call(post, `${BASE_URL}/order`, {
+      ...data,
+    });
+
+    yield put(CartActions.orderLoaded());
+  } catch (error) {
+    yield put(CartActions.orderError());
+    showErrorToast('Có lỗi xảy ra');
+  }
+}
+
+export function* CheckCoupon() {
+  try {
+    delay(500);
+    const code = yield select(selectCoupon);
+    const totalAmount = yield select(selectTotalPrice);
+    if (!code || !totalAmount) return;
+    const response = yield call(post, `${BASE_URL}/coupon/check`, {
+      code,
+      totalAmount,
+    });
+
+    yield put(CartActions.checkedCoupon(response.data.data));
+  } catch (error: any) {
+    yield put(CartActions.setErrorCoupon(error.response.data.message));
+  }
+}
+
 export function* CartFromSaga() {
   yield takeLatest(CartActions.loadAddToCart, addToCart);
   yield takeLatest(CartActions.setIncrease, checkOutOfStock);
   yield takeLatest(CartActions.setDecrease, checkDecreaseStock);
   yield takeLatest(CartActions.LoadingSyncCart, syncCart);
   yield takeLatest(CartActions.LoadDeleteCart, deleteCart);
+  yield takeLatest(CartActions.checkingCoupon, CheckCoupon);
+  yield takeLatest(CartActions.loadingOrder, order);
   yield all([call(checkStock), call(getCart)]);
 }

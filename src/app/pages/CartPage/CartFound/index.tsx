@@ -5,28 +5,48 @@ import { currencyVND } from 'utils/string';
 import { CartInfo } from './components/CartInfo';
 import { CartDisCount } from './components/CartDiscount';
 import CustomCheckbox from 'app/components/CustomCheckBox';
-import { useState } from 'react';
-import { useCartSlice } from '../slice';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { CartActions, useCartSlice } from '../slice';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCartItems,
+  selectCouponResult,
   selectIsExistHasNoStock,
   selectLengthCart,
+  selectOrderDone,
+  selectOrderLoading,
   selectTotalPrice,
 } from '../slice/selector';
+import { CenteredLoading } from 'app/components/LoadingCenter';
+import { useAddToCartToast } from 'app/components/Toast';
 
 export function CartFound() {
   useCartSlice();
-
+  const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
-
   const cartLength = useSelector(selectLengthCart);
-
   const totalAmount = useSelector(selectTotalPrice);
-
   const hasNoStock = useSelector(selectIsExistHasNoStock);
-
+  const couponResult = useSelector(selectCouponResult);
+  const totalPrice = couponResult.totalAmount
+    ? couponResult.totalAmount
+    : totalAmount;
+  const isLoading = useSelector(selectOrderLoading);
+  const isOrderDone = useSelector(selectOrderDone);
   const [isDegree, setIsDegree] = useState<boolean>(false);
+
+  const showAddToCartToast = useAddToCartToast();
+
+  useEffect(() => {
+    if (isOrderDone) {
+      showAddToCartToast();
+      const timer = setTimeout(() => {
+        dispatch(CartActions.resetCart());
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isOrderDone, dispatch]);
+
   return (
     <Wrapper>
       <CartContainer>
@@ -49,7 +69,19 @@ export function CartFound() {
           <Total>
             <TotalPriceWrapper>
               <TotalPrice>TổngTiền: </TotalPrice>
-              <Price>{currencyVND(totalAmount)} </Price>
+              <PriceWrapper>
+                {couponResult.totalAmount ? (
+                  <OldPrice>{currencyVND(totalPrice)}</OldPrice>
+                ) : null}
+                {couponResult.totalAmount ? (
+                  <DisCount>
+                    {couponResult.disCountType === 'percentage'
+                      ? `-${couponResult.disCountValue}%`
+                      : `-${currencyVND(couponResult.disCountValue)}`}
+                  </DisCount>
+                ) : null}
+                <Price>{currencyVND(totalPrice)}</Price>
+              </PriceWrapper>
             </TotalPriceWrapper>
           </Total>
 
@@ -68,7 +100,16 @@ export function CartFound() {
             </LabelPolicy>
           </CheckBoxWrapper>
           <WrapperSubmit>
-            <SubmitOrder hasNoStock={hasNoStock}>Đặt Hàng</SubmitOrder>
+            <SubmitOrder
+              hasNoStock={hasNoStock}
+              onClick={() => dispatch(CartActions.loadingOrder())}
+            >
+              {isLoading ? (
+                <CenteredLoading tiny minHeight="100%" />
+              ) : (
+                ' Đặt Hàng'
+              )}
+            </SubmitOrder>
           </WrapperSubmit>
         </CartBody>
       </CartContainer>
@@ -197,4 +238,18 @@ const SubmitOrder = styled.button<{ hasNoStock: boolean }>`
 
 const WrapperSubmit = styled.div`
   padding: 10px 20px;
+`;
+
+const OldPrice = styled.span`
+  color: #666;
+  text-decoration: line-through;
+`;
+
+const DisCount = styled.span`
+  color: #333;
+`;
+
+const PriceWrapper = styled.div`
+  display: flex;
+  gap: 5px;
 `;

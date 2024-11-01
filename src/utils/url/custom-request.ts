@@ -89,7 +89,9 @@ axiosInstance.interceptors.response.use(
       const errorData = error.response.data;
 
       if (statusCode === 400) {
-        showErrorToast(ERROR_TYPE[errorData.error] || 'Yêu cầu không hợp lệ');
+        if (ERROR_TYPE[errorData.error]) {
+          showErrorToast(ERROR_TYPE[errorData.error]);
+        }
       } else if (statusCode >= 500) {
         showErrorToast('Lỗi máy chủ, vui lòng thử lại sau');
       }

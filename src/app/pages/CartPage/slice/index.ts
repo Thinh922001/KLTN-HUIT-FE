@@ -1,9 +1,12 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { CartState, ICart } from './type';
+import { CartState, ICart, ICouponResult } from './type';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { CartFromSaga } from './saga';
-import { getCartFromLocalStorage } from 'utils/url/local-storage';
+import {
+  getCartFromLocalStorage,
+  isAuthenticated,
+} from 'utils/url/local-storage';
 
 export const initialState: CartState = getCartFromLocalStorage();
 
@@ -155,6 +158,65 @@ const slice = createSlice({
     },
     deleteCartLoaded(state) {
       state.IsSyncing = false;
+    },
+    setCoupon(state, actions: PayloadAction<string>) {
+      state.coupon = actions.payload;
+    },
+    checkingCoupon(state) {
+      state.isCheckingCoupon = true;
+    },
+    checkedCoupon(state, actions: PayloadAction<ICouponResult>) {
+      state.isCheckingCoupon = false;
+      state.couponResult = actions.payload;
+    },
+    setErrorCoupon(state, actions: PayloadAction<string>) {
+      state.isCheckingCoupon = false;
+      state.couponError = actions.payload;
+    },
+    resetCoupon(state) {
+      state.isCheckingCoupon = false;
+      state.coupon = '';
+      state.couponResult.disCountType = '';
+      state.couponResult.disCountValue = 0;
+      state.couponResult.totalAmount = 0;
+      state.couponError = '';
+    },
+    resetCouponActions(state) {
+      state.couponResult.disCountType = '';
+      state.couponResult.disCountValue = 0;
+      state.couponResult.totalAmount = 0;
+      state.couponError = '';
+      state.isCheckingCoupon = false;
+    },
+    setName(state, actions: PayloadAction<string>) {
+      state.name = actions.payload;
+    },
+    setPhone(state, actions: PayloadAction<string>) {
+      state.phone = actions.payload;
+    },
+    setGender(state, actions: PayloadAction<'male' | 'female' | 'other' | ''>) {
+      state.gender = actions.payload;
+    },
+    setNote(state, actions: PayloadAction<string>) {
+      state.note = actions.payload;
+    },
+    loadingOrder(state) {
+      state.loadingOrder = true;
+    },
+    orderLoaded(state) {
+      state.isOrderDone = true;
+      state.loadingOrder = false;
+    },
+    orderError(state) {
+      state.loadingOrder = false;
+    },
+    resetCart(state) {
+      if (isAuthenticated()) {
+        localStorage.removeItem('cart-auth');
+      } else {
+        localStorage.removeItem('cart');
+      }
+      return getCartFromLocalStorage();
     },
   },
 });

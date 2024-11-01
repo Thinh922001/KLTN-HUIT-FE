@@ -9,6 +9,12 @@ export interface ICart {
   hasNoStock: boolean;
 }
 
+export interface ICouponResult {
+  disCountType: string;
+  disCountValue: number;
+  totalAmount: number;
+}
+
 export interface CartState {
   cartItems: ICart[];
   totalAmount: number;
@@ -22,4 +28,14 @@ export interface CartState {
   isIncreaseLoading: boolean;
   IsSyncing: boolean;
   skuId: number;
+  coupon: string;
+  isCheckingCoupon: boolean;
+  couponError: string;
+  couponResult: ICouponResult;
+  name: string;
+  phone: string;
+  gender: 'male' | 'female' | 'other' | '';
+  note: string;
+  loadingOrder: boolean;
+  isOrderDone: boolean;
 }
