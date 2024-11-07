@@ -10,7 +10,9 @@ import { LZLogin } from './pages/Login/Loadable';
 import { LZRegister } from './pages/Register/Loadable';
 import { LZCategory } from './pages/Category/Loadable';
 import { isAuthenticated } from 'utils/url/local-storage';
-import { LZPrivateRoute } from './pages/TestPrivateRoute/Loadable';
+import { LZOrderHistory } from './pages/OrderHistory/Loadable';
+import { UserLayout } from './layout/user-layout';
+import { LZOrderDetail } from './pages/OrderDetail/Loadable';
 
 const PrivateRoute: React.FC = () => {
   return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
@@ -23,30 +25,20 @@ const routes: RouteObject[] = [
     children: [
       { index: true, element: <LZMyHomePage /> },
       {
-        path: '/chi-tiet-san-pham/:id',
+        path: 'chi-tiet-san-pham/:id',
         element: <LZDetailItem />,
       },
       {
-        path: '/login',
+        path: 'login',
         element: <LZLogin />,
       },
       {
-        path: '/Register',
+        path: 'register',
         element: <LZRegister />,
       },
       {
-        path: '/danh-muc/:id',
+        path: 'danh-muc/:id',
         element: <LZCategory />,
-      },
-      {
-        path: '/private-route',
-        element: <PrivateRoute />,
-        children: [
-          {
-            path: 'user',
-            element: <LZPrivateRoute />,
-          },
-        ],
       },
     ],
   },
@@ -54,6 +46,27 @@ const routes: RouteObject[] = [
     path: '/cart',
     element: <NoFooterLayout />,
     children: [{ index: true, element: <LZCartPage /> }],
+  },
+  {
+    path: '/user',
+    element: <PrivateRoute />,
+    children: [
+      {
+        path: '',
+        element: <UserLayout />,
+        children: [
+          {
+            path: 'lich-su-mua-hang',
+            index: true,
+            element: <LZOrderHistory />,
+          },
+          {
+            path: 'chi-tiet-don-hang',
+            element: <LZOrderDetail />,
+          },
+        ],
+      },
+    ],
   },
   { path: '*', element: <NotFoundPage /> },
 ];

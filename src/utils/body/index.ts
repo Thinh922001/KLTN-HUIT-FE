@@ -13,13 +13,13 @@ export const genBodyOrder = (
 ): Order => ({
   carts: cartData,
   type: isAuthenticated() ? 'AUTH' : 'NO_AUTH',
+  address,
   ...(isAuthenticated()
     ? {}
     : {
         auth: {
           fullName: name,
           phone,
-          address,
           gender,
         },
       }),

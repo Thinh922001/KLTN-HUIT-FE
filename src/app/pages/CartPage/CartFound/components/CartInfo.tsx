@@ -11,7 +11,13 @@ import CustomCheckbox from 'app/components/CustomCheckBox';
 import { OtherReceive } from './OtherRecevie';
 import { InvoiceCompany } from './InvoiceCompany';
 import { CartActions } from '../../slice';
-import { selectGender, selectName, selectPhone } from '../../slice/selector';
+import {
+  selectGender,
+  selectName,
+  selectNote,
+  selectPhone,
+} from '../../slice/selector';
+import { isAuthenticated } from 'utils/url/local-storage';
 
 export const CartInfo = () => {
   const dispatch = useDispatch();
@@ -28,12 +34,20 @@ export const CartInfo = () => {
 
   const phone = useSelector(selectPhone);
 
+  const note = useSelector(selectNote);
+
+  const isAuth = isAuthenticated();
+
   const handleSetName = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(CartActions.setName(event.target.value));
   };
 
   const handleSetPhone = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(CartActions.setPhone(event.target.value));
+  };
+
+  const handleSetNote = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(CartActions.setNote(event.target.value));
   };
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,46 +65,50 @@ export const CartInfo = () => {
   return (
     <Wrapper>
       <Content>
-        <Header>Thông tin khách hàng</Header>
+        {isAuth ? null : (
+          <FormGroup>
+            <Header>Thông tin khách hàng</Header>
+            <CustomRadio
+              id={Gender.MALE}
+              isChecked={selectedRadio == Gender.MALE}
+              label="Anh"
+              name="Gender"
+              onChange={handleRadioChange}
+            />
+            <CustomRadio
+              id={Gender.FEMALE}
+              isChecked={selectedRadio == Gender.FEMALE}
+              label="Chị"
+              name="Gender"
+              onChange={handleRadioChange}
+            />
+          </FormGroup>
+        )}
+
+        {isAuth ? null : (
+          <FormGroupInput>
+            <FloatingInput
+              customColor="#333;"
+              customBorder="1px solid #d1d1d1"
+              name="fullName"
+              label="Họ và Tên"
+              onChange={handleSetName}
+              value={name}
+            />
+            <FloatingInput
+              customColor="#333;"
+              customBorder="1px solid #d1d1d1"
+              name="phoneNumber"
+              label="Số điện thoại"
+              onChange={handleSetPhone}
+              value={phone}
+            />
+          </FormGroupInput>
+        )}
+
         <FormGroup>
-          <CustomRadio
-            id={Gender.MALE}
-            isChecked={selectedRadio == Gender.MALE}
-            label="Anh"
-            name="Gender"
-            onChange={handleRadioChange}
-          />
-          <CustomRadio
-            id={Gender.FEMALE}
-            isChecked={selectedRadio == Gender.FEMALE}
-            label="Chị"
-            name="Gender"
-            onChange={handleRadioChange}
-          />
-        </FormGroup>
+          <Header>Cách thức nhận hàng</Header>
 
-        <FormGroupInput>
-          <FloatingInput
-            customColor="#333;"
-            customBorder="1px solid #d1d1d1"
-            name="fullName"
-            label="Họ và Tên"
-            onChange={handleSetName}
-            value={name}
-          />
-          <FloatingInput
-            customColor="#333;"
-            customBorder="1px solid #d1d1d1"
-            name="phoneNumber"
-            label="Số điện thoại"
-            onChange={handleSetPhone}
-            value={phone}
-          />
-        </FormGroupInput>
-
-        <Header>Cách thức nhận hàng</Header>
-
-        <FormGroup>
           <CustomRadio
             id={'YOUR_PLACE'}
             isChecked={receive == 'YOUR_PLACE'}
@@ -109,13 +127,14 @@ export const CartInfo = () => {
         {receive === 'YOUR_PLACE' ? <CartLocation /> : <ReceiveSM />}
 
         <OtherRequest>
-          {' '}
           <FloatingInput
             customColor="#333;"
             customBorder="1px solid #d1d1d1"
             name="address"
             customWidth="100%"
             label="Yêu cầu khác không bắt buộc"
+            value={note}
+            onChange={handleSetNote}
           />
         </OtherRequest>
 

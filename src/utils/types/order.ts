@@ -3,7 +3,7 @@ import { Gender } from 'app/pages/CartPage/CartFound/components/type';
 export interface Auth {
   phone: string;
   fullName: string;
-  address: string;
+
   gender: Gender;
 }
 
@@ -17,6 +17,8 @@ export interface Order {
   coupon?: string;
 
   note?: string;
+
+  address: string;
 }
 
 export interface CartDto {

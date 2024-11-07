@@ -11,9 +11,9 @@ const LoadingWrapper = styled.div`
   justify-content: center;
 `;
 
-export const LZPrivateRoute = lazyLoad(
+export const LZOrderDetail = lazyLoad(
   () => import('./index'),
-  module => module.PrivateRoute,
+  module => module.OrderDetail,
   {
     fallback: (
       <LoadingWrapper>
