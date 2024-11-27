@@ -11,6 +11,7 @@ export const initialState: ProductDetailState = {
   variationChosen: {},
   isVariantLoading: false,
   componentActive: 'SPEC',
+  isDisableProduct: false,
 };
 
 const slice = createSlice({
@@ -24,6 +25,8 @@ const slice = createSlice({
     productDetailLoaded(state, actions: PayloadAction<IProductDetail>) {
       state.isLoading = false;
       state.productDetail = actions.payload;
+      state.isDisableProduct =
+        !!actions.payload.deletedAt || actions.payload.stock < 1;
     },
     setProductId(state, actions: PayloadAction<string | undefined>) {
       if (actions.payload) {
@@ -56,6 +59,8 @@ const slice = createSlice({
         state.productDetail.price = actions.payload.price;
       }
       state.productDetail.discount = actions.payload.discount;
+      state.isDisableProduct =
+        !!actions.payload.deletedAt || actions.payload.stock < 1;
     },
     resetProductDetail(state) {
       return initialState;

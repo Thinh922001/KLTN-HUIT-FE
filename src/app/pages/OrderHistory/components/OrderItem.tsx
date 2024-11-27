@@ -1,24 +1,33 @@
+import React from 'react';
 import styled from 'styled-components';
+import { IOrderHistory } from 'types/OrderHistory';
 import { currencyVND } from 'utils/string';
 
-export const OrderItem = () => {
+interface Props {
+  data: IOrderHistory;
+}
+
+export const OrderItem: React.FC<Props> = ({ data }) => {
   return (
     <Wrapper>
       <Head>
         <OrderId>
-          <B>Đơn hàng</B> <Span>#15876SH24020118978</Span>
+          <B>Đơn hàng</B> <Span>{data.id}</Span>
         </OrderId>
-        <OrderStatus>Thành công</OrderStatus>
+        <OrderStatus>{data.status}</OrderStatus>
       </Head>
       <ItemWrapper>
         <Item>
           <ItemImg>
-            <Img src="https://cdn.tgdd.vn/Products/Images/54/310643/tai-nghe-co-day-ava-livebass-y231-thumb-400x400.jpg" />
+            <Img src={data.images[0]} />
           </ItemImg>
-          <ItemName>Tai nghe EP AVA+ LiveBass Y231 Đen</ItemName>
+          <ItemName>
+            {data.name}
+            {data.totalItems > 1 ? `và còn ${data.totalItems}` : null}
+          </ItemName>
         </Item>
         <TotalPriceWrapper>
-          <TotalPrice>Tổng tiền: {currencyVND(130000)}</TotalPrice>
+          <TotalPrice>Tổng tiền: {currencyVND(data.totalAmount)}</TotalPrice>
         </TotalPriceWrapper>
       </ItemWrapper>
       <BtnDetailItem>Chi Tiết</BtnDetailItem>

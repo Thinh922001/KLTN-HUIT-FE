@@ -20,6 +20,8 @@ export interface IProductDetail {
   id: number;
   title?: string;
   subImg?: string[];
+  stock: number;
+  deletedAt: string;
   img: string;
   labels: ILabel[];
   discount?: IDiscount;
@@ -39,4 +41,5 @@ export interface ProductDetailState {
   variationChosen: IVariationChosen;
   isVariantLoading: boolean;
   componentActive: 'SPEC' | 'RATE';
+  isDisableProduct: boolean;
 }

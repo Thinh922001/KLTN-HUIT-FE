@@ -79,3 +79,8 @@ export const selectComponentActive = createSelector(
   [(state: RootState) => state.productDetailState || initialState],
   state => state.componentActive,
 );
+
+export const selectIsDisableProduct = createSelector(
+  [(state: RootState) => state.productDetailState || initialState],
+  state => state.isDisableProduct,
+);
