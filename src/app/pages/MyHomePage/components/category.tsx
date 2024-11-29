@@ -4,26 +4,38 @@ import { Arrow } from 'app/components/Arrow';
 import { Props as ArrowProps } from 'app/components/Arrow/index';
 import { useEffect, useState } from 'react';
 import { renderCategoryItems } from './render-cate-items';
+import { HomePageActions, useHomePageSlice } from '../slice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCate,
+  selectCateLoading,
+  selectProduct,
+} from '../slice/selector';
+import { processCate } from 'utils/array';
+import { CenteredLoading } from 'app/components/LoadingCenter';
 
 interface Props {
   currenIndex: number;
 }
 
 export const Category = () => {
+  useHomePageSlice();
   const [currenIndex, setCurrentIndex] = useState(0);
+  const dispatch = useDispatch();
 
-  const newData = MenuData.flatMap(e => e.subMenus);
+  useEffect(() => {
+    dispatch(HomePageActions.loadCate());
+  }, []);
 
-  const halfLength = newData.length / 2;
+  const cateData = useSelector(selectCate);
 
-  const [firstHalf, secondHalf] = [
-    newData.slice(0, Math.ceil(halfLength)),
-    newData.slice(Math.ceil(halfLength)),
-  ];
+  const isCateLoading = useSelector(selectCateLoading);
+
+  const [firstHalf, secondHalf] = processCate(cateData);
 
   const ITEM_TO_SHOW = 8;
 
-  const totalItem = halfLength;
+  const totalItem = cateData.length;
 
   const onNext = () => {
     if (currenIndex < totalItem - ITEM_TO_SHOW) {
@@ -39,24 +51,33 @@ export const Category = () => {
 
   return (
     <CategoryContainer>
-      <ArrowWrapper direction="left" onClick={onPrev}>
-        {' '}
-        <Arrow direction="left" />
-      </ArrowWrapper>
+      {totalItem > 16 ? (
+        <ArrowWrapper direction="left" onClick={onPrev}>
+          {' '}
+          <Arrow direction="left" />
+        </ArrowWrapper>
+      ) : null}
 
       <CategoryWarper className="wrapper">
-        <CateInner currenIndex={currenIndex}>
-          {firstHalf.length && renderCategoryItems(firstHalf)}
-        </CateInner>
-        <CateInner currenIndex={currenIndex}>
-          {secondHalf.length && renderCategoryItems(secondHalf)}
-        </CateInner>
+        {isCateLoading ? (
+          <CenteredLoading minHeight="94px" />
+        ) : (
+          <>
+            <CateInner currenIndex={currenIndex}>
+              {firstHalf.length ? renderCategoryItems(firstHalf) : null}
+            </CateInner>
+            <CateInner currenIndex={currenIndex}>
+              {secondHalf.length ? renderCategoryItems(secondHalf) : null}
+            </CateInner>
+          </>
+        )}
       </CategoryWarper>
 
-      <ArrowWrapper direction="right" onClick={onNext}>
-        {' '}
-        <Arrow direction="right" />
-      </ArrowWrapper>
+      {totalItem > 16 ? (
+        <ArrowWrapper direction="right" onClick={onNext}>
+          <Arrow direction="right" />
+        </ArrowWrapper>
+      ) : null}
     </CategoryContainer>
   );
 };

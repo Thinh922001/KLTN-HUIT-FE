@@ -1,6 +1,7 @@
 export interface User {
   id: number;
   name: string;
+  gender: 'male' | 'female';
 }
 
 export interface Auth {

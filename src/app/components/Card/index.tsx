@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import IconLogin from '../icons';
 import { Span } from '../Span/inedx';
 import { mapCardLabel } from '../CardLabel';
@@ -16,11 +16,12 @@ interface Props {
   data: ICard;
   imgWidth?: string;
   imgHeight?: string;
+  index?: number;
 }
 
-export const Card: React.FC<Props> = ({ data, imgWidth, imgHeight }) => {
+export const Card: React.FC<Props> = ({ data, imgWidth, imgHeight, index }) => {
   return (
-    <CardWrapper>
+    <CardWrapper index={index}>
       {data.labels?.length ? mapCardLabel(data.labels) : null}
       <CardImgWrapper>
         <A to={`/chi-tiet-san-pham/${data.id}`}>
@@ -66,28 +67,29 @@ export const Card: React.FC<Props> = ({ data, imgWidth, imgHeight }) => {
   );
 };
 
-const CardImg = styled.img<{ imgWidth?: string; imgHeight?: string }>`
-  width: ${({ imgWidth }) => imgWidth ?? `155px`};
-  height: ${({ imgHeight }) => imgHeight ?? `155px`};
-  object-fit: contain;
-  padding-top: 8px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  transition: transform 0.5s;
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 `;
 
-const CardTitleWrapper = styled.div`
-  margin-bottom: 5px;
-  margin-top: 5px;
+const scaleIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 `;
 
 const CardTitle = styled.h3`
   line-height: 21px;
   font-size: 1.4rem;
-  line-height: 20px;
-  overflow: hidden;
-  text-overflow: ellipsis;
   font-weight: 700;
   color: #1d2939;
 
@@ -100,12 +102,28 @@ const CardTitle = styled.h3`
   transition: color 0.3s;
 `;
 
-const CardWrapper = styled.div`
+const CardImg = styled.img<{ imgWidth?: string; imgHeight?: string }>`
+  width: ${({ imgWidth }) => imgWidth ?? `155px`};
+  height: ${({ imgHeight }) => imgHeight ?? `155px`};
+  object-fit: contain;
+  padding-top: 8px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.5s, opacity 0.5s ease-in-out;
+  animation: ${fadeIn} 0.5s ease-in-out;
+`;
+
+// Styled Components
+const CardWrapper = styled.div<{ index?: number }>`
   border-radius: 8px;
   padding: 10px;
   border: 1px solid #eaecf0;
   background-color: #fff;
   min-height: 436px;
+  animation: ${scaleIn} 0.5s ease-in-out;
+  animation-delay: ${({ index }) => (index ?? 0) * 0.1}s;
+  animation-fill-mode: both;
 
   &:hover {
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
@@ -118,6 +136,11 @@ const CardWrapper = styled.div`
       transform: translateY(-8px);
     }
   }
+`;
+
+const CardTitleWrapper = styled.div`
+  margin-bottom: 5px;
+  margin-top: 5px;
 `;
 
 const CardPrice = styled.strong`
@@ -135,32 +158,26 @@ const CardOldPriceWrapper = styled.div`
 
 const CardOldPrice = styled.p`
   color: #98a2b3;
-  text-align: left;
-  display: inline-block;
-  font-size: 1.4rem;
-  line-height: 17px;
   text-decoration-line: line-through;
 `;
 
 const CardPercent = styled.span`
   color: #dd2f2c;
-  display: inline-block;
   font-size: 1.3rem;
-  line-height: 17px;
 `;
 
 const CardVote = styled.div`
   color: #667085;
   font-size: 1.2rem;
-  line-height: 13px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
 `;
 
 const StartNumber = styled.div`
   font-weight: normal;
   margin-right: 2px;
   color: #667085;
-  vertical-align: unset;
-  display: inline-block;
 `;
 
 const StartIcon = styled(IconLogin)`

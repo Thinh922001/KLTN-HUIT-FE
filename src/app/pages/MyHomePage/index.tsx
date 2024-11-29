@@ -12,7 +12,7 @@ export function MyHomePage() {
   return (
     <>
       <Helmet>
-        <title>My Home Page</title>
+        <title>Trang Chủ</title>
         <meta name="description" content="KLTN HUIT  homepage" />
       </Helmet>
       <Container>

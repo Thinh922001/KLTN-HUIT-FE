@@ -104,3 +104,25 @@ export const createFormDataCmt = async (data: {
 
   return formData;
 };
+
+export const getUserName = (input, gender: 'male' | 'female' = 'male') => {
+  const phoneRegex = /^xxxxxx\d{4}$/;
+  if (phoneRegex.test(input)) {
+    return input;
+  }
+
+  if (typeof input === 'string') {
+    const nameParts = input.trim().split(/\s+/);
+    const lastName = nameParts[nameParts.length - 1];
+
+    if (gender === 'male') {
+      return `A.${lastName}`;
+    } else if (gender === 'female') {
+      return `C.${lastName}`;
+    } else {
+      return lastName;
+    }
+  }
+
+  return '';
+};

@@ -142,6 +142,7 @@ export function* checkDecreaseStock() {
 
 export function* syncCart() {
   try {
+    if (!isAuthenticated()) return;
     const syncData = yield select(selectSyncCart);
 
     yield call(post, `${BASE_URL}/cart/sync`, {

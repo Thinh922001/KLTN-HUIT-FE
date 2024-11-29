@@ -6,7 +6,6 @@ import { LoginActions, useLoginSlice } from '../slice';
 import {
   selectError,
   selectIsLoadingLoaded,
-  selectIsLoadingLogin,
   selectLoginStatus,
 } from '../slice/selector';
 
@@ -18,8 +17,6 @@ const OtpForm: React.FC = () => {
   const dispatch = useDispatch();
 
   const isLoading = useSelector(selectIsLoadingLoaded);
-
-  const isLoadingVerify = useSelector(selectIsLoadingLogin);
 
   const loginStatus = useSelector(selectLoginStatus);
 

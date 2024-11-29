@@ -52,7 +52,7 @@ export const getAuthFromLocalStorage = (): AuthState => {
     }
   }
   return {
-    user: { id: 0, name: '' },
+    user: { id: 0, name: '', gender: 'male' },
     auth: { accessToken: '', refreshToken: '' },
   };
 };
@@ -76,6 +76,16 @@ export const getNameLocalStorage = () => {
       localStorage.getItem('auth') || '{}',
     ) as AuthState;
     return auth.user.name;
+  }
+  return '';
+};
+
+export const getGenderLocalStorage = () => {
+  if (isAuthenticated()) {
+    const auth: AuthState = JSON.parse(
+      localStorage.getItem('auth') || '{}',
+    ) as AuthState;
+    return auth.user?.gender || 'male';
   }
   return '';
 };

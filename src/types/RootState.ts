@@ -7,6 +7,8 @@ import { CommentBoxState } from 'app/pages/DetaiItem/Features/Review/slice/type'
 import { ProductDetailState } from 'app/pages/DetaiItem/slice/type';
 import { GithubRepoFormState } from 'app/pages/HomePage/Features/GithubRepoForm/slice/types';
 import { FormLoginState } from 'app/pages/Login/slice/type';
+import { IHomePageState } from 'app/pages/MyHomePage/slice/type';
+
 import { OrderHistoryState } from 'app/pages/OrderHistory/slice/type';
 import { AuthState } from 'auth/type';
 import { ThemeState } from 'styles/theme/slice/types';
@@ -31,5 +33,6 @@ export interface RootState {
   authState?: AuthState;
   commentBoxState?: CommentBoxState;
   orderHistoryState?: OrderHistoryState;
+  homePageState?: IHomePageState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
