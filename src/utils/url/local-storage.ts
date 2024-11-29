@@ -87,5 +87,5 @@ export const getGenderLocalStorage = () => {
     ) as AuthState;
     return auth.user?.gender || 'male';
   }
-  return '';
+  return 'male';
 };
