@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
 import IconLogin from 'app/components/IconLogin';
+import { CartActions } from 'app/pages/CartPage/slice';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { getNameLocalStorage } from 'utils/url/local-storage';
 
 const infoItemsData = [
   {
@@ -18,11 +22,20 @@ const infoItemsData = [
 ];
 const UserMenuLeft = () => {
   const [hoveredItem, setHoveredItem] = useState<number | null>(0);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const fullName = getNameLocalStorage();
 
+  const handleLogOut = () => {
+    localStorage.removeItem('cart-auth');
+    localStorage.removeItem('auth');
+    dispatch(CartActions.refreshCart());
+    navigate('/login');
+  };
   return (
     <Wrapper>
       <Title>
-        Anh <Name>Lê Cường Thịnh</Name>
+        Anh <Name>{fullName}</Name>
       </Title>
       <InfoList>
         {infoItemsData.map((item, index) => (
@@ -44,7 +57,7 @@ const UserMenuLeft = () => {
             {item.text}
           </InfoItem>
         ))}
-        <BtnLogout>Đăng Xuất</BtnLogout>
+        <BtnLogout onClick={handleLogOut}>Đăng Xuất</BtnLogout>
       </InfoList>
     </Wrapper>
   );

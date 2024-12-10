@@ -13,6 +13,7 @@ export const initialState: FormLoginState = {
   isLoadingLogin: false,
   isLoadingLoaded: false,
   loginStatus: '',
+  syncCartLoaded: false,
 };
 
 const slice = createSlice({
@@ -51,6 +52,12 @@ const slice = createSlice({
     },
     setLoginStatus(state, actions: PayloadAction<string>) {
       state.loginStatus = actions.payload;
+    },
+    setSyncCartLoading(state, actions: PayloadAction<boolean>) {
+      state.syncCartLoaded = actions.payload;
+    },
+    syncCart(state) {
+      state.syncCartLoaded = true;
     },
   },
 });

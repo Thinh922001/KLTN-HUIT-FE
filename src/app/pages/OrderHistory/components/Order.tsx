@@ -15,11 +15,13 @@ import {
   selectTotal,
 } from '../slice/selector';
 import { SeeMore } from 'app/components/SeeMore';
+import { LoginActions } from 'app/pages/Login/slice';
 
 export const Order = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(OrderHistoryActions.loadOrder());
+    dispatch(LoginActions.syncCart());
   }, []);
 
   const isLoading = useSelector(selectIsLoading);

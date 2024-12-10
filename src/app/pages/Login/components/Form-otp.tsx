@@ -7,6 +7,7 @@ import {
   selectError,
   selectIsLoadingLoaded,
   selectLoginStatus,
+  syncCartLoading,
 } from '../slice/selector';
 
 const OtpForm: React.FC = () => {
@@ -19,6 +20,8 @@ const OtpForm: React.FC = () => {
   const isLoading = useSelector(selectIsLoadingLoaded);
 
   const loginStatus = useSelector(selectLoginStatus);
+
+  const syncCartLoaded = useSelector(syncCartLoading);
 
   const error = useSelector(selectError);
 
@@ -41,7 +44,7 @@ const OtpForm: React.FC = () => {
   useEffect(() => {
     if (loginStatus === 'DONE') {
       dispatch(LoginActions.setLoginStatus(''));
-      navigate('/');
+      navigate('/user/lich-su-mua-hang');
     }
   }, [loginStatus]);
 

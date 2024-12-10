@@ -218,6 +218,9 @@ const slice = createSlice({
       }
       return getCartFromLocalStorage();
     },
+    refreshCart(state) {
+      return getCartFromLocalStorage();
+    },
   },
 });
 
