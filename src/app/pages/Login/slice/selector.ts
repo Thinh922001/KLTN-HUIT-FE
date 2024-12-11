@@ -41,3 +41,8 @@ export const selectError = createSelector(
   [(state: RootState) => state.loginState || initialState],
   state => state.error,
 );
+
+export const syncCartLoading = createSelector(
+  [(state: RootState) => state.loginState || initialState],
+  state => state.syncCartLoaded,
+);

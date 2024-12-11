@@ -7,4 +7,5 @@ export interface FormLoginState {
   error: string;
   isLoadingLoaded: boolean;
   loginStatus: string;
+  syncCartLoaded: boolean;
 }

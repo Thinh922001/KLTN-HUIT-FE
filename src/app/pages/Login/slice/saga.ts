@@ -1,5 +1,6 @@
-import { call, put, select, takeLatest, delay } from 'redux-saga/effects';
+import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 
+import { getCart } from 'app/pages/CartPage/slice/saga';
 import { AuthActions } from 'auth';
 import { BASE_URL } from 'utils/url';
 import { post } from 'utils/url/custom-request';
@@ -61,4 +62,5 @@ export function* verifyCode() {
 export function* LoginFormSaga() {
   yield takeLatest(LoginActions.loadOtp, requestCode);
   yield takeLatest(LoginActions.loadLogin, verifyCode);
+  yield takeLatest(LoginActions.syncCart, getCart);
 }
