@@ -14,6 +14,7 @@ import { CenteredLoading } from 'app/components/LoadingCenter';
 import {
   bannerLoading,
   cateBanner,
+  selectBrand,
   selectBrandLoading,
   selectBreadCrumb,
   selectBreadCrumbLoading,
@@ -21,25 +22,19 @@ import {
   selectProductCate,
 } from './slice/selector';
 import { ProductCateNotFound } from './components/cate-not-found';
+import { IBrand } from 'types/Card';
 
 export function Category() {
   useProductCateSlice();
-
   const dispatch = useDispatch();
-
   const { id } = useParams<{ id: string }>();
-
   const isLoading = useSelector(selectIsLoading);
-
   const isBreadCrumbLoading = useSelector(selectBreadCrumbLoading);
-
   const isBrandLoading = useSelector(selectBrandLoading);
-
   const productList = useSelector(selectProductCate);
-
   const banner = useSelector(cateBanner);
-
   const isBannerLoading = useSelector(bannerLoading);
+  const FilterData: IBrand[] = useSelector(selectBrand);
 
   useEffect(() => {
     dispatch(ProductCateActions.resetProductCate());
@@ -68,7 +63,7 @@ export function Category() {
           <WrapperLoading>
             <CenteredLoading minHeight="100%" />
           </WrapperLoading>
-        ) : !productList.length ? (
+        ) : !productList.length && !FilterData.length ? (
           <ProductCateNotFound />
         ) : (
           <Container>
