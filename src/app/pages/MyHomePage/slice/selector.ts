@@ -21,3 +21,18 @@ export const selectProductLoading = createSelector(
   [(state: RootState) => state.homePageState || initialState],
   state => state.isProductLoading,
 );
+
+export const selectBanner = createSelector(
+  [(state: RootState) => state.homePageState || initialState],
+  state => state.banner,
+);
+
+export const selectCateType = createSelector(
+  [(state: RootState) => state.homePageState || initialState],
+  state => state.cateType,
+);
+
+export const selectCateTypeLoading = createSelector(
+  [(state: RootState) => state.homePageState || initialState],
+  state => state.cateTypeLoading,
+);

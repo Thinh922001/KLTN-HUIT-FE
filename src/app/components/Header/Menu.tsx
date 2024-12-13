@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import IconLogin from 'app/components/icons';
 import styled from 'styled-components/macro';
-import { MenuData, MenuType } from './data/menu';
 import { SubMenu } from './sub-menu';
 import { media } from 'styles/media';
+import { HomePageActions, useHomePageSlice } from 'app/pages/MyHomePage/slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCateType } from 'app/pages/MyHomePage/slice/selector';
+import { ICateType } from 'app/pages/MyHomePage/slice/type';
 interface Props {
   isActive?: boolean;
   onMouseEnter: () => void;
@@ -14,7 +17,15 @@ export const Menu: React.FC<Pick<Props, 'onMouseEnter' | 'onMouseLeave'>> = ({
   onMouseEnter,
   onMouseLeave,
 }) => {
+  useHomePageSlice();
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const dispatch = useDispatch();
+
+  const menuCateType = useSelector(selectCateType);
+
+  useEffect(() => {
+    dispatch(HomePageActions.loadingCateType());
+  }, []);
 
   return (
     <ButtonMenu onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
@@ -25,7 +36,7 @@ export const Menu: React.FC<Pick<Props, 'onMouseEnter' | 'onMouseLeave'>> = ({
           <TopMenu>
             <TopMenuMain>
               <MenuItems>
-                {MenuData.map((e: MenuType, index) => {
+                {menuCateType.map((e, index) => {
                   return (
                     <MenuItemWithHover
                       key={index}
@@ -45,7 +56,7 @@ export const Menu: React.FC<Pick<Props, 'onMouseEnter' | 'onMouseLeave'>> = ({
 };
 
 const MenuItemWithHover: React.FC<{
-  menu: MenuType;
+  menu: ICateType;
   isActive: boolean;
   onHover: () => void;
 }> = ({ menu, isActive, onHover }) => {
@@ -67,10 +78,10 @@ const MenuItemWithHover: React.FC<{
       }}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <A>{menu.title}</A>
+      <A>{menu.name}</A>
       {(isHovered || isActive) && (
         <SubMenuWarper>
-          <SubMenu data={menu.subMenus as any} title={menu.title} />
+          <SubMenu data={menu.category} title={menu.name} />
         </SubMenuWarper>
       )}
     </MenuItem>

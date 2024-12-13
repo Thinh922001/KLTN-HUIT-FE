@@ -1,10 +1,10 @@
 import styled from 'styled-components/macro';
-import { SubMenuType } from './data/menu';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ICate } from 'app/pages/MyHomePage/slice/type';
 
 interface SubMenuProps {
-  data: SubMenuType[];
+  data: ICate[];
   title: string;
 }
 
@@ -16,10 +16,10 @@ export const SubMenu: React.FC<SubMenuProps> = ({ data = [], title = '' }) => {
         {data?.length &&
           data.map((e, index) => {
             return (
-              <A to="/danh-muc/1" key={index}>
+              <A to={`/danh-muc/${e.id}`} key={index}>
                 <SubMenuItem>
-                  <ItemImg src={e.img} alt={e.desc} loading="lazy" />
-                  <ItemDesc>{e.desc}</ItemDesc>
+                  <ItemImg src={e.img} alt={e.img} loading="lazy" />
+                  <ItemDesc>{e.name}</ItemDesc>
                 </SubMenuItem>
               </A>
             );

@@ -1,18 +1,13 @@
-import styled from 'styled-components';
-import { MenuData } from 'app/components/Header/data/menu';
 import { Arrow } from 'app/components/Arrow';
 import { Props as ArrowProps } from 'app/components/Arrow/index';
-import { useEffect, useState } from 'react';
-import { renderCategoryItems } from './render-cate-items';
-import { HomePageActions, useHomePageSlice } from '../slice';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectCate,
-  selectCateLoading,
-  selectProduct,
-} from '../slice/selector';
-import { processCate } from 'utils/array';
 import { CenteredLoading } from 'app/components/LoadingCenter';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { processCate } from 'utils/array';
+import { HomePageActions, useHomePageSlice } from '../slice';
+import { selectCate, selectCateLoading } from '../slice/selector';
+import { renderCategoryItems } from './render-cate-items';
 
 interface Props {
   currenIndex: number;

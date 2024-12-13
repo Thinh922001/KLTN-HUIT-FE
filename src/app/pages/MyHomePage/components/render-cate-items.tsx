@@ -1,4 +1,3 @@
-import { SubMenuType } from 'app/components/Header/data/menu';
 import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components/macro';
 import { ICate } from '../slice/type';
