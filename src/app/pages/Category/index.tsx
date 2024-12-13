@@ -12,11 +12,15 @@ import { ProductCateActions, useProductCateSlice } from './slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { CenteredLoading } from 'app/components/LoadingCenter';
 import {
+  bannerLoading,
+  cateBanner,
   selectBrandLoading,
   selectBreadCrumb,
   selectBreadCrumbLoading,
   selectIsLoading,
+  selectProductCate,
 } from './slice/selector';
+import { ProductCateNotFound } from './components/cate-not-found';
 
 export function Category() {
   useProductCateSlice();
@@ -31,6 +35,12 @@ export function Category() {
 
   const isBrandLoading = useSelector(selectBrandLoading);
 
+  const productList = useSelector(selectProductCate);
+
+  const banner = useSelector(cateBanner);
+
+  const isBannerLoading = useSelector(bannerLoading);
+
   useEffect(() => {
     dispatch(ProductCateActions.resetProductCate());
   }, [dispatch]);
@@ -40,6 +50,7 @@ export function Category() {
     dispatch(ProductCateActions.loadProduct());
     dispatch(ProductCateActions.loadBreadCrumb());
     dispatch(ProductCateActions.loadingBrand());
+    dispatch(ProductCateActions.loadingBanner());
   }, [id]);
 
   const BreakCumData: IBreakCum[] = useSelector(selectBreadCrumb);
@@ -50,14 +61,19 @@ export function Category() {
         <meta name="description" content="login" />
       </Helmet>
       <Wrapper>
-        {isLoading || isBreadCrumbLoading || isBrandLoading ? (
+        {isLoading ||
+        isBreadCrumbLoading ||
+        isBrandLoading ||
+        isBannerLoading ? (
           <WrapperLoading>
             <CenteredLoading minHeight="100%" />
           </WrapperLoading>
+        ) : !productList.length ? (
+          <ProductCateNotFound />
         ) : (
           <Container>
             <BreakCum data={BreakCumData} />
-            <Banner />
+            {!banner.length ? null : <Banner images={banner} />}
             <ProductionContainer>
               <Filter />
               <ProductList />

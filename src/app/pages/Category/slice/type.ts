@@ -5,6 +5,7 @@ export interface ProductCateState {
   isPageLoading: boolean;
   isBreadCrumbLoading: boolean;
   isBrandLoading: boolean;
+  isLoadingBanner: boolean;
   cateId: string;
   take: number;
   skip: number;
@@ -16,4 +17,5 @@ export interface ProductCateState {
   brand: IBrand[];
   orderBy: IOrderBy;
   filters: IFilters;
+  cateBanner: string[];
 }

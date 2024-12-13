@@ -66,3 +66,13 @@ export const selectFilters = createSelector(
   [(state: RootState) => state.productCateState || initialState],
   state => state.filters,
 );
+
+export const cateBanner = createSelector(
+  [(state: RootState) => state.productCateState || initialState],
+  state => state.cateBanner,
+);
+
+export const bannerLoading = createSelector(
+  [(state: RootState) => state.productCateState || initialState],
+  state => state.isLoadingBanner,
+);

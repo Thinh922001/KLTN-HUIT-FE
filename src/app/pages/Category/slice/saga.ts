@@ -11,6 +11,7 @@ import { BASE_URL } from 'utils/url';
 import { createQueryString } from 'utils/string';
 import { ProductCateActions } from '.';
 import { QueryParams } from 'types/Card';
+import { get } from 'utils/url/custom-request';
 
 export function* getProductCate() {
   try {
@@ -27,6 +28,9 @@ export function* getProductCate() {
     if (data.data.data.length > 0) {
       yield put(ProductCateActions.productLoaded(data.data.data));
       yield put(ProductCateActions.setTotal(data.data.paging.total));
+    } else {
+      yield put(ProductCateActions.productLoaded([]));
+      yield put(ProductCateActions.setTotal(0));
     }
   } catch (error) {
     console.log(error);
@@ -96,9 +100,24 @@ export function* getBrand() {
   }
 }
 
+export function* getCateBanner() {
+  try {
+    const cateId = yield select(selectCateId);
+    const banner = yield call(get, `${BASE_URL}/banner-cate`, {
+      params: {
+        cateId,
+      },
+    });
+    yield put(ProductCateActions.bannerLoaded(banner.data.data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function* ProductCateFromSaga() {
   yield takeLatest(ProductCateActions.loadProduct, getProductCate);
   yield takeLatest(ProductCateActions.loadingPage, getProductPageCate);
   yield takeLatest(ProductCateActions.loadBreadCrumb, getBreadCrumbs);
   yield takeLatest(ProductCateActions.loadingBrand, getBrand);
+  yield takeLatest(ProductCateActions.loadingBanner, getCateBanner);
 }

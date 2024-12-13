@@ -10,6 +10,7 @@ export const initialState: ProductCateState = {
   isPageLoading: false,
   isBreadCrumbLoading: false,
   isBrandLoading: false,
+  isLoadingBanner: false,
   cateId: '0',
   take: 10,
   skip: 0,
@@ -21,6 +22,7 @@ export const initialState: ProductCateState = {
   brand: [],
   orderBy: { trend: 'DESC' },
   filters: { brand: [] },
+  cateBanner: [],
 };
 
 const slice = createSlice({
@@ -29,6 +31,7 @@ const slice = createSlice({
   reducers: {
     loadProduct(state) {
       state.isLoading = true;
+      state.products = [];
     },
     productLoaded(state, actions: PayloadAction<ICard[]>) {
       state.isLoading = false;
@@ -90,6 +93,14 @@ const slice = createSlice({
     },
     resetProductCate(state) {
       return initialState;
+    },
+    loadingBanner(state) {
+      state.isLoadingBanner = true;
+      state.cateBanner = [];
+    },
+    bannerLoaded(state, actions: PayloadAction<string[]>) {
+      state.isLoadingBanner = false;
+      state.cateBanner = actions.payload;
     },
   },
 });

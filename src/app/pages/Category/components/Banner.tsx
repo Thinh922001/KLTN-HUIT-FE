@@ -1,22 +1,16 @@
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Arrow } from 'app/components/Arrow';
-import IMG1 from './assets/1.png';
-import IMG2 from './assets/2.jpg';
-import IMG3 from './assets/3.png';
-import IMG4 from './assets/4.jpg';
-import IMG5 from './assets/5.png';
-import IMG6 from './assets/6.png';
-import IMG7 from './assets/7.jpg';
-import IMG8 from './assets/8.jpg';
-import IMG9 from './assets/9.jpg';
 
 interface ArrowProps {
   direction: string;
 }
 
-export const Banner = () => {
-  const images = [IMG1, IMG2, IMG3, IMG3, IMG4, IMG5, IMG6, IMG7, IMG8, IMG9];
+interface Props {
+  images: string[];
+}
+
+export const Banner: React.FC<Props> = ({ images }) => {
   const [currenIndex, setCurrentIndex] = useState(0);
 
   const onNext = () => {
