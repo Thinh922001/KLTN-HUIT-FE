@@ -18,6 +18,7 @@ import { SeeMore } from 'app/components/SeeMore';
 import { LoginActions } from 'app/pages/Login/slice';
 
 export const Order = () => {
+  useOrderHistorySlice();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(OrderHistoryActions.loadOrder());

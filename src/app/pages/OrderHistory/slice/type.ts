@@ -7,4 +7,9 @@ export interface OrderHistoryState {
   take: number;
   skip: number;
   total: number;
+  userBalance: number;
+  isLoadingBalance: boolean;
+  amount: number;
+  payUrl: string;
+  topUpLoading: boolean;
 }

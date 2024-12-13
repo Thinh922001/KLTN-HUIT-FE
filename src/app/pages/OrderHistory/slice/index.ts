@@ -12,6 +12,11 @@ export const initialState: OrderHistoryState = {
   take: 3,
   skip: 0,
   total: 0,
+  userBalance: 0,
+  isLoadingBalance: false,
+  amount: 0,
+  payUrl: '',
+  topUpLoading: false,
 };
 
 const slice = createSlice({
@@ -35,6 +40,23 @@ const slice = createSlice({
     loadMoreOrder(state) {
       state.skip += state.take;
       state.isLoading = true;
+    },
+    loadingUserBalance(state) {
+      state.isLoadingBalance = true;
+    },
+    balanceLoaded(state, actions: PayloadAction<number>) {
+      state.userBalance = actions.payload;
+      state.isLoadingBalance = false;
+    },
+    setAmount(state, actions: PayloadAction<number>) {
+      state.amount = actions.payload;
+    },
+    loadingTopUp(state) {
+      state.topUpLoading = true;
+    },
+    topUpLoaded(state, actions: PayloadAction<string>) {
+      state.topUpLoading = false;
+      state.payUrl = actions.payload;
     },
   },
 });

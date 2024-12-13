@@ -24,7 +24,7 @@ export const Menu: React.FC<Pick<Props, 'onMouseEnter' | 'onMouseLeave'>> = ({
   const menuCateType = useSelector(selectCateType);
 
   useEffect(() => {
-    dispatch(HomePageActions.loadingCateType());
+    if (!menuCateType.length) dispatch(HomePageActions.loadingCateType());
   }, []);
 
   return (

@@ -4,7 +4,6 @@ import { RightMenu } from './components/RightMeu';
 import { useOrderHistorySlice } from './slice';
 
 export function OrderHistory() {
-  useOrderHistorySlice();
   return (
     <>
       <Helmet>

@@ -31,3 +31,28 @@ export const selectSkip = createSelector(
   [(state: RootState) => state.orderHistoryState || initialState],
   state => state.skip,
 );
+
+export const selectBalance = createSelector(
+  [(state: RootState) => state.orderHistoryState || initialState],
+  state => state.userBalance,
+);
+
+export const selectBalanceLoading = createSelector(
+  [(state: RootState) => state.orderHistoryState || initialState],
+  state => state.isLoadingBalance,
+);
+
+export const selectAnount = createSelector(
+  [(state: RootState) => state.orderHistoryState || initialState],
+  state => state.amount,
+);
+
+export const selectTopUpLoading = createSelector(
+  [(state: RootState) => state.orderHistoryState || initialState],
+  state => state.topUpLoading,
+);
+
+export const selectPayUrl = createSelector(
+  [(state: RootState) => state.orderHistoryState || initialState],
+  state => state.payUrl,
+);

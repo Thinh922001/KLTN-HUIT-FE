@@ -1,10 +1,23 @@
 import IconLogin from 'app/components/IconLogin';
 import { CartActions } from 'app/pages/CartPage/slice';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import {
+  OrderHistoryActions,
+  useOrderHistorySlice,
+} from 'app/pages/OrderHistory/slice';
+import {
+  selectAnount,
+  selectBalance,
+  selectBalanceLoading,
+  selectPayUrl,
+  selectTopUpLoading,
+} from 'app/pages/OrderHistory/slice/selector';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getNameLocalStorage } from 'utils/url/local-storage';
+import { CenteredLoading } from '../LoadingCenter';
+import ShowModal from '../ModolOverlay';
 
 const infoItemsData = [
   {
@@ -21,10 +34,19 @@ const infoItemsData = [
   },
 ];
 const UserMenuLeft = () => {
+  useOrderHistorySlice();
   const [hoveredItem, setHoveredItem] = useState<number | null>(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const fullName = getNameLocalStorage();
+  const balance = useSelector(selectBalance);
+  const isalanceLoading = useSelector(selectBalanceLoading);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const amount = useSelector(selectAnount);
+  const isTopUpLoading = useSelector(selectTopUpLoading);
+  const payUrl = useSelector(selectPayUrl);
 
   const handleLogOut = () => {
     localStorage.removeItem('cart-auth');
@@ -32,11 +54,38 @@ const UserMenuLeft = () => {
     dispatch(CartActions.refreshCart());
     navigate('/login');
   };
+
+  useEffect(() => {
+    if (payUrl) {
+      window.location.href = payUrl;
+    }
+  }, [payUrl]);
+
+  const handleTopUp = () => {
+    if (amount) {
+      dispatch(OrderHistoryActions.loadingTopUp());
+    } else {
+      alert('Vui lòng chọn số tiền muốn nạp.');
+    }
+  };
+
+  useEffect(() => {
+    dispatch(OrderHistoryActions.loadingUserBalance());
+  }, []);
+
   return (
     <Wrapper>
       <Title>
         Anh <Name>{fullName}</Name>
       </Title>
+      <Balance>
+        Số dư ví
+        {isalanceLoading && !balance ? (
+          <CenteredLoading tiny minHeight="10px" />
+        ) : (
+          <Name>{balance.toLocaleString()} VND</Name>
+        )}
+      </Balance>
       <InfoList>
         {infoItemsData.map((item, index) => (
           <InfoItem
@@ -57,7 +106,40 @@ const UserMenuLeft = () => {
             {item.text}
           </InfoItem>
         ))}
+        <BtnTopUp onClick={() => setIsModalVisible(true)}>Nạp tiền</BtnTopUp>
         <BtnLogout onClick={handleLogOut}>Đăng Xuất</BtnLogout>
+        <ShowModal
+          show={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+        >
+          <h2 style={{ marginBottom: '10px' }}>Nạp tiền bằng MoMo</h2>
+          <p>Chọn số tiền bạn muốn nạp:</p>
+          <select
+            style={{
+              fontSize: '18px',
+              padding: '10px',
+              width: '100%',
+              margin: '20px 0',
+            }}
+            value={amount}
+            onChange={e =>
+              dispatch(OrderHistoryActions.setAmount(Number(e.target.value)))
+            }
+          >
+            <option value="" disabled>
+              Chọn số tiền
+            </option>
+            {[1000000, 5000000, 10000000, 20000000, 50000000, 100000000].map(
+              amount => (
+                <option key={amount} value={amount}>
+                  {amount.toLocaleString()} VND
+                </option>
+              ),
+            )}
+          </select>
+          {isTopUpLoading ? <CenteredLoading minHeight="20px" /> : null}
+          <TopUpButton onClick={handleTopUp}>Nạp tiền</TopUpButton>
+        </ShowModal>
       </InfoList>
     </Wrapper>
   );
@@ -69,6 +151,17 @@ const Wrapper = styled.div`
   display: flex;
   gap: 20px;
   flex-direction: column;
+`;
+
+const TopUpButton = styled.button`
+  padding: 10px 20px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-right: 20px;
 `;
 
 const Title = styled.h2`
@@ -86,7 +179,15 @@ const Title = styled.h2`
   text-transform: capitalize;
 `;
 
-const Name = styled.b``;
+const Balance = styled(Title)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const Name = styled.b`
+  color: #333;
+`;
 
 const InfoList = styled.ul`
   display: flex;
@@ -110,6 +211,7 @@ const InfoItem = styled.li<{ isActive: boolean }>`
 `;
 
 const BtnLogout = styled.button`
+  cursor: pointer;
   border-radius: 5px;
   font-weight: 700;
   font-size: 14px;
@@ -123,6 +225,16 @@ const BtnLogout = styled.button`
 
   &:hover {
     background: #4a90e2;
+    color: #fff;
+  }
+`;
+
+const BtnTopUp = styled(BtnLogout)`
+  color: #adbe2f;
+  border: 1px solid #9ab814;
+
+  &:hover {
+    background: #adc910;
     color: #fff;
   }
 `;
