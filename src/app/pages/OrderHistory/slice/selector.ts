@@ -56,3 +56,13 @@ export const selectPayUrl = createSelector(
   [(state: RootState) => state.orderHistoryState || initialState],
   state => state.payUrl,
 );
+
+export const selectCancelOrderId = createSelector(
+  [(state: RootState) => state.orderHistoryState || initialState],
+  state => state.orderIdCancel,
+);
+
+export const selectFilter = createSelector(
+  [(state: RootState) => state.orderHistoryState || initialState],
+  state => state.fliterBy,
+);

@@ -13,3 +13,11 @@ export interface AuthState {
   user: User;
   auth: Auth;
 }
+
+export enum OrderStatus {
+  Pending = 'Pending',
+  Processing = 'Processing',
+  Returned = 'Returned',
+  Canceled = 'Canceled',
+  Completed = 'Completed',
+}

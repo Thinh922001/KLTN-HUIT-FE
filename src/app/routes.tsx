@@ -61,7 +61,7 @@ const routes: RouteObject[] = [
             element: <LZOrderHistory />,
           },
           {
-            path: 'chi-tiet-don-hang',
+            path: 'chi-tiet-don-hang/:id',
             element: <LZOrderDetail />,
           },
         ],

@@ -17,6 +17,8 @@ export const initialState: OrderHistoryState = {
   amount: 0,
   payUrl: '',
   topUpLoading: false,
+  orderIdCancel: 0,
+  fliterBy: '',
 };
 
 const slice = createSlice({
@@ -44,6 +46,9 @@ const slice = createSlice({
     loadingUserBalance(state) {
       state.isLoadingBalance = true;
     },
+    setBalance(state, actions: PayloadAction<number>) {
+      state.userBalance = actions.payload;
+    },
     balanceLoaded(state, actions: PayloadAction<number>) {
       state.userBalance = actions.payload;
       state.isLoadingBalance = false;
@@ -57,6 +62,32 @@ const slice = createSlice({
     topUpLoaded(state, actions: PayloadAction<string>) {
       state.topUpLoading = false;
       state.payUrl = actions.payload;
+    },
+    loadingCancelOrder(state) {
+      state.orders = state.orders.map(e => ({
+        ...e,
+        isLoading: e.id === state.orderIdCancel,
+      }));
+    },
+    cancelOrderLoaded(state) {
+      state.orders = state.orders.map(e => ({
+        ...e,
+        isLoading: false,
+        status: e.id === state.orderIdCancel ? 'Canceled' : e.status,
+      }));
+      state.orderIdCancel = 0;
+    },
+    cancelOrderFail(state) {
+      state.orders = state.orders.map(e => ({
+        ...e,
+        isLoading: false,
+      }));
+    },
+    setCancelOrderId(state, actions: PayloadAction<number>) {
+      state.orderIdCancel = actions.payload;
+    },
+    setFilter(state, actions: PayloadAction<string>) {
+      state.fliterBy = actions.payload;
     },
   },
 });

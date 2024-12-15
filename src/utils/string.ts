@@ -126,3 +126,18 @@ export const getUserName = (input, gender: 'male' | 'female' = 'male') => {
 
   return '';
 };
+
+export const getNameStatusOrder = status => {
+  switch (status) {
+    case 'Processing':
+      return 'Đang xử lý';
+    case 'Completed':
+      return 'Đã nhận hàng';
+    case 'Canceled':
+      return 'Đơn hàng bị hủy';
+    case 'Returned':
+      return 'Đơn hàng bị hoàn lại';
+    default:
+      return 'Chờ hệ thống xác nhận';
+  }
+};

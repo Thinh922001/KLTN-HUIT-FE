@@ -1,3 +1,4 @@
+import { OrderStatus } from 'auth/type';
 import { IOrderHistory } from 'types/OrderHistory';
 
 export interface OrderHistoryState {
@@ -12,4 +13,6 @@ export interface OrderHistoryState {
   amount: number;
   payUrl: string;
   topUpLoading: boolean;
+  orderIdCancel: number;
+  fliterBy: string;
 }

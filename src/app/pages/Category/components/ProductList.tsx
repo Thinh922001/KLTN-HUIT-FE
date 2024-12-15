@@ -60,7 +60,3 @@ const ProductWrapper = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 `;
-
-const WrapperSeeMore = styled.div`
-  width: 100%;
-`;

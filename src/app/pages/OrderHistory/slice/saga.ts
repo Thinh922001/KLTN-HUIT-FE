@@ -1,9 +1,16 @@
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
-import { selectAnount, selectSkip, selectTake } from './selector';
+import {
+  selectAnount,
+  selectCancelOrderId,
+  selectFilter,
+  selectSkip,
+  selectTake,
+} from './selector';
 import { get, post } from 'utils/url/custom-request';
 import { BASE_URL } from 'utils/url';
 import { OrderHistoryActions } from '.';
 import showErrorToast from 'app/components/Toast/components/Toast-error';
+import showSuccessToast from 'app/components/Toast/components/Toast-success';
 
 export function* getOrder() {
   try {
@@ -11,10 +18,19 @@ export function* getOrder() {
     const take = yield select(selectTake);
     const skip = yield select(selectSkip);
 
-    const response = yield call(get, `${BASE_URL}/order`, {
+    const filterBy = yield select(selectFilter);
+
+    let query: any = { take, skip };
+
+    if (filterBy) {
+      query.filterBy = filterBy;
+    }
+
+    console.log(query);
+
+    let response = yield call(get, `${BASE_URL}/order`, {
       params: {
-        take,
-        skip,
+        ...query,
       },
     });
 
@@ -50,9 +66,25 @@ export function* topUp() {
   }
 }
 
+export function* cancelOrderUser() {
+  try {
+    const orderIdCancel = yield select(selectCancelOrderId);
+    if (!orderIdCancel) return;
+    const res = yield call(post, `${BASE_URL}/cancel-order`, {
+      orderId: orderIdCancel,
+    });
+    yield put(OrderHistoryActions.cancelOrderLoaded());
+    showSuccessToast('Hủy hóa đơn thành công ');
+  } catch (error) {
+    yield put(OrderHistoryActions.cancelOrderFail());
+    showErrorToast('Hủy hóa đơn thất bại');
+  }
+}
+
 export function* OrderHistoryFromSaga() {
   yield takeLatest(OrderHistoryActions.loadOrder, getOrder);
   yield takeLatest(OrderHistoryActions.loadMoreOrder, getOrder);
   yield takeLatest(OrderHistoryActions.loadingUserBalance, getBalance);
   yield takeLatest(OrderHistoryActions.loadingTopUp, topUp);
+  yield takeLatest(OrderHistoryActions.loadingCancelOrder, cancelOrderUser);
 }

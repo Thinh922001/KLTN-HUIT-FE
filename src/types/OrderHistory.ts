@@ -5,4 +5,5 @@ export interface IOrderHistory {
   name: string;
   images: string[];
   totalItems: number;
+  isLoading: boolean;
 }

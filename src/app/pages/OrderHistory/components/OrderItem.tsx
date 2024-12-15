@@ -1,20 +1,35 @@
+import { CenteredLoading } from 'app/components/LoadingCenter';
+import { OrderStatus } from 'auth/type';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IOrderHistory } from 'types/OrderHistory';
-import { currencyVND } from 'utils/string';
+import { currencyVND, getNameStatusOrder } from 'utils/string';
+import { StatusColors } from 'utils/url';
+import { OrderHistoryActions } from '../slice';
 
 interface Props {
   data: IOrderHistory;
 }
 
 export const OrderItem: React.FC<Props> = ({ data }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleCancelOrder = () => {
+    dispatch(OrderHistoryActions.setCancelOrderId(data.id));
+    dispatch(OrderHistoryActions.loadingCancelOrder());
+  };
   return (
     <Wrapper>
       <Head>
         <OrderId>
           <B>Đơn hàng</B> <Span>{data.id}</Span>
         </OrderId>
-        <OrderStatus>{data.status}</OrderStatus>
+        <OrderStatusStyled status={data.status as OrderStatus}>
+          {getNameStatusOrder(data.status)}
+        </OrderStatusStyled>
       </Head>
       <ItemWrapper>
         <Item>
@@ -30,7 +45,17 @@ export const OrderItem: React.FC<Props> = ({ data }) => {
           <TotalPrice>Tổng tiền: {currencyVND(data.totalAmount)}</TotalPrice>
         </TotalPriceWrapper>
       </ItemWrapper>
-      <BtnDetailItem>Chi Tiết</BtnDetailItem>
+      <BtnDetailItem
+        onClick={() => navigate(`/user/chi-tiet-don-hang/${data.id}`)}
+      >
+        Chi Tiết
+      </BtnDetailItem>
+      {data.status === 'Pending' || data.status === 'Processing' ? (
+        <BtnCancelorder onClick={handleCancelOrder}>
+          {data.isLoading ? <CenteredLoading minHeight="100%" tiny /> : null}{' '}
+          Hủy đơn hàng
+        </BtnCancelorder>
+      ) : null}
     </Wrapper>
   );
 };
@@ -61,8 +86,9 @@ const B = styled.b``;
 
 const Span = styled.span``;
 
-const OrderStatus = styled(B)`
-  color: #1cac53;
+export const OrderStatusStyled = styled.span<{ status: OrderStatus }>`
+  color: ${({ status }) => StatusColors[status]};
+  font-weight: bold;
 `;
 
 const ItemWrapper = styled.div`
@@ -102,4 +128,13 @@ const BtnDetailItem = styled.button`
   margin-left: 8px;
   margin-left: auto;
   cursor: pointer;
+
+  & + & {
+    margin-top: 5px;
+  }
+`;
+
+const BtnCancelorder = styled(BtnDetailItem)`
+  border: 1px solid #e98127;
+  color: #e98127;
 `;
