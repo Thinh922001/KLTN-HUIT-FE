@@ -71,7 +71,7 @@ export function CartFound() {
               <TotalPrice>TổngTiền: </TotalPrice>
               <PriceWrapper>
                 {couponResult.totalAmount ? (
-                  <OldPrice>{currencyVND(totalPrice)}</OldPrice>
+                  <OldPrice>{currencyVND(totalAmount)}</OldPrice>
                 ) : null}
                 {couponResult.totalAmount ? (
                   <DisCount>
