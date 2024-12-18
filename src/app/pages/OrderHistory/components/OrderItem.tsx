@@ -27,9 +27,15 @@ export const OrderItem: React.FC<Props> = ({ data }) => {
         <OrderId>
           <B>Đơn hàng</B> <Span>{data.id}</Span>
         </OrderId>
-        <OrderStatusStyled status={data.status as OrderStatus}>
-          {getNameStatusOrder(data.status)}
-        </OrderStatusStyled>
+        <WarapperStatus>
+          {' '}
+          <OrderStatusStyled status={data.status as OrderStatus}>
+            {getNameStatusOrder(data.status)}
+          </OrderStatusStyled>
+          <StatusPayment isPaid={data?.isPaid}>
+            {data?.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}
+          </StatusPayment>
+        </WarapperStatus>
       </Head>
       <ItemWrapper>
         <Item>
@@ -86,6 +92,12 @@ const B = styled.b``;
 
 const Span = styled.span``;
 
+const WarapperStatus = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+
 export const OrderStatusStyled = styled.span<{ status: OrderStatus }>`
   color: ${({ status }) => StatusColors[status]};
   font-weight: bold;
@@ -137,4 +149,10 @@ const BtnDetailItem = styled.button`
 const BtnCancelorder = styled(BtnDetailItem)`
   border: 1px solid #e98127;
   color: #e98127;
+`;
+
+const StatusPayment = styled.span<{ isPaid: boolean }>`
+  color: ${({ isPaid }) => (isPaid ? '#1cac53' : '#d0021b')};
+  transform: translateY(1px);
+  font-weight: bold;
 `;

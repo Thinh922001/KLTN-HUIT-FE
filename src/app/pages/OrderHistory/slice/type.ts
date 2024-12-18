@@ -1,4 +1,3 @@
-import { OrderStatus } from 'auth/type';
 import { IOrderHistory } from 'types/OrderHistory';
 
 export interface OrderHistoryState {

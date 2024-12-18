@@ -6,4 +6,5 @@ export interface IOrderHistory {
   images: string[];
   totalItems: number;
   isLoading: boolean;
+  isPaid: boolean;
 }
