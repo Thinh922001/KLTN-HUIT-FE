@@ -1,13 +1,12 @@
+import CustomCheckbox from 'app/components/CustomCheckBox';
+import { CenteredLoading } from 'app/components/LoadingCenter';
+import showSuccessToast from 'app/components/Toast/components/Toast-success';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { CardItem } from './components/cart-items';
 import { currencyVND } from 'utils/string';
-import { CartInfo } from './components/CartInfo';
-import { CartDisCount } from './components/CartDiscount';
-import CustomCheckbox from 'app/components/CustomCheckBox';
-import { useEffect, useState } from 'react';
 import { CartActions, useCartSlice } from '../slice';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCartItems,
   selectCouponResult,
@@ -17,8 +16,9 @@ import {
   selectOrderLoading,
   selectTotalPrice,
 } from '../slice/selector';
-import { CenteredLoading } from 'app/components/LoadingCenter';
-import { useAddToCartToast } from 'app/components/Toast';
+import { CardItem } from './components/cart-items';
+import { CartDisCount } from './components/CartDiscount';
+import { CartInfo } from './components/CartInfo';
 
 export function CartFound() {
   useCartSlice();
@@ -35,11 +35,9 @@ export function CartFound() {
   const isOrderDone = useSelector(selectOrderDone);
   const [isDegree, setIsDegree] = useState<boolean>(false);
 
-  const showAddToCartToast = useAddToCartToast();
-
   useEffect(() => {
     if (isOrderDone) {
-      showAddToCartToast();
+      showSuccessToast('Đã đặt hàng thành công');
       const timer = setTimeout(() => {
         dispatch(CartActions.resetCart());
       }, 1000);
