@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { OrderDetailActions } from '../slice';
-import { selectItemSelected } from '../slice/selector';
+import { selectItemSelected, selectOrderDetail } from '../slice/selector';
 
 interface IDetailItem {
   id: number;
@@ -22,6 +22,9 @@ interface Props {
 export const ProductDetailItem: React.FC<Props> = ({ data, visibleModal }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
+
+  const orderDetail = useSelector(selectOrderDetail);
+
   const dispatch = useDispatch();
   return (
     <Wrapper
@@ -43,14 +46,16 @@ export const ProductDetailItem: React.FC<Props> = ({ data, visibleModal }) => {
           )}
         </PriceWrapper>
         <MoreOptions>
-          {showMenu && (
-            <Dots
-              onMouseEnter={() => setShowDropDown(true)}
-              onMouseLeave={() => setShowDropDown(false)}
-            >
-              ...
-            </Dots>
-          )}
+          {showMenu &&
+            orderDetail?.isPaid &&
+            orderDetail.status === 'Completed' && (
+              <Dots
+                onMouseEnter={() => setShowDropDown(true)}
+                onMouseLeave={() => setShowDropDown(false)}
+              >
+                ...
+              </Dots>
+            )}
           {showDropDown && (
             <DropdownMenu
               onMouseEnter={() => setShowDropDown(true)}
