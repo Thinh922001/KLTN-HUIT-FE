@@ -17,12 +17,12 @@ const ModalOverlay = styled.div<ModalOverlayProps>`
   align-items: center;
 `;
 
-const ModalContent = styled.div`
+const ModalContent = styled.div<{ minWidth?: string }>`
   background: #fff;
   padding: 30px 40px;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  min-width: 400px;
+  min-width: ${({ minWidth }) => minWidth || '400px'};
   text-align: center;
 `;
 
@@ -46,12 +46,18 @@ type ShowModalProps = {
   children: ReactNode;
   show: boolean;
   onClose: () => void;
+  minWidth?: string;
 };
 
-const ShowModal: React.FC<ShowModalProps> = ({ children, show, onClose }) => {
+const ShowModal: React.FC<ShowModalProps> = ({
+  children,
+  show,
+  onClose,
+  minWidth,
+}) => {
   return (
     <ModalOverlay show={show} onClick={onClose}>
-      <ModalContent onClick={e => e.stopPropagation()}>
+      <ModalContent onClick={e => e.stopPropagation()} minWidth={minWidth}>
         {children}
         <CloseButton onClick={onClose}>Đóng</CloseButton>
       </ModalContent>

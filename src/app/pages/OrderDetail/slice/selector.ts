@@ -44,3 +44,8 @@ export const selectReturnOrderLoading = createSelector(
   [(state: RootState) => state.orderDetailState || initialState],
   state => state.isReturnOrderLoading,
 );
+
+export const selectImgReturnOrder = createSelector(
+  [(state: RootState) => state.orderDetailState || initialState],
+  state => state.img,
+);

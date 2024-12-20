@@ -7,7 +7,7 @@ import {
 } from 'app/components/SelectionOption';
 import showErrorToast from 'app/components/Toast/components/Toast-error';
 import { selectBalance } from 'app/pages/OrderHistory/slice/selector';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -19,6 +19,7 @@ import {
   selectReturnOrderLoading,
 } from '../slice/selector';
 import { ProductDetailItem } from './ProductDettailItem';
+import { ReturnOrderImg } from './ReturnOrderImg';
 
 export const OrderDetailProduct = () => {
   const navigate = useNavigate();
@@ -26,7 +27,6 @@ export const OrderDetailProduct = () => {
   const orderDetail = useSelector(selectOrderDetail);
   const isLoading = useSelector(selectPaymentLoading);
   const balance = useSelector(selectBalance);
-
   const isReturnOrderLoading = useSelector(selectReturnOrderLoading);
 
   const hanldePayment = () => {
@@ -41,8 +41,9 @@ export const OrderDetailProduct = () => {
 
   const hanldeReturnOrder = () => {
     dispatch(OrderDetailActions.loadingReturnOrder());
-    setIsModalVisible(false);
   };
+
+
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -54,10 +55,6 @@ export const OrderDetailProduct = () => {
 
   const handleQuantityChange = event => {
     dispatch(OrderDetailActions.setQuantityReturn(event.target.value));
-  };
-
-  const handleReasonChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(OrderDetailActions.setReasonReturn(event.target.value));
   };
 
   const returnReasons = [
@@ -126,19 +123,25 @@ export const OrderDetailProduct = () => {
         </ActionLink>
       </PaymentActionsWrapper>
 
-      <ShowModal show={isModalVisible} onClose={() => setIsModalVisible(false)}>
+      <ShowModal
+        show={isModalVisible}
+        onClose={() => {
+          dispatch(OrderDetailActions.resetReturnOrderState());
+          setIsModalVisible(false);
+        }}
+        minWidth="70%"
+      >
         <h2 style={{ marginBottom: '10px' }}>Đổi trả sản phẩm</h2>
         <ProductInforWrapper>
           <p>Sản phẩm: {item?.name}</p>
           <ImgModal src={item?.img} />
           <QuantitySelector
+            minWidth="50px"
             maxQuantity={item?.quantity || 0}
             onChange={handleQuantityChange}
           />
-          <ReturnReasonSelector
-            reasons={returnReasons}
-            onChange={handleReasonChange}
-          />
+          <ReturnReasonSelector reasons={returnReasons} />
+          <ReturnOrderImg />
         </ProductInforWrapper>
 
         {isReturnOrderLoading ? <CenteredLoading minHeight="20px" /> : null}
@@ -255,10 +258,12 @@ const TopUpButton = styled.button`
 `;
 
 const ImgModal = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   margin-top: 20px;
+  margin: 0 auto;
+  display: inline-block;
 `;
 
 const ProductInforWrapper = styled.div`

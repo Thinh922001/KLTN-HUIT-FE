@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
+import { FloatingInput } from '../FloatingInput';
+import { OrderDetailActions } from 'app/pages/OrderDetail/slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectReasonReturn } from 'app/pages/OrderDetail/slice/selector';
 
 type QuantitySelectorProps = {
   maxQuantity: number;
+  minWidth?: string;
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
-type ReturnReasonSelectorProps = {
+interface ReturnReasonSelectorProps {
   reasons: string[];
-  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-};
+}
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
   gap: 10px;
+  align-items: center;
 `;
 
 const Label = styled.label`
@@ -24,8 +28,8 @@ const Label = styled.label`
   color: #333;
 `;
 
-const Select = styled.select`
-  width: 200px;
+const Select = styled.select<{ customWidth?: string }>`
+  width: ${({ customWidth }) => (customWidth ? customWidth : '200px')};
   padding: 5px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -43,11 +47,12 @@ const Option = styled.option`
 const QuantitySelector: React.FC<QuantitySelectorProps> = ({
   maxQuantity,
   onChange,
+  minWidth,
 }) => {
   return (
     <Container>
       <Label>Chọn số lượng:</Label>
-      <Select onChange={onChange}>
+      <Select onChange={onChange} customWidth={minWidth}>
         {Array.from({ length: maxQuantity }, (_, index) => (
           <Option key={index + 1} value={index + 1}>
             {index + 1}
@@ -60,18 +65,57 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({
 
 const ReturnReasonSelector: React.FC<ReturnReasonSelectorProps> = ({
   reasons,
-  onChange,
 }) => {
+  const dispatch = useDispatch();
+
+  const reason = useSelector(selectReasonReturn);
+  const [isCustomReason, setIsCustomReason] = useState(false);
+
+  const handleReasonChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+
+    if (value === 'other') {
+      setIsCustomReason(true);
+      dispatch(OrderDetailActions.setReasonReturn(''));
+    } else {
+      setIsCustomReason(false);
+      dispatch(OrderDetailActions.setReasonReturn(value));
+    }
+  };
+
+  const handleCustomReasonChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    dispatch(OrderDetailActions.setReasonReturn(value));
+  };
+
   return (
     <Container>
-      <Label>Chọn lý do SP:</Label>
-      <Select onChange={onChange}>
-        {reasons.map((reason, index) => (
-          <Option key={index} value={reason}>
-            {reason}
+      <Label>Chọn lý do đổi trả:</Label>
+      <Select
+        value={isCustomReason ? 'other' : reason}
+        onChange={handleReasonChange}
+        customWidth="400px"
+      >
+        {reasons.map((r, index) => (
+          <Option key={index} value={r}>
+            {r}
           </Option>
         ))}
+        <Option value="other">Nhập lý do khác...</Option>
       </Select>
+
+      {isCustomReason && (
+        <FloatingInput
+          name="customReason"
+          label="Nhập lý do của bạn"
+          value={reason}
+          onChange={handleCustomReasonChange}
+          customWidth="300px"
+          disableFocusColor={true}
+          disableFloating={true}
+          customHeight="32.5px"
+        />
+      )}
     </Container>
   );
 };

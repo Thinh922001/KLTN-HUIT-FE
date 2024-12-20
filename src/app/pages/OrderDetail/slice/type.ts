@@ -33,4 +33,5 @@ export interface OrderDetailState {
   quantityReturn: number;
   reasonReturn: string;
   isReturnOrderLoading: boolean;
+  img: string[];
 }

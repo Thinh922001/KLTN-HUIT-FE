@@ -105,6 +105,39 @@ export const createFormDataCmt = async (data: {
   return formData;
 };
 
+export const createFormdataReturnOrder = async ({
+  images,
+  orderId,
+  productDetailId,
+  quantity,
+  reason,
+}: {
+  images: string[];
+  orderId: number;
+  productDetailId: number;
+  quantity: number;
+  reason: string;
+}) => {
+  const formData = new FormData();
+  formData.append('orderId', String(orderId));
+  formData.append('productDetailId', String(productDetailId));
+  formData.append('quantity', String(quantity));
+  formData.append('reason', reason);
+  if (images && images.length > 0) {
+    const blobs = await Promise.all(
+      images.map(async image => {
+        const response = await fetch(image);
+        return await response.blob();
+      }),
+    );
+
+    blobs.forEach((blob, index) => {
+      formData.append('img', blob, `image-${index}.png`);
+    });
+  }
+  return formData;
+};
+
 export const getUserName = (input, gender: 'male' | 'female' = 'male') => {
   const phoneRegex = /^xxxxxx\d{4}$/;
   if (phoneRegex.test(input)) {

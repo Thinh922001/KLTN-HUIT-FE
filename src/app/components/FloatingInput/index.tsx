@@ -12,6 +12,7 @@ interface Props {
   disableFloating?: boolean;
   disableFocusColor?: boolean;
   isReadOnly?: boolean;
+  customHeight?: string;
 }
 
 export const FloatingInput: React.FC<Props> = ({
@@ -25,6 +26,7 @@ export const FloatingInput: React.FC<Props> = ({
   disableFloating,
   disableFocusColor,
   isReadOnly,
+  customHeight,
 }) => {
   return (
     <Wrapper>
@@ -41,6 +43,7 @@ export const FloatingInput: React.FC<Props> = ({
         disableFloating={disableFloating}
         disableFocusColor={disableFocusColor}
         readOnly={isReadOnly}
+        customHeight={customHeight}
       />
       {!disableFloating && (
         <Label customColor={customColor} htmlFor={name}>
@@ -77,13 +80,14 @@ const Input = styled.input<
     | 'customWidth'
     | 'disableFloating'
     | 'disableFocusColor'
+    | 'customHeight'
   >
 >`
   padding: 10px;
   border: ${({ customBorder }) => customBorder || '2px solid #ccc'};
   border-radius: 5px;
   width: ${({ customWidth }) => customWidth || '264px'};
-  height: 40px;
+  height: ${({ customHeight }) => (customHeight ? customHeight : '40px')};
   transition: border 0.5s, transform 0.5s, box-shadow 0.5s, text-shadow 0.5s;
   font-family: inherit;
   font-size: 1.4rem;

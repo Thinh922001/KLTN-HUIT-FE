@@ -15,6 +15,7 @@ export const initialState: OrderDetailState = {
   quantityReturn: 1,
   reasonReturn: 'Sản phẩm bị lỗi',
   isReturnOrderLoading: false,
+  img: [],
 };
 
 // isPaid , payMentMethod , balance
@@ -70,6 +71,16 @@ const slice = createSlice({
     },
     returnOrderLoaded(state) {
       state.isReturnOrderLoading = false;
+    },
+    setImgReturnOrder(state, actions: PayloadAction<string[]>) {
+      state.img = actions.payload;
+    },
+    overWriteImgReturnOrder(state, actions: PayloadAction<string>) {
+      state.img = [...state.img, actions.payload];
+    },
+    resetReturnOrderState(state) {
+      state.img = [];
+      state.reasonReturn = 'Sản phẩm bị lỗi';
     },
   },
 });

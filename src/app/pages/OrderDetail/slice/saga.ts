@@ -7,12 +7,14 @@ import { BASE_URL } from 'utils/url';
 import { get, post } from 'utils/url/custom-request';
 import { OrderDetailActions } from '.';
 import {
+  selectImgReturnOrder,
   selectItemSelected,
   selectOrderDetail,
   selectOrderId,
   selectQuantityReturn,
   selectReasonReturn,
 } from './selector';
+import { createFormdataReturnOrder } from 'utils/string';
 
 export function* getOrderDetail() {
   try {
@@ -56,11 +58,18 @@ export function* returnOrder() {
     const item = yield select(selectItemSelected);
     const quantityOrder = yield select(selectQuantityReturn);
     const reason = yield select(selectReasonReturn);
-    const res = yield call(post, `${BASE_URL}/return-order`, {
+    const images = yield select(selectImgReturnOrder);
+    const formData = yield call(createFormdataReturnOrder, {
       orderId,
       productDetailId: item.id,
       quantity: quantityOrder,
-      reason: reason,
+      reason,
+      images,
+    });
+    const res = yield call(post, `${BASE_URL}/return-order`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
     yield put(OrderDetailActions.returnOrderLoaded());
     showSuccessToast('Thành công xin vui lòng đợi từ 3 - 7 ngày để giải quyết');
